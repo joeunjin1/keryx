@@ -1,0 +1,121 @@
+{
+  "brand": {
+    "name": "KERYX",
+    "tagline": "连接中国工厂与海外买家(客户)的精选匹配平台",
+    "operator": "本服务由森康运营",
+    "operator_full": "本服务由森康运营 · 韩国通关物流由 GAZA TRADE 委托处理"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "submit": "提交",
+    "approve": "批准",
+    "reject": "拒绝",
+    "edit": "编辑",
+    "delete": "删除",
+    "loading": "加载中…",
+    "error": "出错了",
+    "success": "成功",
+    "back": "返回",
+    "next": "下一步",
+    "viewAll": "查看全部",
+    "search": "搜索",
+    "notifications": "通知",
+    "settings": "设置",
+    "logout": "退出"
+  },
+  "auth": {
+    "login": "登录",
+    "signup": "注册",
+    "email": "邮箱",
+    "password": "密码"
+  },
+  "factory": {
+    "dashboard": {
+      "greeting": "{name} · 工厂",
+      "totalRegistered": "已注册",
+      "underReview": "审核中",
+      "approved": "已批准",
+      "orders": "订单",
+      "rating": "评分",
+      "uploadNew": "+ 上传新产品",
+      "uploadOcr": "报价单 OCR",
+      "briefAlert": "有买家想找你",
+      "briefCount": "{n} 件 Brief 待回应",
+      "briefAnonymous": "买家信息保密",
+      "ongoing": "进行中订单",
+      "deadline": "截止 {date}",
+      "leadMd": "负责 MD"
+    },
+    "brief": {
+      "title": "Brief 回应",
+      "concept": "Brief 概念",
+      "targetPrice": "目标单价",
+      "qty": "数量",
+      "deliveryTarget": "交付时间",
+      "referenceImages": "参考图片",
+      "mdNote": "{name} MD 备注",
+      "competition": "其他工厂回应",
+      "factoriesSent": "{total} 家工厂发送 · {responded} 家回应",
+      "proposalNum": "提案 {n}",
+      "productName": "产品名 (中文)",
+      "uploadPhotos": "上传照片",
+      "size": "尺寸",
+      "material": "材质",
+      "moq": "MOQ",
+      "tieredPrice": "数量阶梯单价",
+      "leadTime": "交期",
+      "sampleCost": "样品费",
+      "addProposal": "+ 添加提案 2",
+      "submit": "提交提案"
+    },
+    "product": {
+      "registerNew": "新产品登记",
+      "category": "分类",
+      "ip": "IP 角色",
+      "noIp": "无 IP",
+      "name": "产品名",
+      "specifications": "规格",
+      "tradeTerms": "交易条款"
+    }
+  },
+  "inspection": {
+    "title": "检查",
+    "captureNormal": "正常样品",
+    "captureDefect": "不良样品",
+    "qtyPassed": "合格",
+    "qtyFailed": "不良",
+    "passRate": "合格率",
+    "defectRate": "不良率",
+    "saveAndNext": "下一项 →"
+  },
+  "chat": {
+    "title": "消息",
+    "autoTranslate": "自动翻译聊天 · 韩语 ↔ 中文",
+    "showOriginal": "查看原文",
+    "showTranslation": "查看译文",
+    "translated": "已翻译",
+    "read": "已读",
+    "placeholder": "输入消息 …",
+    "send": "发送",
+    "noMessages": "还没有消息。发个招呼吧。"
+  },
+  "md": {
+    "workroom": "MD 工作室",
+    "mySellers": "负责买家(客户)",
+    "vipSellers": "VIP 买家(客户)",
+    "unreadMessages": "未回复消息",
+    "interestsRealtime": "兴趣品 · 实时",
+    "researchInProgress": "市场调研进行中",
+    "internalNotes": "内部备注",
+    "recommendationQueue": "买家(客户)工作台展示队列",
+    "selectToOrder": "选择 → 订单单",
+    "addProduct": "+ 添加产品",
+    "briefResponses": "已发 Brief 响应情况",
+    "ongoingOrders": "进行中订单",
+    "quickActions": "快速操作",
+    "changeSeller": "更换买家(客户)",
+    "viewAsSeller": "查看买家(客户)工作台 →",
+    "newBrief": "新 Brief"
+  }
+}

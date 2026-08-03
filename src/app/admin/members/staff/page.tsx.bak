@@ -1,0 +1,118 @@
+import { createClient } from '@/lib/supabase/server';
+
+export default async function StaffManagementPage() {
+  const supabase = createClient() as any;
+
+  const { data: staffList } = await supabase
+    .from('user_profiles')
+    .select('id, display_name, kind, email, created_at')
+    .in('kind', ['admin', 'md', 'inspector'])
+    .order('created_at', { ascending: false }) as { data: any[] };
+
+  const kindLabel: Record<string, string> = {
+    admin: '관리자',
+    md: 'MD',
+    inspector: '검수원',
+  };
+  const kindColor: Record<string, string> = {
+    admin: '#0ea5e9',
+    md: '#10b981',
+    inspector: '#f59e0b',
+  };
+
+  return (
+    <div className="kx-animate-in">
+
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+        <div>
+          <h1 style={{ fontSize: 24, fontWeight: 900, color: 'var(--text-primary)', marginBottom: 4 }}>
+            직원 등록·관리
+          </h1>
+          <p style={{ fontSize: 14, color: 'var(--text-secondary)' }}>
+            내부 직원(관리자, MD, 검수원) 계정을 관리합니다.
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <button className="active:scale-95 transition-all" style={{
+            padding: '10px 20px', borderRadius: 12, background: '#0ea5e9', color: '#fff',
+            border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 700,
+          }}>
+            + 직원 초대
+          </button>
+        </div>
+      </div>
+
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 24 }}>
+        {[
+          { label: '전체 직원', value: staffList?.length ?? 0, icon: '👥', color: '#0ea5e9' },
+          { label: 'MD', value: staffList?.filter(s => s.kind === 'md').length ?? 0, icon: '🤝', color: '#10b981' },
+          { label: '검수원', value: staffList?.filter(s => s.kind === 'inspector').length ?? 0, icon: '🔍', color: '#f59e0b' },
+        ].map(stat => (
+          <div key={stat.label} style={{
+            background: 'var(--bg-base)', borderRadius: 16, padding: '20px',
+            border: '1.5px solid var(--border-light)', boxShadow: 'var(--shadow-sm)',
+          }}>
+            <div style={{ fontSize: 28, marginBottom: 8 }}>{stat.icon}</div>
+            <div style={{ fontSize: 11, color: 'var(--text-tertiary)', marginBottom: 4 }}>{stat.label}
+              </div>
+            <div style={{ fontSize: 32, fontWeight: 900, color: stat.color }}>{stat.value}</div>
+          </div>
+        ))}
+      </div>
+
+
+      <div style={{ background: 'var(--bg-base)', borderRadius: 16, border: '1.5px solid var(--border-light)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
+        <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-light)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <span className="text-[15px] font-bold">직원 목록</span>
+          <span style={{ fontSize: 12, color: 'var(--text-tertiary)' }}>총 {staffList?.length ?? 0}명
+              </span>
+        </div>
+        {!staffList || staffList.length === 0 ? (
+          <div style={{ padding: '60px 20px', textAlign: 'center', color: 'var(--text-tertiary)' }}>
+            <div style={{ fontSize: 48, marginBottom: 12 }}>👥</div>
+            <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>등록된 직원이 없습니다</div>
+            <div className="text-[13px]">직원 초대 버튼을 눌러 새 직원을 등록하세요.</div>
+          </div>
+        ) : (
+          <div>
+            {staffList.map((staff: any, i: number) => (
+              <div key={staff.id} style={{
+                padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 16,
+                borderBottom: i < staffList.length - 1 ? '1px solid var(--border-light)' : 'none',
+              }}>
+                <div style={{
+                  width: 40, height: 40, borderRadius: '50%',
+                  background: `${kindColor[staff.kind] ?? '#94a3b8'}20`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 16, fontWeight: 700, color: kindColor[staff.kind] ?? '#94a3b8', flexShrink: 0,
+                }}>
+                  {(staff.display_name ?? '?')[0]}
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>
+                    {staff.display_name ?? '(이름 없음)'}
+                  </div>
+                  <div style={{ fontSize: 12, color: 'var(--text-tertiary)', marginTop: 2 }}>
+                    {staff.email ?? '-'}
+                  </div>
+                </div>
+                <div style={{
+                  padding: '4px 12px', borderRadius: 99, fontSize: 11, fontWeight: 700,
+                  background: `${kindColor[staff.kind] ?? '#94a3b8'}15`,
+                  color: kindColor[staff.kind] ?? '#94a3b8',
+                  border: `1px solid ${kindColor[staff.kind] ?? '#94a3b8'}30`,
+                }}>
+                  {kindLabel[staff.kind] ?? staff.kind}
+                </div>
+                <div style={{ fontSize: 11, color: 'var(--text-tertiary)', flexShrink: 0 }}>
+                  {staff.created_at ? new Date(staff.created_at).toLocaleDateString('ko-KR') : '-'}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,30 @@
+/* ── [web-performance-resilience 스킬 준수] 마이크로인터랙션 ─────────────── */
+/* 버튼 클릭 시 즉각적인 촉각 피드백 */
+.kx-btn:active:not(:disabled) {
+  transform: scale(0.97);
+  transition: transform 0.08s ease;
+}
+button[type="submit"]:active:not(:disabled) {
+  transform: scale(0.97);
+  transition: transform 0.08s ease;
+}
+/* 스켈레톤 로딩 애니메이션 */
+@keyframes kx-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.kx-skeleton {
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: kx-shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+/* 낙관적 UI - 전송 중 상태 */
+.kx-optimistic {
+  opacity: 0.65;
+  transition: opacity 0.2s ease;
+}
+/* 네비게이션 아이템 클릭 피드백 */
+.kx-nav-item:active {
+  transform: scale(0.98);
+}

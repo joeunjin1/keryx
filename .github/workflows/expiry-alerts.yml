@@ -1,0 +1,38 @@
+# KERYX 구독 만료 알림
+# 스킬 원칙: 만료 전 14/7/3/1일 알림 필수
+# 실행 시간: 매일 09:00 KST (= 00:00 UTC)
+name: Subscription Expiry Alerts
+
+on:
+  schedule:
+    # 매일 00:00 UTC = 09:00 KST
+    - cron: '0 0 * * *'
+  workflow_dispatch:  # 수동 실행 가능
+
+jobs:
+  send-expiry-alerts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send expiry alerts
+        run: |
+          echo "구독 만료 알림 발송 중..."
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.NEXT_PUBLIC_APP_URL }}/api/cron/expiry-alerts")
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | head -1)
+          
+          echo "응답 코드: $HTTP_CODE"
+          echo "응답 내용: $BODY"
+          
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "❌ 만료 알림 실패 (HTTP $HTTP_CODE)"
+            exit 1
+          fi
+          
+          # 알림 건수 추출
+          ALERT_COUNT=$(echo "$BODY" | python3 -c "import sys, json; d=json.load(sys.stdin); print(d.get('alert_count', 0))" 2>/dev/null || echo "unknown")
+          echo "✅ 만료 알림 완료 — ${ALERT_COUNT}건 처리"

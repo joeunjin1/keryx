@@ -1,0 +1,442 @@
+"use client";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+
+/* ─────────────────────────────────────────────
+   다국어 텍스트
+───────────────────────────────────────────── */
+const T = {
+  ko: {
+    langBtn: '中文',
+    nav_login: '로그인',
+    badge: '30년 중국무역 노하우',
+    hero_title_1: '중국무역 차원을',
+    hero_title_2: '높여야 합니다.',
+    hero_sub: '당신의 전담 무역비서가 당신에게 꼭 필요한 부분들을 맞춤 제공할 것입니다.',
+    hero_desc: '시장조사 · 샘플제작발송 · 공장매칭 · 디자인개발 · 제품개발 · 패키지디자인 · 100% 전수검사 · 전담직원 MD · 창고까지 원스톱 물류 제공',
+    hero_promise: '원하는 상품과 원하는 품질, 주력제품을 생산할 공장 — 모든 것을 제공해 드립니다.',
+    cta1: '시장조사 의뢰하기',
+    cta2: '공장매칭 의뢰하기',
+    cta3: '샘플개발 의뢰하기',
+    services_title: '전담 무역비서가 제공하는 서비스',
+    services_sub: '중국 현지 전문가가 처음부터 끝까지 함께합니다',
+    why_title: 'KERYX를 선택하는 이유',
+    why_sub: '30년 중국무역 경험이 만든 신뢰할 수 있는 파트너',
+    process_title: '이렇게 진행됩니다',
+    process_sub: '간단한 3단계로 중국 최고의 공장과 연결됩니다',
+    cta_bottom_title: '지금 바로 시작하세요',
+    cta_bottom_sub: '간단한 신청만으로 전담 무역비서가 배정됩니다',
+    footer_slogan: '케릭스 / KERYX — 30년 중국무역의 프리미엄 원스톱 서비스',
+    footer_biz: '사업자등록번호: 609-81-63010 | 대표: 조은진 | 이메일: support@keryx.kr',
+    footer_addr: '중국 이우 센캉 일용품 유한공사 | 한국 통관·물류: 가자트레이드',
+    footer_copy: '© 2025 KERYX. All rights reserved.',
+    admin_link: '관리자',
+    dashboard: '내 대시보드',
+  },
+  zh: {
+    langBtn: '한국어',
+    nav_login: '登录',
+    badge: '30年中国贸易经验',
+    hero_title_1: '提升您的',
+    hero_title_2: '中国贸易水平。',
+    hero_sub: '您的专属贸易秘书将为您量身定制所需的一切服务。',
+    hero_desc: '市场调研 · 样品制作发货 · 工厂匹配 · 设计开发 · 产品开发 · 包装设计 · 100%全检 · 专属MD · 仓储一站式物流',
+    hero_promise: '您想要的产品、您想要的品质、生产主力产品的工厂 — 我们为您全部提供。',
+    cta1: '申请市场调研',
+    cta2: '申请工厂匹配',
+    cta3: '申请样品开发',
+    services_title: '专属贸易秘书提供的服务',
+    services_sub: '中国本地专家从头到尾全程陪伴',
+    why_title: '选择KERYX的理由',
+    why_sub: '30年中国贸易经验打造的可信赖合作伙伴',
+    process_title: '这样进行',
+    process_sub: '简单3步与中国顶级工厂对接',
+    cta_bottom_title: '立即开始',
+    cta_bottom_sub: '简单申请即可分配专属贸易秘书',
+    footer_slogan: '凯瑞 / KERYX — 30年中国贸易一站式高端服务',
+    footer_biz: '营业执照: 609-81-63010 | 代表: 조은진 | 邮箱: support@keryx.kr',
+    footer_addr: '中国义乌森康日用品有限公司 | 韩国清关·物流: GAZA Trade',
+    footer_copy: '© 2025 KERYX. All rights reserved.',
+    admin_link: '管理员',
+    dashboard: '我的控制台',
+  },
+};
+
+const SERVICES = {
+  ko: [
+    { icon: '🔍', title: '시장조사', desc: '원하시는 제품의 중국 시장 현황, 가격대, 공장 정보를 전문적으로 조사해 드립니다.' },
+    { icon: '🏭', title: '공장매칭', desc: '품질·가격·납기·안정성 기준으로 최적의 공장을 선별하여 매칭해 드립니다.' },
+    { icon: '📦', title: '샘플제작·발송', desc: '선정된 공장에서 샘플을 제작하고 한국까지 안전하게 발송해 드립니다.' },
+    { icon: '🎨', title: '디자인개발', desc: '제품 디자인부터 패키지 디자인까지 전문 디자이너가 개발해 드립니다.' },
+    { icon: '🔧', title: '제품개발', desc: '아이디어를 실제 제품으로 만들어 드립니다. OEM/ODM 모두 가능합니다.' },
+    { icon: '📋', title: '패키지디자인', desc: '브랜드 아이덴티티에 맞는 패키지 디자인과 인쇄까지 원스톱으로 제공합니다.' },
+    { icon: '✅', title: '100% 전수검사', desc: '출고 전 전수검사로 불량품 없이 완벽한 품질을 보장해 드립니다.' },
+    { icon: '🚚', title: '원스톱 물류', desc: '중국 창고에서 한국 창고까지 통관·운송·보관을 원스톱으로 처리합니다.' },
+  ],
+  zh: [
+    { icon: '🔍', title: '市场调研', desc: '专业调研您所需产品的中国市场现状、价格区间及工厂信息。' },
+    { icon: '🏭', title: '工厂匹配', desc: '按品质、价格、交期、稳定性标准筛选最优工厂进行匹配。' },
+    { icon: '📦', title: '样品制作·发货', desc: '在选定工厂制作样品，安全发货至韩国。' },
+    { icon: '🎨', title: '设计开发', desc: '从产品设计到包装设计，专业设计师全程开发。' },
+    { icon: '🔧', title: '产品开发', desc: '将您的创意转化为实际产品，OEM/ODM均可。' },
+    { icon: '📋', title: '包装设计', desc: '符合品牌形象的包装设计与印刷，一站式提供。' },
+    { icon: '✅', title: '100%全检', desc: '出货前全数检验，确保无不良品，品质有保障。' },
+    { icon: '🚚', title: '一站式物流', desc: '从中国仓库到韩国仓库，清关、运输、仓储一站式处理。' },
+  ],
+};
+
+const WHY = {
+  ko: [
+    { icon: '👤', title: '전담 MD 배정', desc: '모든 고객에게 전담 MD가 배정되어 처음부터 끝까지 1:1로 관리합니다.' },
+    { icon: '🏆', title: '검증된 공장 네트워크', desc: '30년간 직접 검증한 공장 네트워크로 품질과 신뢰를 보장합니다.' },
+    { icon: '💰', title: '투명한 비용 구조', desc: '숨겨진 비용 없이 모든 비용을 사전에 명확하게 안내해 드립니다.' },
+    { icon: '🔒', title: 'IP 보호', desc: '디자인 및 제품 정보는 철저한 보안으로 보호됩니다.' },
+  ],
+  zh: [
+    { icon: '👤', title: '专属MD配置', desc: '每位客户配置专属MD，从头到尾1:1全程管理。' },
+    { icon: '🏆', title: '经验证的工厂网络', desc: '30年亲自验证的工厂网络，品质与信誉有保障。' },
+    { icon: '💰', title: '透明费用结构', desc: '无隐藏费用，所有费用提前明确告知。' },
+    { icon: '🔒', title: 'IP保护', desc: '设计及产品信息受严格安全保护。' },
+  ],
+};
+
+const PROCESS = {
+  ko: [
+    { step: '01', title: '서비스 신청', desc: '원하시는 서비스를 선택하고 간단한 정보를 입력해 주세요. 1분이면 충분합니다.' },
+    { step: '02', title: '전담 MD 배정', desc: '신청 후 24시간 내에 전담 MD가 배정되어 직접 연락을 드립니다.' },
+    { step: '03', title: '맞춤 서비스 제공', desc: '전담 MD가 시장조사, 공장 매칭, 샘플 제작 등 원하시는 서비스를 진행합니다.' },
+  ],
+  zh: [
+    { step: '01', title: '申请服务', desc: '选择您需要的服务，填写简单信息。1分钟即可完成。' },
+    { step: '02', title: '分配专属MD', desc: '申请后24小时内分配专属MD，直接与您联系。' },
+    { step: '03', title: '提供定制服务', desc: '专属MD进行市场调研、工厂匹配、样品制作等您所需的服务。' },
+  ],
+};
+
+export default function LandingPage() {
+  const [lang, setLang] = useState<'ko' | 'zh'>('ko');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const supabase = createClientComponentClient();
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session?.user) {
+          setIsLoggedIn(true);
+          supabase
+            .from('user_profiles')
+            .select('kind')
+            .eq('id', session.user.id)
+            .single()
+            .then(({ data }) => { if (data) setUserRole(data.kind); });
+        }
+      });
+    } catch { /* ignore */ }
+  }, []);
+
+  const t = T[lang];
+  const services = SERVICES[lang];
+  const why = WHY[lang];
+  const process = PROCESS[lang];
+
+  const getDashboardHref = () => {
+    if (userRole === 'admin' || userRole === 'md') return '/admin';
+    if (userRole === 'factory') return '/factory';
+    return '/seller';
+  };
+
+  return (
+    <div className="min-h-screen bg-white">
+
+      {/* ══════════════════════════════════════
+          네비게이션
+      ══════════════════════════════════════ */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between h-16">
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/logos/logo-horizontal.png"
+                alt="KERYX"
+                width={120}
+                height={32}
+                style={{ objectFit: 'contain' }}
+                priority
+                onError={(e) => {
+                  const el = e.currentTarget as HTMLImageElement;
+                  el.style.display = 'none';
+                  const parent = el.parentElement;
+                  if (parent) {
+                    parent.innerHTML = '<span style="font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent">KERYX</span>';
+                  }
+                }}
+              />
+            </Link>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setLang(lang === 'ko' ? 'zh' : 'ko')}
+                className="hidden sm:flex items-center gap-1 px-3 py-1.5 text-sm text-gray-500 hover:text-gray-800 border border-gray-200 rounded-lg transition-colors"
+              >
+                🌐 {t.langBtn}
+              </button>
+              {isLoggedIn ? (
+                <Link
+                  href={getDashboardHref()}
+                  className="px-4 py-2 text-sm font-bold text-white rounded-lg shadow-sm transition-all hover:shadow-md"
+                  style={{ background: 'linear-gradient(135deg,#667eea,#764ba2)' }}
+                >
+                  {t.dashboard}
+                </Link>
+              ) : (
+                <>
+                  <Link href="/login" className="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 font-medium">
+                    {t.nav_login}
+                  </Link>
+                  <Link
+                    href="/apply/market-research"
+                    className="px-4 py-2 text-sm font-bold text-white rounded-lg shadow-sm transition-all hover:shadow-md"
+                    style={{ background: 'linear-gradient(135deg,#667eea,#764ba2)' }}
+                  >
+                    {lang === 'ko' ? '무료 신청' : '免费申请'}
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* ══════════════════════════════════════
+          히어로 섹션
+      ══════════════════════════════════════ */}
+      <section
+        className="relative overflow-hidden pt-16"
+        style={{ background: 'linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%)' }}
+      >
+        {/* 배경 글로우 */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-20 right-10 w-80 h-80 rounded-full opacity-10"
+            style={{ background: 'radial-gradient(circle,#667eea,transparent)' }} />
+          <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full opacity-10"
+            style={{ background: 'radial-gradient(circle,#764ba2,transparent)' }} />
+        </div>
+
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-24 sm:py-36">
+          <div className="max-w-3xl">
+            {/* 배지 */}
+            <div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-8"
+              style={{ background: 'rgba(102,126,234,0.2)', color: '#a5b4fc', border: '1px solid rgba(102,126,234,0.3)' }}
+            >
+              ⭐ {t.badge}
+            </div>
+
+            {/* 메인 타이틀 */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
+              {t.hero_title_1}
+              <br />
+              <span style={{ background: 'linear-gradient(135deg,#667eea,#a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                {t.hero_title_2}
+              </span>
+            </h1>
+
+            {/* 부제목 */}
+            <p className="text-xl sm:text-2xl text-blue-100 font-semibold mb-5 leading-relaxed">
+              {t.hero_sub}
+            </p>
+
+            {/* 서비스 목록 */}
+            <p className="text-sm sm:text-base text-blue-200/80 mb-4 leading-relaxed">
+              {t.hero_desc}
+            </p>
+
+            {/* 약속 문구 */}
+            <p
+              className="text-base sm:text-lg text-white/90 font-bold mb-10 pl-4 leading-relaxed"
+              style={{ borderLeft: '4px solid #667eea' }}
+            >
+              {t.hero_promise}
+            </p>
+
+            {/* CTA 버튼 3개 */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link
+                href="/apply/market-research"
+                className="flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-white text-base transition-all hover:scale-105 shadow-lg"
+                style={{ background: 'linear-gradient(135deg,#667eea,#764ba2)' }}
+              >
+                🔍 {t.cta1}
+              </Link>
+              <Link
+                href="/apply/factory-matching"
+                className="flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-white text-base transition-all hover:scale-105 shadow-lg"
+                style={{ background: 'linear-gradient(135deg,#f093fb,#f5576c)' }}
+              >
+                🏭 {t.cta2}
+              </Link>
+              <Link
+                href="/apply/sample-development"
+                className="flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-white text-base transition-all hover:scale-105 shadow-lg"
+                style={{ background: 'linear-gradient(135deg,#4facfe,#00f2fe)' }}
+              >
+                📦 {t.cta3}
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* 웨이브 */}
+        <div className="relative h-16">
+          <svg viewBox="0 0 1440 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute bottom-0 w-full">
+            <path d="M0 64L1440 64L1440 0C1200 40 960 56 720 56C480 56 240 40 0 0L0 64Z" fill="white" />
+          </svg>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          서비스 소개
+      ══════════════════════════════════════ */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl sm:text-4xl font-black text-gray-900 mb-3">{t.services_title}</h2>
+            <p className="text-lg text-gray-500">{t.services_sub}</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {services.map((s, i) => (
+              <div
+                key={i}
+                className="p-6 rounded-2xl border border-gray-100 hover:border-purple-200 hover:shadow-lg transition-all duration-300"
+                style={{ background: 'linear-gradient(135deg,#fafafa,#f5f3ff)' }}
+              >
+                <div className="text-4xl mb-4">{s.icon}</div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{s.title}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          선택 이유
+      ══════════════════════════════════════ */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl sm:text-4xl font-black text-gray-900 mb-3">{t.why_title}</h2>
+            <p className="text-lg text-gray-500">{t.why_sub}</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {why.map((w, i) => (
+              <div key={i} className="text-center p-8 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="text-5xl mb-4">{w.icon}</div>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">{w.title}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed">{w.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          프로세스
+      ══════════════════════════════════════ */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl sm:text-4xl font-black text-gray-900 mb-3">{t.process_title}</h2>
+            <p className="text-lg text-gray-500">{t.process_sub}</p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-8 sm:gap-4">
+            {process.map((p, i) => (
+              <div key={i} className="flex-1 text-center px-4">
+                <div
+                  className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-black text-2xl shadow-lg"
+                  style={{ background: 'linear-gradient(135deg,#667eea,#764ba2)' }}
+                >
+                  {p.step}
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{p.title}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed">{p.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          하단 CTA
+      ══════════════════════════════════════ */}
+      <section
+        className="py-20"
+        style={{ background: 'linear-gradient(135deg,#667eea 0%,#764ba2 100%)' }}
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">{t.cta_bottom_title}</h2>
+          <p className="text-lg text-white/80 mb-10">{t.cta_bottom_sub}</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/apply/market-research"
+              className="flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-purple-700 bg-white text-base transition-all hover:scale-105 shadow-lg"
+            >
+              🔍 {t.cta1}
+            </Link>
+            <Link
+              href="/apply/factory-matching"
+              className="flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-purple-700 bg-white text-base transition-all hover:scale-105 shadow-lg"
+            >
+              🏭 {t.cta2}
+            </Link>
+            <Link
+              href="/apply/sample-development"
+              className="flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-purple-700 bg-white text-base transition-all hover:scale-105 shadow-lg"
+            >
+              📦 {t.cta3}
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          푸터
+      ══════════════════════════════════════ */}
+      <footer className="bg-gray-900 text-gray-400 py-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+            <div>
+              <div className="mb-3">
+                <Image
+                  src="/logos/logo-horizontal.png"
+                  alt="KERYX"
+                  width={100}
+                  height={28}
+                  style={{ objectFit: 'contain', filter: 'brightness(0) invert(0.5)' }}
+                  onError={(e) => {
+                    const el = e.currentTarget as HTMLImageElement;
+                    el.style.display = 'none';
+                  }}
+                />
+              </div>
+              <p className="text-sm text-gray-500">{t.footer_slogan}</p>
+            </div>
+            <div className="text-xs text-gray-600 space-y-1 sm:text-right">
+              <p>{t.footer_biz}</p>
+              <p>{t.footer_addr}</p>
+              <p className="mt-2 text-gray-700">{t.footer_copy}</p>
+            </div>
+          </div>
+          <div className="mt-8 pt-6 border-t border-gray-800 flex justify-center">
+            <Link href="/login?role=admin" className="text-xs text-gray-800 hover:text-gray-600 transition-colors">
+              {t.admin_link}
+            </Link>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

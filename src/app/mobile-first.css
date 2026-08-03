@@ -1,0 +1,183 @@
+/* ══════════════════════════════════════════════════════════
+   [mobile-first-design 스킬] 모바일 기반 CSS
+   Day 1: safe-area, 100dvh, overscroll, 터치 타깃
+   ══════════════════════════════════════════════════════════ */
+
+/* 1. Safe Area Insets (iPhone 노치, 홈바, Android 둥근 모서리) */
+.safe-top    { padding-top: env(safe-area-inset-top); }
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+.safe-left   { padding-left: env(safe-area-inset-left); }
+.safe-right  { padding-right: env(safe-area-inset-right); }
+.safe-x      { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+.safe-all    { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+
+/* 2. 100dvh — iOS Safari 주소창 버그 수정 (h-screen 대체) */
+.h-dvh     { height: 100dvh; }
+.min-h-dvh { min-height: 100dvh; }
+
+/* kx-shell, kx-auth-wrap, kx-landing → 100dvh로 업그레이드 */
+.kx-shell     { min-height: 100dvh !important; }
+.kx-auth-wrap { min-height: 100dvh !important; }
+.kx-landing   { min-height: 100dvh !important; }
+
+/* 3. overscroll 바운스 방지 (iOS 전체 페이지 튕김 방지) */
+html, body {
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+/* 스크롤 가능한 컨테이너는 개별 허용 */
+.kx-scroll-container {
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 4. 터치 타깃 최소 44×44px (Apple HIG, WCAG 2.5.5) */
+.kx-touch-target {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 아이콘 버튼 — 시각적으론 작지만 터치 영역 44px */
+.kx-icon-btn {
+  position: relative;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.15s, transform 0.1s;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+.kx-icon-btn:hover  { background: rgba(0,0,0,0.06); }
+.kx-icon-btn:active { transform: scale(0.93); }
+
+/* 5. 하단 탭바 safe-area 적용 */
+.kx-mobile-nav {
+  padding-bottom: env(safe-area-inset-bottom) !important;
+}
+
+/* 6. 모바일 입력 폰트 16px (iOS 자동 줌 방지) */
+@media (max-width: 767px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+/* 7. 인앱 브라우저 안내 배너 */
+.kx-inapp-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: #fef3c7;
+  border-bottom: 1px solid #f59e0b;
+  padding: 10px 16px;
+  font-size: 13px;
+  color: #92400e;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 8. 모바일 풀스크린 모달 */
+@media (max-width: 767px) {
+  .kx-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    max-width: 100% !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* 9. 하단 시트 (Bottom Sheet) */
+.kx-bottom-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: flex-end;
+}
+.kx-bottom-sheet {
+  width: 100%;
+  background: white;
+  border-radius: 20px 20px 0 0;
+  padding: 16px 20px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  max-height: 85dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.kx-bottom-sheet-handle {
+  width: 36px;
+  height: 4px;
+  background: #d1d5db;
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+
+/* 10. Pull-to-refresh 인디케이터 */
+.kx-ptr-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  gap: 8px;
+}
+
+/* 11. 모바일 우선 컨테이너 패턴 */
+.kx-page-container {
+  margin: 0 auto;
+  padding: 0 16px;
+  max-width: 1280px;
+}
+@media (min-width: 640px)  { .kx-page-container { padding: 0 24px; } }
+@media (min-width: 1024px) { .kx-page-container { padding: 0 32px; } }
+
+/* 12. 모바일 카드 그리드 */
+.kx-mobile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+@media (min-width: 640px)  { .kx-mobile-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
+@media (min-width: 1024px) { .kx-mobile-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
+@media (min-width: 1280px) { .kx-mobile-grid { grid-template-columns: repeat(4, 1fr); } }
+
+/* 13. 버튼 최소 터치 타깃 보강 */
+.kx-btn {
+  min-height: 44px !important;
+}
+.kx-btn-sm {
+  min-height: 36px !important;
+}
+.kx-btn-lg, .kx-btn-xl {
+  min-height: 52px !important;
+}
+
+/* 14. Android 백버튼 모달 닫기 지원 (JS에서 pushState 사용 시 배경 처리) */
+.kx-modal-backdrop {
+  overscroll-behavior: contain;
+}
+
+/* 15. 채팅 입력창 키보드 가림 방지 */
+.kx-chat-input-area {
+  position: sticky;
+  bottom: 0;
+  bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--bg-base);
+  padding-bottom: env(safe-area-inset-bottom);
+}

@@ -1,0 +1,45 @@
+{
+  "common": {
+    "loading": "로딩 중...",
+    "error": "오류가 발생했습니다",
+    "retry": "다시 시도",
+    "save": "저장",
+    "cancel": "취소",
+    "confirm": "확인",
+    "delete": "삭제",
+    "edit": "수정",
+    "search": "검색",
+    "filter": "필터",
+    "all": "전체",
+    "none": "없음",
+    "yes": "예",
+    "no": "아니오",
+    "back": "뒤로",
+    "next": "다음",
+    "prev": "이전",
+    "close": "닫기",
+    "open": "열기",
+    "submit": "제출",
+    "reset": "초기화",
+    "download": "다운로드",
+    "upload": "업로드",
+    "view": "보기",
+    "more": "더보기",
+    "less": "접기",
+    "logout": "로그아웃",
+    "login": "로그인",
+    "signup": "회원가입"
+  },
+  "nav": {
+    "shop": "제품 쇼핑몰",
+    "seller": "바이어(고객) 포털",
+    "factory": "공장 포털",
+    "admin": "관리자",
+    "md": "MD 포털",
+    "designer": "디자이너 포털"
+  },
+  "meta": {
+    "title": "KERYX - 한국 바이어(고객)와 중국 공장을 잇는 B2B 플랫폼",
+    "description": "중국 공장에서 직접 소싱하는 가장 빠른 경로. MOQ 200개부터 대량 주문까지, IP 보호 + 전담 MD + AI 검수를 한번에."
+  }
+}

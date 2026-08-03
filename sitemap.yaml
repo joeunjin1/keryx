@@ -1,0 +1,651 @@
+# KERYX Platform Sitemap — Single Source of Truth
+# living-sitemap-system 스킬 원칙 준수
+# 모든 라우트, 권한, DB 테이블, i18n 키를 이 파일에서 관리
+# 변경 시 반드시 이 파일을 먼저 수정 후 코드에 반영
+
+version: "2.0"
+updated: "2026-05-04"
+
+# ─────────────────────────────────────────────
+# 공개 라우트 (인증 불필요)
+# ─────────────────────────────────────────────
+public:
+  - path: /
+    label: 홈
+    labelZh: 首页
+    component: src/app/page.tsx
+
+  - path: /shop
+    label: B2B 쇼핑몰
+    labelZh: B2B商城
+    component: src/app/shop/page.tsx
+    db_tables: [products, factories, categories]
+
+  - path: /shop/factory/[factoryId]
+    label: 공장 상세
+    labelZh: 工厂详情
+    component: src/app/shop/factory/[factoryId]/page.tsx
+    db_tables: [factories, products]
+
+  - path: /products/[id]
+    label: 상품 상세
+    labelZh: 商品详情
+    component: src/app/products/[id]/page.tsx
+    db_tables: [products]
+
+  - path: /login
+    label: 로그인
+    labelZh: 登录
+    component: src/app/login/page.tsx
+
+  - path: /signup
+    label: 회원가입
+    labelZh: 注册
+    component: src/app/signup/page.tsx
+
+  - path: /register
+    label: 공장 등록
+    labelZh: 工厂注册
+    component: src/app/register/page.tsx
+
+  - path: /membership
+    label: 멤버십
+    labelZh: 会员计划
+    component: src/app/membership/page.tsx
+    db_tables: [subscription_plans]
+
+  - path: /support
+    label: 고객센터
+    labelZh: 客户支持
+    component: src/app/support/page.tsx
+
+  - path: /faq
+    label: FAQ
+    labelZh: 常见问题
+    component: src/app/faq/page.tsx
+
+  - path: /privacy
+    label: 개인정보처리방침
+    labelZh: 隐私政策
+    component: src/app/privacy/page.tsx
+
+  - path: /terms
+    label: 이용약관
+    labelZh: 使用条款
+    component: src/app/terms/page.tsx
+
+# ─────────────────────────────────────────────
+# Admin 포털 (role: admin)
+# ─────────────────────────────────────────────
+admin:
+  role: admin
+  bypass_roles: [admin]  # admin은 모든 포털 접근 가능
+  base_path: /admin
+  shell: AdminShell
+  nav_source: src/config/navigation.ts#adminNavItems
+  pages:
+    - path: /admin
+      label: 대시보드
+      labelZh: 管理控制台
+      db_tables: [profiles, orders, products, factories]
+
+    - path: /admin/sellers
+      label: 셀러 목록·관리
+      labelZh: 卖家列表·管理
+      db_tables: [profiles, subscriptions]
+
+    - path: /admin/factories
+      label: 공장 목록·상세
+      labelZh: 工厂列表·详情
+      db_tables: [factories, profiles]
+
+    - path: /admin/factories/approvals
+      label: 공장 입점 승인
+      labelZh: 工厂入驻审批
+      db_tables: [factories]
+
+    - path: /admin/factory-ratings
+      label: 공장 평가·점수
+      labelZh: 工厂评分
+      db_tables: [factory_ratings]
+
+    - path: /admin/inspections
+      label: 검수 관리
+      labelZh: 验货管理
+      db_tables: [inspections]
+
+    - path: /admin/inspections/[inspectionId]
+      label: 검수 상세
+      labelZh: 验货详情
+      db_tables: [inspections, inspection_photos]
+
+    - path: /admin/products
+      label: 전체 상품 데이터
+      labelZh: 全部商品数据
+      db_tables: [products, categories]
+
+    - path: /admin/products/price-approvals
+      label: 가격 수정 승인
+      labelZh: 价格修改审批
+      db_tables: [price_change_requests, products]
+
+    - path: /admin/ip-studio
+      label: IP Studio
+      labelZh: IP Studio
+      db_tables: [ip_characters]
+
+    - path: /admin/ip-studio/[characterId]
+      label: IP 캐릭터 상세
+      labelZh: IP角色详情
+      db_tables: [ip_characters, ip_assets]
+
+    - path: /admin/ip-studio/new
+      label: IP 캐릭터 등록
+      labelZh: 新建IP角色
+      db_tables: [ip_characters]
+
+    - path: /admin/ip-approvals
+      label: IP 라이센스 승인
+      labelZh: IP授权审批
+      db_tables: [ip_license_requests]
+
+    - path: /admin/ip-license
+      label: IP 라이센스 관리
+      labelZh: IP授权管理
+      db_tables: [ip_licenses]
+
+    - path: /admin/subscriptions
+      label: 구독 서비스 관리
+      labelZh: 订阅服务管理
+      db_tables: [subscriptions, subscription_plans]
+
+    - path: /admin/trade
+      label: 거래 관리
+      labelZh: 交易管理
+      db_tables: [orders, order_items]
+
+    - path: /admin/payments
+      label: 결제 관리
+      labelZh: 支付管理
+      db_tables: [payments]
+
+    - path: /admin/research
+      label: 시장조사 관리
+      labelZh: 市场调研管理
+      db_tables: [research_requests]
+
+    - path: /admin/samples
+      label: 샘플 요청 관리
+      labelZh: 样品请求管理
+      db_tables: [sample_requests]
+
+    - path: /admin/notifications
+      label: 알림 관리
+      labelZh: 通知管理
+      db_tables: [notifications]
+
+    - path: /admin/members/sellers
+      label: 셀러 회원
+      labelZh: 卖家会员
+      db_tables: [profiles]
+
+    - path: /admin/members/factories
+      label: 공장 회원
+      labelZh: 工厂会员
+      db_tables: [profiles, factories]
+
+    - path: /admin/members/staff
+      label: 직원 관리
+      labelZh: 员工管理
+      db_tables: [profiles]
+
+    - path: /admin/md-performance
+      label: MD 성과 관리
+      labelZh: MD绩效管理
+      db_tables: [profiles, orders]
+
+    - path: /admin/health
+      label: 시스템 상태
+      labelZh: 系统状态
+      db_tables: []
+
+# ─────────────────────────────────────────────
+# MD 포털 (role: md)
+# ─────────────────────────────────────────────
+md:
+  role: md
+  bypass_roles: [admin]
+  base_path: /md
+  shell: AdminShell
+  nav_source: src/config/navigation.ts#mdNavItems
+  pages:
+    - path: /md
+      label: MD 대시보드
+      labelZh: MD控制台
+      db_tables: [profiles, orders, briefs]
+
+    - path: /md/briefs
+      label: 의뢰 관리
+      labelZh: 委托管理
+      db_tables: [briefs]
+
+    - path: /md/briefs/new
+      label: 새 의뢰
+      labelZh: 新建委托
+      db_tables: [briefs]
+
+    - path: /md/briefs/[briefId]
+      label: 의뢰 상세
+      labelZh: 委托详情
+      db_tables: [briefs, brief_proposals]
+
+    - path: /md/ai-brief
+      label: AI 의뢰서 작성
+      labelZh: AI委托书生成
+      db_tables: [briefs]
+
+    - path: /md/ai-match
+      label: AI 공장 매칭
+      labelZh: AI工厂匹配
+      db_tables: [factories, briefs]
+
+    - path: /md/factory
+      label: 공장 관리
+      labelZh: 工厂管理
+      db_tables: [factories]
+
+    - path: /md/factory/[factoryId]
+      label: 공장 상세
+      labelZh: 工厂详情
+      db_tables: [factories, products]
+
+    - path: /md/products
+      label: 상품 관리
+      labelZh: 商品管理
+      db_tables: [products]
+
+    - path: /md/products/price-requests
+      label: 가격 수정 요청
+      labelZh: 价格修改申请
+      db_tables: [price_change_requests]
+
+    - path: /md/orders
+      label: 주문 관리
+      labelZh: 订单管理
+      db_tables: [orders, order_items]
+
+    - path: /md/orders/new
+      label: 주문 생성
+      labelZh: 创建订单
+      db_tables: [orders]
+
+    - path: /md/orders/margin-builder
+      label: 마진 계산기
+      labelZh: 利润计算器
+      db_tables: [orders]
+
+    - path: /md/orders/[orderId]
+      label: 주문 상세
+      labelZh: 订单详情
+      db_tables: [orders, order_items]
+
+    - path: /md/inspections
+      label: 검수 관리
+      labelZh: 验货管理
+      db_tables: [inspections]
+
+    - path: /md/inspections/[inspectionId]
+      label: 검수 상세
+      labelZh: 验货详情
+      db_tables: [inspections, inspection_photos]
+
+    - path: /md/inspections/[inspectionId]/capture
+      label: 검수 사진 촬영
+      labelZh: 拍摄验货照片
+      db_tables: [inspection_photos]
+
+    - path: /md/sellers
+      label: 담당 셀러
+      labelZh: 负责卖家
+      db_tables: [profiles]
+
+    - path: /md/seller/[sellerId]
+      label: 셀러 상세
+      labelZh: 卖家详情
+      db_tables: [profiles, orders]
+
+    - path: /md/chat/seller
+      label: 셀러 채팅
+      labelZh: 卖家聊天
+      db_tables: [conversations, messages]
+
+    - path: /md/chat/seller/[conversationId]
+      label: 셀러 대화방
+      labelZh: 卖家对话
+      db_tables: [conversations, messages]
+
+    - path: /md/chat/factory
+      label: 공장 채팅
+      labelZh: 工厂聊天
+      db_tables: [conversations, messages]
+
+    - path: /md/chat/factory/[conversationId]
+      label: 공장 대화방
+      labelZh: 工厂对话
+      db_tables: [conversations, messages]
+
+    - path: /md/community
+      label: 커뮤니티
+      labelZh: 社区
+      db_tables: [conversations]
+
+    - path: /md/research
+      label: 시장조사
+      labelZh: 市场调研
+      db_tables: [research_requests]
+
+    - path: /md/research/[requestId]
+      label: 시장조사 상세
+      labelZh: 市场调研详情
+      db_tables: [research_requests]
+
+    - path: /md/samples
+      label: 샘플 관리
+      labelZh: 样品管理
+      db_tables: [sample_requests]
+
+    - path: /md/trade
+      label: 무역 관리
+      labelZh: 贸易管理
+      db_tables: [orders]
+
+    - path: /md/performance
+      label: 성과 현황
+      labelZh: 绩效状况
+      db_tables: [orders, profiles]
+
+# ─────────────────────────────────────────────
+# Seller 포털 (role: seller)
+# ─────────────────────────────────────────────
+seller:
+  role: seller
+  bypass_roles: [admin]
+  base_path: /seller
+  shell: AppShell
+  nav_source: src/config/navigation.ts#sellerNavItems
+  pages:
+    - path: /seller
+      label: 셀러 대시보드
+      labelZh: 卖家控制台
+      db_tables: [profiles, orders, subscriptions]
+
+    - path: /seller/catalog
+      label: 상품 카탈로그
+      labelZh: 商品目录
+      db_tables: [products, categories]
+
+    - path: /seller/interests
+      label: 관심 상품
+      labelZh: 收藏商品
+      db_tables: [product_interests]
+
+    - path: /seller/orders
+      label: 주문 현황
+      labelZh: 订单状态
+      db_tables: [orders, order_items]
+
+    - path: /seller/orders/[orderId]
+      label: 주문 상세
+      labelZh: 订单详情
+      db_tables: [orders, order_items]
+
+    - path: /seller/orders/[orderId]/design
+      label: 디자인 요청
+      labelZh: 设计请求
+      db_tables: [design_tasks]
+
+    - path: /seller/inspections
+      label: 검수 현황
+      labelZh: 验货状态
+      db_tables: [inspections]
+
+    - path: /seller/inspections/[inspectionId]
+      label: 검수 상세
+      labelZh: 验货详情
+      db_tables: [inspections, inspection_photos]
+
+    - path: /seller/research
+      label: 시장조사 요청
+      labelZh: 市场调研申请
+      db_tables: [research_requests]
+
+    - path: /seller/research/new
+      label: 새 시장조사
+      labelZh: 新建市场调研
+      db_tables: [research_requests]
+
+    - path: /seller/research/[requestId]
+      label: 시장조사 상세
+      labelZh: 市场调研详情
+      db_tables: [research_requests]
+
+    - path: /seller/messages
+      label: 메시지
+      labelZh: 消息
+      db_tables: [conversations, messages]
+
+    - path: /seller/payments
+      label: 결제 내역
+      labelZh: 支付记录
+      db_tables: [payments]
+
+    - path: /seller/membership
+      label: 멤버십 관리
+      labelZh: 会员管理
+      db_tables: [subscriptions]
+
+    - path: /seller/trade
+      label: 무역 서비스
+      labelZh: 贸易服务
+      db_tables: [orders]
+
+# ─────────────────────────────────────────────
+# Factory 포털 (role: factory)
+# ─────────────────────────────────────────────
+factory:
+  role: factory
+  bypass_roles: [admin]
+  base_path: /factory
+  shell: AppShell
+  nav_source: src/config/navigation.ts#factoryNavItems
+  pages:
+    - path: /factory
+      label: 공장 대시보드
+      labelZh: 工厂控制台
+      db_tables: [factories, products, orders]
+
+    - path: /factory/products
+      label: 상품 관리
+      labelZh: 商品管理
+      db_tables: [products]
+
+    - path: /factory/products/new
+      label: 상품 등록
+      labelZh: 新建商品
+      db_tables: [products]
+
+    - path: /factory/products/[productId]
+      label: 상품 상세
+      labelZh: 商品详情
+      db_tables: [products]
+
+    - path: /factory/orders
+      label: 주문 관리
+      labelZh: 订单管理
+      db_tables: [orders, order_items]
+
+    - path: /factory/orders/[orderId]
+      label: 주문 상세
+      labelZh: 订单详情
+      db_tables: [orders, order_items]
+
+    - path: /factory/inspections
+      label: 검수 현황
+      labelZh: 验货状态
+      db_tables: [inspections]
+
+    - path: /factory/briefs
+      label: 의뢰 현황
+      labelZh: 委托状态
+      db_tables: [briefs, brief_proposals]
+
+    - path: /factory/samples
+      label: 샘플 관리
+      labelZh: 样品管理
+      db_tables: [sample_requests]
+
+    - path: /factory/profile
+      label: 공장 프로필
+      labelZh: 工厂资料
+      db_tables: [factories]
+
+# ─────────────────────────────────────────────
+# API 라우트 (서버 전용)
+# ─────────────────────────────────────────────
+api:
+  public:
+    - path: /api/public/products
+    - path: /api/public/products/[id]
+    - path: /api/public/factories
+    - path: /api/public/categories
+    - path: /api/exchange-rates
+
+  auth:
+    - path: /api/auth/me
+    - path: /api/auth/signout
+    - path: /api/auth/callback
+
+  admin:
+    - path: /api/admin/error-report
+    - path: /api/admin/factories/approve
+    - path: /api/admin/register-factory
+    - path: /api/admin/register-seller
+    - path: /api/admin/subscriptions
+
+  ai:
+    - path: /api/ai/brief-draft
+    - path: /api/ai/match-products
+    - path: /api/ai/match-products/[matchId]
+    - path: /api/ai/match-products/[matchId]/promote
+
+  cron:
+    - path: /api/cron/daily-alerts
+    - path: /api/cron/exchange-rates
+
+# ─────────────────────────────────────────────
+# DB 테이블 목록 (Supabase)
+# ─────────────────────────────────────────────
+database:
+  tables:
+    - name: profiles
+      description: 사용자 프로필 (role, tier 포함)
+      sensitive_columns: [cost, margin]
+      rls: true
+
+    - name: factories
+      description: 공장 정보
+      rls: true
+
+    - name: products
+      description: 상품 데이터
+      sensitive_columns: [cost_price, margin_rate]
+      rls: true
+
+    - name: categories
+      description: 상품 카테고리
+      rls: false
+
+    - name: orders
+      description: 주문 데이터
+      sensitive_columns: [cost_total, margin_total]
+      rls: true
+
+    - name: order_items
+      description: 주문 항목
+      rls: true
+
+    - name: briefs
+      description: 의뢰서
+      rls: true
+
+    - name: brief_proposals
+      description: 의뢰 제안
+      rls: true
+
+    - name: inspections
+      description: 검수 데이터
+      rls: true
+
+    - name: inspection_photos
+      description: 검수 사진
+      rls: true
+
+    - name: subscriptions
+      description: 구독 정보
+      rls: true
+
+    - name: subscription_plans
+      description: 구독 플랜
+      rls: false
+
+    - name: payments
+      description: 결제 내역
+      rls: true
+
+    - name: conversations
+      description: 채팅 대화방
+      rls: true
+
+    - name: messages
+      description: 채팅 메시지
+      rls: true
+
+    - name: notifications
+      description: 알림
+      rls: true
+
+    - name: ip_characters
+      description: IP 캐릭터
+      rls: true
+
+    - name: ip_licenses
+      description: IP 라이센스
+      rls: true
+
+    - name: ip_license_requests
+      description: IP 라이센스 요청
+      rls: true
+
+    - name: research_requests
+      description: 시장조사 요청
+      rls: true
+
+    - name: sample_requests
+      description: 샘플 요청
+      rls: true
+
+    - name: price_change_requests
+      description: 가격 수정 요청
+      rls: true
+
+    - name: design_tasks
+      description: 디자인 작업
+      rls: true
+
+    - name: factory_ratings
+      description: 공장 평가
+      rls: true
+
+    - name: product_interests
+      description: 관심 상품
+      rls: true

@@ -1,0 +1,53 @@
+# KERYX 구독 월간 사용량 리셋
+# 스킬 원칙: 사용량 카운터는 매월 1일 자동 리셋
+# 실행 시간: 매월 1일 00:00 KST (= 15:00 UTC 전날)
+name: Monthly Usage Reset
+
+on:
+  schedule:
+    # 매월 1일 15:00 UTC = 다음날 00:00 KST
+    - cron: '0 15 28-31 * *'
+  workflow_dispatch:  # 수동 실행 가능
+
+jobs:
+  reset-usage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if today is the 1st of the month (KST)
+        id: check-date
+        run: |
+          # KST는 UTC+9, 현재 UTC 시간에서 9시간 더함
+          KST_DATE=$(TZ='Asia/Seoul' date '+%d')
+          echo "KST day: $KST_DATE"
+          if [ "$KST_DATE" = "01" ]; then
+            echo "is_first=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_first=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Reset monthly usage
+        if: steps.check-date.outputs.is_first == 'true'
+        run: |
+          echo "월간 사용량 리셋 실행 중..."
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.NEXT_PUBLIC_APP_URL }}/api/cron/monthly-reset")
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | head -1)
+          
+          echo "응답 코드: $HTTP_CODE"
+          echo "응답 내용: $BODY"
+          
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "❌ 월간 리셋 실패 (HTTP $HTTP_CODE)"
+            exit 1
+          fi
+          
+          echo "✅ 월간 사용량 리셋 완료"
+
+      - name: Skip (not the 1st)
+        if: steps.check-date.outputs.is_first != 'true'
+        run: echo "오늘은 월 1일이 아닙니다. 건너뜁니다."
