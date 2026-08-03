@@ -263,7 +263,8 @@ export default function IPSerialPage() {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredEpisodes.map(ep => (
-                <article key={ep.id} className="group rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:border-gray-200 transition-all duration-300">
+                <Link key={ep.id} href={`/ip-serial/${ep.id}`}>
+                <article className="group rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:border-gray-200 transition-all duration-300">
                   {/* 썸네일 */}
                   <div className="relative h-48 overflow-hidden">
                     <div className={`absolute inset-0 bg-gradient-to-br ${ep.color} opacity-80`} />
@@ -313,6 +314,7 @@ export default function IPSerialPage() {
                     </div>
                   </div>
                 </article>
+                </Link>
               ))}
             </div>
           )}

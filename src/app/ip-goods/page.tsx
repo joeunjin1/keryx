@@ -58,7 +58,7 @@ const IP_GOODS = [
   {
     id: 'ppuchi-plush',
     ip: 'ppuchi',
-    image: '/images/ip-goods/ppuchi-plush-doll.jpg',
+    image: '/images/ip-goods/ppuchi-plush-doll.webp',
     name_ko: '뿌찌 봉제인형 25cm',
     name_zh: '噗奇毛绒公仔 25cm',
     category_ko: '봉제인형',
@@ -70,7 +70,7 @@ const IP_GOODS = [
   {
     id: 'ppuchi-keyring',
     ip: 'ppuchi',
-    image: '/images/ip-goods/ppuchi-keyring.jpg',
+    image: '/images/ip-goods/ppuchi-keyring.webp',
     name_ko: '뿌찌 봉제 키링',
     name_zh: '噗奇毛绒钥匙扣',
     category_ko: '키링',
@@ -82,7 +82,7 @@ const IP_GOODS = [
   {
     id: 'ppuchi-bagcharm',
     ip: 'ppuchi',
-    image: '/images/ip-goods/ppuchi-bag-charm.jpg',
+    image: '/images/ip-goods/ppuchi-bag-charm.webp',
     name_ko: '뿌찌 아크릴 가방고리',
     name_zh: '噗奇亚克力包挂件',
     category_ko: '가방고리',
@@ -94,7 +94,7 @@ const IP_GOODS = [
   {
     id: 'ppuchi-gacha',
     ip: 'ppuchi',
-    image: '/images/ip-goods/ppuchi-gacha-set.jpg',
+    image: '/images/ip-goods/ppuchi-gacha-set.webp',
     name_ko: '뿌찌프랜즈 뽑기 세트 (5종)',
     name_zh: '噗奇朋友扭蛋套装 (5款)',
     category_ko: '뽑기 굿즈',
@@ -106,7 +106,7 @@ const IP_GOODS = [
   {
     id: 'duckle-plush',
     ip: 'duckle',
-    image: '/images/ip-goods/duckle-plush-doll.jpg',
+    image: '/images/ip-goods/duckle-plush-doll.webp',
     name_ko: '덕클 봉제인형 30cm',
     name_zh: '鸭克毛绒公仔 30cm',
     category_ko: '봉제인형',
@@ -118,7 +118,7 @@ const IP_GOODS = [
   {
     id: 'duckle-keychain',
     ip: 'duckle',
-    image: '/images/ip-goods/duckle-keychain.jpg',
+    image: '/images/ip-goods/duckle-keychain.webp',
     name_ko: '덕클 봉제 키링',
     name_zh: '鸭克毛绒钥匙扣',
     category_ko: '키링',
@@ -130,7 +130,7 @@ const IP_GOODS = [
   {
     id: 'duckle-coolerbag',
     ip: 'duckle',
-    image: '/images/ip-goods/duckle-cooler-bag.jpg',
+    image: '/images/ip-goods/duckle-cooler-bag.webp',
     name_ko: '덕클 캐릭터 보냉백',
     name_zh: '鸭克角色保温袋',
     category_ko: '보냉백',
@@ -142,7 +142,7 @@ const IP_GOODS = [
   {
     id: 'dinomon-plush',
     ip: 'dinomon',
-    image: '/images/ip-goods/dinomon-plush-doll.jpg',
+    image: '/images/ip-goods/dinomon-plush-doll.webp',
     name_ko: '디노몬 봉제인형 28cm',
     name_zh: '恐龙萌毛绒公仔 28cm',
     category_ko: '봉제인형',
@@ -154,7 +154,7 @@ const IP_GOODS = [
   {
     id: 'dinomon-bagcharm',
     ip: 'dinomon',
-    image: '/images/ip-goods/dinomon-bag-charm.jpg',
+    image: '/images/ip-goods/dinomon-bag-charm.webp',
     name_ko: '디노몬 PVC 가방고리',
     name_zh: '恐龙萌PVC包挂件',
     category_ko: '가방고리',
@@ -166,7 +166,7 @@ const IP_GOODS = [
   {
     id: 'dinomon-figure',
     ip: 'dinomon',
-    image: '/images/ip-goods/dinomon-figure.jpg',
+    image: '/images/ip-goods/dinomon-figure.webp',
     name_ko: '디노몬 아트토이 피규어',
     name_zh: '恐龙萌艺术手办',
     category_ko: '피규어',
@@ -178,7 +178,7 @@ const IP_GOODS = [
   {
     id: 'dinomon-gacha',
     ip: 'dinomon',
-    image: '/images/ip-goods/dinomon-gacha-set.jpg',
+    image: '/images/ip-goods/dinomon-gacha-set.webp',
     name_ko: '디노몬 뽑기 세트 (4종)',
     name_zh: '恐龙萌扭蛋套装 (4款)',
     category_ko: '뽑기 굿즈',

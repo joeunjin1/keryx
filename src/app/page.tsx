@@ -346,10 +346,10 @@ export default function HomePage() {
               {/* IP 상품 이미지 그리드 */}
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { img: '/images/ip-goods/ppuchi-plush-doll.jpg', label: lang === 'zh' ? '噗奇公仔' : '뿌찌 인형' },
-                  { img: '/images/ip-goods/duckle-keychain.jpg', label: lang === 'zh' ? '鸭克钥匙扣' : '덕클 키링' },
-                  { img: '/images/ip-goods/dinomon-bag-charm.jpg', label: lang === 'zh' ? '恐龙萌包挂' : '디노몬 가방고리' },
-                  { img: '/images/ip-goods/ppuchi-gacha-set.jpg', label: lang === 'zh' ? '扭蛋套装' : '뽑기 세트' },
+                  { img: '/images/ip-goods/ppuchi-plush-doll.webp', label: lang === 'zh' ? '噗奇公仔' : '뿌찌 인형' },
+                  { img: '/images/ip-goods/duckle-keychain.webp', label: lang === 'zh' ? '鸭克钥匙扣' : '덕클 키링' },
+                  { img: '/images/ip-goods/dinomon-bag-charm.webp', label: lang === 'zh' ? '恐龙萌包挂' : '디노몬 가방고리' },
+                  { img: '/images/ip-goods/ppuchi-gacha-set.webp', label: lang === 'zh' ? '扭蛋套装' : '뽑기 세트' },
                 ].map((item, i) => (
                   <Link key={i} href="/ip-goods" className="group relative rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition-all">
                     <div className="aspect-square relative">
@@ -450,14 +450,14 @@ export default function HomePage() {
           {/* 상품 그리드 - 8개 하이라이트 */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {[
-              { img: '/images/ip-goods/ppuchi-plush-doll.jpg', name: lang === 'zh' ? '噗奇毛绒公仔 25cm' : '뿌찌 봉제인형 25cm', price: '¥18.0', badge: 'BEST' },
-              { img: '/images/ip-goods/duckle-plush-doll.jpg', name: lang === 'zh' ? '鸭克毛绒公仔 30cm' : '덕클 봉제인형 30cm', price: '¥22.0', badge: 'BEST' },
-              { img: '/images/ip-goods/dinomon-plush-doll.jpg', name: lang === 'zh' ? '恐龙萌毛绒公仔 28cm' : '디노몬 봉제인형 28cm', price: '¥20.0', badge: 'NEW' },
-              { img: '/images/ip-goods/duckle-cooler-bag.jpg', name: lang === 'zh' ? '鸭克保温袋' : '덕클 보냉백', price: '¥12.0', badge: 'BEST' },
-              { img: '/images/ip-goods/ppuchi-gacha-set.jpg', name: lang === 'zh' ? '噗奇扭蛋套装(5款)' : '뿌찌 뽑기세트(5종)', price: '¥4.0/개', badge: 'BEST' },
-              { img: '/images/ip-goods/dinomon-gacha-set.jpg', name: lang === 'zh' ? '恐龙萌扭蛋套装(4款)' : '디노몬 뽑기세트(4종)', price: '¥4.5/개', badge: 'BEST' },
-              { img: '/images/ip-goods/ppuchi-keyring.jpg', name: lang === 'zh' ? '噗奇毛绒钥匙扣' : '뿌찌 봉제 키링', price: '¥5.5', badge: 'NEW' },
-              { img: '/images/ip-goods/dinomon-figure.jpg', name: lang === 'zh' ? '恐龙萌艺术手办' : '디노몬 아트토이 피규어', price: '¥15.0', badge: null },
+              { img: '/images/ip-goods/ppuchi-plush-doll.webp', name: lang === 'zh' ? '噗奇毛绒公仔 25cm' : '뿌찌 봉제인형 25cm', price: '¥18.0', badge: 'BEST' },
+              { img: '/images/ip-goods/duckle-plush-doll.webp', name: lang === 'zh' ? '鸭克毛绒公仔 30cm' : '덕클 봉제인형 30cm', price: '¥22.0', badge: 'BEST' },
+              { img: '/images/ip-goods/dinomon-plush-doll.webp', name: lang === 'zh' ? '恐龙萌毛绒公仔 28cm' : '디노몬 봉제인형 28cm', price: '¥20.0', badge: 'NEW' },
+              { img: '/images/ip-goods/duckle-cooler-bag.webp', name: lang === 'zh' ? '鸭克保温袋' : '덕클 보냉백', price: '¥12.0', badge: 'BEST' },
+              { img: '/images/ip-goods/ppuchi-gacha-set.webp', name: lang === 'zh' ? '噗奇扭蛋套装(5款)' : '뿌찌 뽑기세트(5종)', price: '¥4.0/개', badge: 'BEST' },
+              { img: '/images/ip-goods/dinomon-gacha-set.webp', name: lang === 'zh' ? '恐龙萌扭蛋套装(4款)' : '디노몬 뽑기세트(4종)', price: '¥4.5/개', badge: 'BEST' },
+              { img: '/images/ip-goods/ppuchi-keyring.webp', name: lang === 'zh' ? '噗奇毛绒钥匙扣' : '뿌찌 봉제 키링', price: '¥5.5', badge: 'NEW' },
+              { img: '/images/ip-goods/dinomon-figure.webp', name: lang === 'zh' ? '恐龙萌艺术手办' : '디노몬 아트토이 피규어', price: '¥15.0', badge: null },
             ].map((item, i) => (
               <Link key={i} href="/ip-goods" className="group rounded-3xl border border-gray-100 bg-white overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div className="aspect-square relative bg-gray-50 overflow-hidden">
@@ -564,10 +564,10 @@ export default function HomePage() {
             /* DB 상품이 없을 때 IP 상품 쇼케이스 */
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               {[
-                { img: '/images/ip-goods/ppuchi-plush-doll.jpg', name: lang === 'zh' ? '噗奇毛绒公仔' : '뿌찌프랜즈 봉제인형', price: '18.0', moq: '100', ip: '뿌찌' },
-                { img: '/images/ip-goods/duckle-keychain.jpg', name: lang === 'zh' ? '鸭克钥匙扣' : '덕클 키링', price: '5.5', moq: '200', ip: '덕클' },
-                { img: '/images/ip-goods/dinomon-bag-charm.jpg', name: lang === 'zh' ? '迪诺蒙包挂件' : '디노몬 가방고리', price: '8.0', moq: '300', ip: '디노몬' },
-                { img: '/images/ip-goods/ppuchi-gacha-set.jpg', name: lang === 'zh' ? '噗奇扮蛋套装' : '뿌찌 뽑기 세트', price: '3.5', moq: '500', ip: '뿌찌' },
+                { img: '/images/ip-goods/ppuchi-plush-doll.webp', name: lang === 'zh' ? '噗奇毛绒公仔' : '뿌찌프랜즈 봉제인형', price: '18.0', moq: '100', ip: '뿌찌' },
+                { img: '/images/ip-goods/duckle-keychain.webp', name: lang === 'zh' ? '鸭克钥匙扣' : '덕클 키링', price: '5.5', moq: '200', ip: '덕클' },
+                { img: '/images/ip-goods/dinomon-bag-charm.webp', name: lang === 'zh' ? '迪诺蒙包挂件' : '디노몬 가방고리', price: '8.0', moq: '300', ip: '디노몬' },
+                { img: '/images/ip-goods/ppuchi-gacha-set.webp', name: lang === 'zh' ? '噗奇扮蛋套装' : '뿌찌 뽑기 세트', price: '3.5', moq: '500', ip: '뿌찌' },
               ].map((item, i) => (
                 <div key={i} className="group rounded-2xl border border-gray-100 bg-white overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
                   <div className="aspect-square relative bg-gray-50 overflow-hidden">

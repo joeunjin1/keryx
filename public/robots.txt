@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://keryx.co.kr/sitemap.xml
+
+# Block admin and internal pages
+Disallow: /admin/
+Disallow: /seller/
+Disallow: /factory/
+Disallow: /md/
+Disallow: /inspector/
+Disallow: /marketing/
+Disallow: /api/
+Disallow: /login
+Disallow: /register
+Disallow: /signup

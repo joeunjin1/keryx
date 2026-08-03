@@ -68,7 +68,8 @@ export async function updateSession(request: NextRequest) {
     path.startsWith('/ip-goods') ||
     path.startsWith('/showroom') ||
     path.startsWith('/catalog') ||
-    path.startsWith('/api/subscribe');
+    path.startsWith('/api/subscribe') ||
+    path.startsWith('/ip-license');
 
   if (!user && !isPublic) {
     const url = request.nextUrl.clone();

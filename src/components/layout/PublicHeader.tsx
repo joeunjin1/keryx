@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Logo } from '@/components/ui/Logo';
 
@@ -15,60 +15,129 @@ interface PublicHeaderProps {
 
 const navLabels = {
   ko: {
+    ipBiz: 'IP 사업',
+    productBiz: '상품·제조',
+    company: '회사',
     ipStory: 'IP 스토리',
+    ipSerial: 'IP 연재',
+    ipLicense: 'IP 라이선스',
     ipGoods: 'IP 굿즈',
     showroom: 'IP 쇼룸',
     catalog: '카탈로그',
     services: '서비스',
+    pricing: '가격 안내',
     about: '회사 소개',
     portfolio: '사례',
-    pricing: '가격 안내',
     faq: 'FAQ',
     quote: '견적 의뢰',
     login: '로그인',
     dashboard: '대시보드',
     admin: '관리자',
+    ipBizDesc: '캐릭터 개발·스토리 연재·라이선스',
+    productBizDesc: '상품 기획·공장 매칭·생산·납품',
+    companyDesc: '회사 소개·사례·FAQ',
   },
   zh: {
+    ipBiz: 'IP事业',
+    productBiz: '商品·制造',
+    company: '公司',
     ipStory: 'IP故事',
+    ipSerial: 'IP连载',
+    ipLicense: 'IP授权',
     ipGoods: 'IP周边',
     showroom: 'IP展厅',
     catalog: '商品目录',
     services: '服务',
+    pricing: '价格',
     about: '公司介绍',
     portfolio: '案例',
-    pricing: '价格',
     faq: '常见问题',
     quote: '询价',
     login: '登录',
     dashboard: '控制台',
     admin: '管理员',
+    ipBizDesc: '角色开发·故事连载·授权',
+    productBizDesc: '商品策划·工厂匹配·生产·交付',
+    companyDesc: '公司介绍·案例·FAQ',
   },
   en: {
+    ipBiz: 'IP Business',
+    productBiz: 'Products',
+    company: 'Company',
     ipStory: 'IP Story',
+    ipSerial: 'IP Serial',
+    ipLicense: 'IP License',
     ipGoods: 'IP Goods',
-    showroom: 'IP Showroom',
+    showroom: 'Showroom',
     catalog: 'Catalog',
     services: 'Services',
+    pricing: 'Pricing',
     about: 'About',
     portfolio: 'Cases',
-    pricing: 'Pricing',
     faq: 'FAQ',
     quote: 'Get Quote',
     login: 'Login',
     dashboard: 'Dashboard',
     admin: 'Admin',
+    ipBizDesc: 'Character Dev · Story · License',
+    productBizDesc: 'Planning · Factory · Production',
+    companyDesc: 'About · Cases · FAQ',
   },
 };
+
+interface NavGroup {
+  key: string;
+  label: string;
+  desc: string;
+  items: { href: string; label: string }[];
+}
 
 export function PublicHeader({ lang = 'ko', onLangChange, theme = 'dark' }: PublicHeaderProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const menuTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const isDark = theme === 'dark';
   const t = navLabels[lang];
+
+  const navGroups: NavGroup[] = [
+    {
+      key: 'ip',
+      label: t.ipBiz,
+      desc: t.ipBizDesc,
+      items: [
+        { href: '/ip-story', label: t.ipStory },
+        { href: '/ip-serial', label: t.ipSerial },
+        { href: '/ip-license', label: t.ipLicense },
+        { href: '/ip-goods', label: t.ipGoods },
+        { href: '/showroom', label: t.showroom },
+      ],
+    },
+    {
+      key: 'product',
+      label: t.productBiz,
+      desc: t.productBizDesc,
+      items: [
+        { href: '/catalog', label: t.catalog },
+        { href: '/services', label: t.services },
+        { href: '/pricing', label: t.pricing },
+        { href: '/quote', label: t.quote },
+      ],
+    },
+    {
+      key: 'company',
+      label: t.company,
+      desc: t.companyDesc,
+      items: [
+        { href: '/about', label: t.about },
+        { href: '/portfolio', label: t.portfolio },
+        { href: '/faq', label: t.faq },
+      ],
+    },
+  ];
 
   useEffect(() => {
     const supabase = createClient();
@@ -77,11 +146,11 @@ export function PublicHeader({ lang = 'ko', onLangChange, theme = 'dark' }: Publ
         setIsLoggedIn(true);
         supabase
           .from('user_profiles')
-          .select('role')
+          .select('kind')
           .eq('id', data.session.user.id)
           .single()
           .then(({ data: profile }) => {
-            if (profile) setUserRole(profile.role);
+            if (profile) setUserRole(profile.kind);
           });
       }
     });
@@ -99,6 +168,15 @@ export function PublicHeader({ lang = 'ko', onLangChange, theme = 'dark' }: Publ
     return '/seller';
   }
 
+  function handleMenuEnter(key: string) {
+    if (menuTimeout.current) clearTimeout(menuTimeout.current);
+    setOpenMenu(key);
+  }
+
+  function handleMenuLeave() {
+    menuTimeout.current = setTimeout(() => setOpenMenu(null), 200);
+  }
+
   const bgStyle = isDark
     ? { background: scrolled ? 'rgba(10,15,30,0.97)' : 'rgba(10,15,30,0.94)', backdropFilter: 'blur(16px)' }
     : { background: scrolled ? 'rgba(255,255,255,0.98)' : 'rgba(255,255,255,0.95)', backdropFilter: 'blur(12px)' };
@@ -108,24 +186,13 @@ export function PublicHeader({ lang = 'ko', onLangChange, theme = 'dark' }: Publ
     ? 'text-white/70 hover:text-white transition-colors text-sm font-medium'
     : 'text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium';
 
-  const mainNavItems = [
-    { href: "/ip-story", label: t.ipStory },
-    { href: "/ip-serial", label: lang === 'zh' ? 'IP连载' : 'IP 연재' },
-    { href: "/ip-goods", label: t.ipGoods },
-    { href: "/showroom", label: t.showroom },
-    { href: "/catalog", label: t.catalog },
-    { href: "/services", label: t.services },
-    { href: "/about", label: t.about },
-    { href: "/pricing", label: t.pricing },
-  ];
-
   return (
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 ${borderClass} transition-all duration-300`}
         style={bgStyle}
       >
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           {/* 로고 */}
           <Link href="/" className="flex items-center shrink-0">
             <Logo
@@ -136,16 +203,57 @@ export function PublicHeader({ lang = 'ko', onLangChange, theme = 'dark' }: Publ
             />
           </Link>
 
-          {/* 중앙 메인 네비게이션 (데스크톱) */}
-          <div className="hidden lg:flex items-center gap-0.5">
-            {mainNavItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`px-3 py-2 rounded-lg hover:bg-white/10 transition-all ${linkClass}`}
+          {/* 중앙 메가메뉴 네비게이션 (데스크톱) */}
+          <div className="hidden lg:flex items-center gap-1">
+            {navGroups.map((group) => (
+              <div
+                key={group.key}
+                className="relative"
+                onMouseEnter={() => handleMenuEnter(group.key)}
+                onMouseLeave={handleMenuLeave}
               >
-                {item.label}
-              </Link>
+                <button
+                  className={`px-4 py-2 rounded-lg transition-all text-sm font-semibold ${
+                    openMenu === group.key
+                      ? isDark ? 'bg-white/15 text-white' : 'bg-gray-100 text-gray-900'
+                      : isDark ? 'text-white/70 hover:text-white hover:bg-white/10' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  }`}
+                >
+                  {group.label}
+                  <svg className="inline-block ml-1 w-3 h-3 opacity-60" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M3 5l3 3 3-3" />
+                  </svg>
+                </button>
+
+                {/* 드롭다운 */}
+                {openMenu === group.key && (
+                  <div
+                    className={`absolute top-full left-0 mt-1 w-56 rounded-xl shadow-xl border overflow-hidden ${
+                      isDark ? 'bg-gray-900/95 border-white/10 backdrop-blur-xl' : 'bg-white border-gray-200'
+                    }`}
+                    onMouseEnter={() => handleMenuEnter(group.key)}
+                    onMouseLeave={handleMenuLeave}
+                  >
+                    <div className={`px-4 py-2.5 border-b ${isDark ? 'border-white/10' : 'border-gray-100'}`}>
+                      <div className={`text-xs font-medium ${isDark ? 'text-white/50' : 'text-gray-400'}`}>{group.desc}</div>
+                    </div>
+                    <div className="py-1">
+                      {group.items.map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setOpenMenu(null)}
+                          className={`block px-4 py-2.5 text-sm font-medium transition-all ${
+                            isDark ? 'text-white/80 hover:bg-white/10 hover:text-white' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                          }`}
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 
@@ -224,26 +332,35 @@ export function PublicHeader({ lang = 'ko', onLangChange, theme = 'dark' }: Publ
           </div>
         </div>
 
-        {/* 모바일 드롭다운 메뉴 */}
+        {/* 모바일 드롭다운 메뉴 - 사업부별 그룹 */}
         {mobileOpen && (
           <div
             className={`lg:hidden border-t ${isDark ? 'border-white/10' : 'border-gray-200'}`}
             style={bgStyle}
           >
-            <div className="max-w-6xl mx-auto px-4 py-4 space-y-1">
-              {mainNavItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`block px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                    isDark ? 'text-white/80 hover:bg-white/10' : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  {item.label}
-                </Link>
+            <div className="max-w-6xl mx-auto px-4 py-4 space-y-4">
+              {navGroups.map((group) => (
+                <div key={group.key}>
+                  <div className={`px-4 py-1 text-xs font-bold uppercase tracking-wider ${isDark ? 'text-white/40' : 'text-gray-400'}`}>
+                    {group.label}
+                  </div>
+                  <div className="space-y-0.5 mt-1">
+                    {group.items.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setMobileOpen(false)}
+                        className={`block px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                          isDark ? 'text-white/80 hover:bg-white/10' : 'text-gray-700 hover:bg-gray-100'
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               ))}
-              <div className="pt-3 border-t border-white/10 space-y-2">
+              <div className={`pt-3 border-t ${isDark ? 'border-white/10' : 'border-gray-200'} space-y-2`}>
                 {onLangChange && (
                   <div className="flex gap-2 px-2">
                     {((['ko', 'zh'] as Lang[])).map((l) => (
