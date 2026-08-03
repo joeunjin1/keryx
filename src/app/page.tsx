@@ -66,6 +66,26 @@ const texts = {
       { icon: 'plan', title: '검수 & 품질 관리', desc: '100% 전수 검수로 완벽한 품질의 상품만 출하합니다' },
       { icon: 'protect', title: '파트너 & 유통', desc: '파트너와 함께 IP 굿즈를 시장에 내놓고 함께 성장합니다' },
     ],
+    // IP 라이선스 무료 제공
+    license_badge: 'IP License — FREE',
+    license_title: 'IP 라이선스를 무료로 제공합니다',
+    license_desc: 'KERYX는 자체 개발 IP(뿌찌프랜즈, 덕클, 디노몬)의 라이선스를 파트너에게 무료로 제공합니다. 유통업체와 독점 또는 공동 판매 계약을 통해 함께 성장하는 모델입니다.',
+    license_items: [
+      { title: '라이선스 비용 0원', desc: '자체 IP 사용에 별도 로열티가 없습니다. 상품 제작과 판매에만 집중하세요.' },
+      { title: '독점 판매 계약', desc: '특정 카테고리 또는 지역에서 독점 판매권을 부여합니다.' },
+      { title: '공동 판매 모델', desc: '여러 유통 채널에서 함께 판매하며 수익을 공유합니다.' },
+      { title: '장기 파트너십', desc: '일회성 거래가 아닌, IP를 함께 키워가는 장기 사업 파트너입니다.' },
+    ],
+    // B2B 구독 서비스
+    subscribe_badge: 'B2B Weekly Report',
+    subscribe_title: '매주 B2B 트렌드 정보를 받아보세요',
+    subscribe_desc: '이메일과 사업자 정보를 등록하시면, 사업자 확인 후 매주 IP 굿즈 트렌드, 신상품 정보, 시장 동향을 보내드립니다.',
+    subscribe_placeholder_email: '이메일 주소',
+    subscribe_placeholder_company: '회사명',
+    subscribe_placeholder_phone: '연락처',
+    subscribe_btn: '무료 구독 신청',
+    subscribe_note: '* 사업자 등록증 확인 후 B2B 정보가 발송됩니다',
+    subscribe_benefits: ['IP 굿즈 트렌드 리포트', '신상품 & 베스트셀러 정보', '시장 동향 & 가격 분석', '파트너 전용 할인 안내'],
     // CTA
     cta_title: '지금 파트너를 시작하세요',
     cta_desc: '의뢰 단계에서는 비용이 발생하지 않습니다. 영업일 2일 내 전담 MD가 연락드립니다.',
@@ -115,9 +135,9 @@ const texts = {
     ip_section_desc: '嘔奇朋友、鸭克、恐龙萌 — 各自拥有独特世界观和故事的KERYX原创角色。我们连载故事、培育角色，并持续开发相应的产品和内容。',
     ip_cta: 'IP故事&世界观',
     ip_propose: 'IP周边产品',
-    catalog_badge: 'B2B商品目录',
-    catalog_title: '可即时启动的验证商品',
-    catalog_desc: '公仔、包挂件、扭蛋周边、保温袋等 — 所有商品均可在专业工厂即时生产，通过KERYX质量标准。',
+    catalog_badge: 'IP商品目录',
+    catalog_title: 'KERYX IP商品系列',
+    catalog_desc: '噗奇朋友、鸭克、迪诺蒙 — KERYX原创IP制作的毛绒公仔、钥匙扣、包挂件、扮蛋周边。免费授权可立即开始。',
     catalog_cta: '查看全部目录',
     catalog_moq: '起订量',
     catalog_featured: '推荐',
@@ -133,6 +153,27 @@ const texts = {
       { icon: 'plan', title: '检验&品质管理', desc: '100%全检，只出货完美品质的产品' },
       { icon: 'protect', title: '合作伙伴&渠道', desc: '与合作伙伴一起将IP周边推向市场，共同成长' },
     ],
+    // IP 授权免费提供
+    license_badge: 'IP License — FREE',
+    license_title: '免费提供IP授权',
+    license_desc: 'KERYX将自主开发的IP（噗奇朋友、鸭克、恐龙萌）授权免费提供给合作伙伴。通过与渠道商签订独家或联合销售协议，实现共同成长。',
+    license_items: [
+      { title: '授权费用0元', desc: '使用自有IP无需支付版权费。专注产品制作和销售。' },
+      { title: '独家销售协议', desc: '在特定品类或地区授予独家销售权。' },
+      { title: '联合销售模式', desc: '在多个渠道共同销售，共享收益。' },
+      { title: '长期合作', desc: '不是一次性交易，而是共同培育IP的长期事业伙伴。' },
+    ],
+    // B2B订阅服务
+    subscribe_badge: 'B2B Weekly Report',
+    subscribe_title: '每周接收B2B趋势信息',
+    subscribe_desc: '注册邮箱和企业信息后，经营业执照确认后，每周发送IP周边趋势、新品信息、市场动态。',
+    subscribe_placeholder_email: '邮箱地址',
+    subscribe_placeholder_company: '公司名称',
+    subscribe_placeholder_phone: '联系电话',
+    subscribe_btn: '免费订阅',
+    subscribe_note: '* 经营业执照确认后发送B2B信息',
+    subscribe_benefits: ['IP周边趋势报告', '新品&畅销品信息', '市场动态&价格分析', '合作伙伴专属优惠'],
+    // CTA
     cta_title: '立即成为合作伙伴',
     cta_desc: '咨询阶段不产生费用。2个工作日内专属MD联系您。',
     cta_btn1: '免费询价',
@@ -181,6 +222,61 @@ const IP_CHARACTERS = [
     products_zh: ['公仔', '手办', '扭蛋周边', '文具'],
   },
 ];
+
+// ── B2B 구독 폼 컴포넌트 ────────────────────────────────────────
+function SubscribeForm({ lang, t }: { lang: string; t: any }) {
+  const [email, setEmail] = useState('');
+  const [company, setCompany] = useState('');
+  const [phone, setPhone] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+    try {
+      const res = await fetch('/api/subscribe/b2b', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, company_name: company, phone }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setStatus('success');
+        setMessage(lang === 'zh' ? '订阅申请已提交！确认后发送。' : '구독 신청이 완료되었습니다! 사업자 확인 후 발송됩니다.');
+        setEmail(''); setCompany(''); setPhone('');
+      } else {
+        setStatus('error');
+        setMessage(data.error || '오류가 발생했습니다.');
+      }
+    } catch {
+      setStatus('error');
+      setMessage(lang === 'zh' ? '网络错误，请重试。' : '네트워크 오류가 발생했습니다.');
+    }
+  };
+
+  if (status === 'success') {
+    return (
+      <div className="text-center p-8 rounded-xl bg-green-50 border border-green-200">
+        <div className="text-4xl mb-3">✅</div>
+        <p className="text-green-800 font-bold">{message}</p>
+      </div>
+    );
+  }
+
+  return (
+    <form className="space-y-4" onSubmit={handleSubmit}>
+      <input type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder={t.subscribe_placeholder_email} className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:border-brand-400 focus:ring-2 focus:ring-brand-100 outline-none transition" />
+      <input type="text" required value={company} onChange={e => setCompany(e.target.value)} placeholder={t.subscribe_placeholder_company} className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:border-brand-400 focus:ring-2 focus:ring-brand-100 outline-none transition" />
+      <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder={t.subscribe_placeholder_phone} className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:border-brand-400 focus:ring-2 focus:ring-brand-100 outline-none transition" />
+      <button type="submit" disabled={status === 'loading'} className="w-full py-4 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl transition-colors text-lg disabled:opacity-50">
+        {status === 'loading' ? (lang === 'zh' ? '提交中...' : '제출 중...') : t.subscribe_btn}
+      </button>
+      {status === 'error' && <p className="text-xs text-red-500 text-center">{message}</p>}
+      <p className="text-xs text-gray-400 text-center">{t.subscribe_note}</p>
+    </form>
+  );
+}
 
 // ── 메인 페이지 컴포넌트 ──────────────────────────────────────
 export default function HomePage() {
@@ -460,13 +556,13 @@ export default function HomePage() {
               ))}
             </div>
           ) : (
-            /* DB 상품이 없을 때 폴백 상품 쇼케이스 */
+            /* DB 상품이 없을 때 IP 상품 쇼케이스 */
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               {[
-                { img: '/pricing-products/plush-doll.jpg', name: lang === 'zh' ? '卡通毛绒公仔' : '캐릭터 봉제인형', price: '18.0', moq: '100' },
-                { img: '/pricing-products/plush-keychain.jpg', name: lang === 'zh' ? '毛绒钥匙扣' : '봉제 키링', price: '5.5', moq: '200' },
-                { img: '/lp-japan/doll-kawaii.jpg', name: lang === 'zh' ? '卡通手办挂件' : '캐릭터 피규어 키링', price: '8.0', moq: '300' },
-                { img: '/lp-japan/doll-custom.jpg', name: lang === 'zh' ? '定制毛绒公仔' : '맞춤 제작 인형', price: '22.0', moq: '50' },
+                { img: '/images/ip-goods/ppuchi-plush-doll.jpg', name: lang === 'zh' ? '噗奇毛绒公仔' : '뿌찌프랜즈 봉제인형', price: '18.0', moq: '100', ip: '뿌찌' },
+                { img: '/images/ip-goods/duckle-keychain.jpg', name: lang === 'zh' ? '鸭克钥匙扣' : '덕클 키링', price: '5.5', moq: '200', ip: '덕클' },
+                { img: '/images/ip-goods/dinomon-bag-charm.jpg', name: lang === 'zh' ? '迪诺蒙包挂件' : '디노몬 가방고리', price: '8.0', moq: '300', ip: '디노몬' },
+                { img: '/images/ip-goods/ppuchi-gacha-set.jpg', name: lang === 'zh' ? '噗奇扮蛋套装' : '뿌찌 뽑기 세트', price: '3.5', moq: '500', ip: '뿌찌' },
               ].map((item, i) => (
                 <div key={i} className="group rounded-2xl border border-gray-100 bg-white overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
                   <div className="aspect-square relative bg-gray-50 overflow-hidden">
@@ -534,6 +630,52 @@ export default function HomePage() {
                 <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ IP LICENSE FREE ═══ */}
+      <section className="py-24 bg-gradient-to-b from-emerald-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="inline-block text-xs font-bold tracking-widest text-emerald-600 uppercase mb-4 px-4 py-2 bg-emerald-100 rounded-full border border-emerald-200">{t.license_badge}</span>
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mt-4">{t.license_title}</h2>
+            <p className="text-gray-500 text-lg mt-4 max-w-2xl mx-auto">{t.license_desc}</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {t.license_items.map((item, i) => (
+              <div key={i} className="p-8 rounded-3xl bg-white border border-emerald-100 hover:border-emerald-300 hover:shadow-lg transition-all text-center">
+                <div className="w-14 h-14 mx-auto rounded-full bg-emerald-100 flex items-center justify-center mb-6">
+                  <span className="text-xl font-black text-emerald-600">{['\u20a9', '\ud83d\udd12', '\ud83e\udd1d', '\ud83d\ude80'][i]}</span>
+                </div>
+                <h3 className="text-base font-bold text-gray-900 mb-3">{item.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ B2B SUBSCRIBE ═══ */}
+      <section className="py-24 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-3xl bg-gradient-to-br from-brand-50 to-indigo-50 border border-brand-100 p-12 md:p-16">
+            <div className="text-center mb-10">
+              <span className="inline-block text-xs font-bold tracking-widest text-brand-600 uppercase mb-4 px-4 py-2 bg-white rounded-full border border-brand-100">{t.subscribe_badge}</span>
+              <h2 className="text-2xl md:text-3xl font-black text-gray-900 mt-4">{t.subscribe_title}</h2>
+              <p className="text-gray-500 mt-4 max-w-xl mx-auto">{t.subscribe_desc}</p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8 items-start">
+              <div className="space-y-3">
+                {t.subscribe_benefits.map((b, i) => (
+                  <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white/80">
+                    <span className="w-6 h-6 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 text-xs font-bold">{i+1}</span>
+                    <span className="text-sm font-medium text-gray-700">{b}</span>
+                  </div>
+                ))}
+              </div>
+              <SubscribeForm lang={lang} t={t} />
+            </div>
           </div>
         </div>
       </section>

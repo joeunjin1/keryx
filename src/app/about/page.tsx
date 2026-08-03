@@ -4,6 +4,7 @@
  * "IP 제안 + 장기 사업플랜 제시 기반 B2B 소싱 플랫폼" 핵심 비전 표현
  */
 import Link from "next/link";
+import Image from "next/image";
 import { PublicHeader } from "@/components/layout/PublicHeader";
 import { PublicFooter } from "@/components/layout/PublicFooter";
 import { useLangContext } from "@/components/layout/LangContext";
@@ -90,9 +91,9 @@ const texts = {
 };
 
 const IP_SHOWCASE = [
-  { name_ko: "뿌찌프랜즈", name_zh: "噗奇朋友", color: "#FF6B9D", gradient: "from-pink-400 to-rose-300", emoji: "🌸", slug: "ppuchi-friends" },
-  { name_ko: "덕클", name_zh: "鸭克", color: "#FFB800", gradient: "from-amber-400 to-yellow-300", emoji: "🦆", slug: "duckle" },
-  { name_ko: "디노몬", name_zh: "恐龙萌", color: "#10B981", gradient: "from-emerald-400 to-teal-300", emoji: "🦕", slug: "dinomon" },
+  { name_ko: "뿌찌프랜즈", name_zh: "噗奇朋友", color: "#FF6B9D", gradient: "from-pink-400 to-rose-300", emoji: "🌸", slug: "ppuchi-friends", image: "/images/ip-characters/ppuji/dangppu.webp", desc_ko: "뿌지빌리지 8명의 친구들", desc_zh: "噗吉村庄8位朋友" },
+  { name_ko: "덕클", name_zh: "鸭克", color: "#FFB800", gradient: "from-amber-400 to-yellow-300", emoji: "🦆", slug: "duckle", image: "/images/ip-characters/duckle/duckle-front.png", desc_ko: "호기심 많은 노란 오리", desc_zh: "好奇心旺盛的黄色鸭子" },
+  { name_ko: "디노몬", name_zh: "恐龙萌", color: "#10B981", gradient: "from-emerald-400 to-teal-300", emoji: "🦕", slug: "dinomon", image: "/images/ip-characters/dinomon/tino.png", desc_ko: "디노몬 아일랜드 6종 공룡", desc_zh: "恐龙怪兽岛6种恐龙" },
 ];
 
 export default function AboutPage() {
@@ -166,9 +167,12 @@ export default function AboutPage() {
           <p className="text-gray-500 text-center max-w-2xl mx-auto mb-12">{t.ip_desc}</p>
           <div className="grid md:grid-cols-3 gap-6">
             {IP_SHOWCASE.map((ip, i) => (
-              <Link key={i} href={`/showroom/${ip.slug}`} className={`block rounded-3xl p-8 bg-gradient-to-br ${ip.gradient} hover:scale-[1.02] transition-transform shadow-lg`}>
-                <span className="text-6xl block mb-4">{ip.emoji}</span>
-                <h3 className="text-2xl font-black text-white mb-2">{lang === 'zh' ? ip.name_zh : ip.name_ko}</h3>
+              <Link key={i} href="/ip-story" className={`block rounded-3xl p-8 bg-gradient-to-br ${ip.gradient} hover:scale-[1.02] transition-transform shadow-lg relative overflow-hidden`}>
+                <div className="relative w-24 h-24 mb-4">
+                  <Image src={ip.image} alt={lang === 'zh' ? ip.name_zh : ip.name_ko} fill className="object-contain drop-shadow-lg" sizes="96px" />
+                </div>
+                <h3 className="text-2xl font-black text-white mb-1">{lang === 'zh' ? ip.name_zh : ip.name_ko}</h3>
+                <p className="text-white/80 text-sm mb-2">{lang === 'zh' ? ip.desc_zh : ip.desc_ko}</p>
                 <div className="text-white/70 text-sm">→ {lang === 'zh' ? '查看详情' : '자세히 보기'}</div>
               </Link>
             ))}

@@ -8,11 +8,11 @@ import './mobile-first.css';
 
 export const metadata: Metadata = {
   title: {
-    default: 'KERYX (케릭스) — 중국 공장 매칭 B2B 플랫폼',
+    default: 'KERYX (케릭스) — IP 캐릭터 개발 & 굿즈 제조 포털',
     template: '%s | KERYX (케릭스)',
   },
-  description: '중국 공장과 한국 바이어를 연결하는 B2B 매칭 플랫폼. 전담 MD 배정, 현장 품질 검수, 물류 대행까지 원스톱으로 제공합니다.',
-  keywords: 'KERYX, 케릭스, 중국 공장 소싱, B2B 무역, 공장 매칭, 전담 MD, 품질 검수, 중국 직수입',
+  description: '오리지널 IP 캐릭터를 개발하고, 스토리를 연재하며, 굿즈를 기획·제조하는 IP 포털 기업. 파트너에게 무료 IP 라이선스와 장기 사업플랜을 제공합니다.',
+  keywords: 'KERYX, 케릭스, IP 캐릭터, 뿌찌프랜즈, 디노몬, 덕클, 캐릭터 굿즈, IP 라이선스, 봉제인형, 키링, 가방고리',
   manifest: '/manifest.json',
   icons: {
     icon: '/logos/keryx-icon-192.png',
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     title: 'KERYX',
   },
   openGraph: {
-    title: 'KERYX (케릭스) — 중국 공장 매칭 B2B 플랫폼',
-    description: '중국 공장과 한국 바이어를 연결하는 B2B 매칭 플랫폼. 전담 MD 배정, 현장 품질 검수, 물류 대행까지 원스톱.',
+    title: 'KERYX (케릭스) — IP 캐릭터 개발 & 굿즈 제조 포털',
+    description: '오리지널 IP 캐릭터를 개발하고, 스토리를 연재하며, 굿즈를 기획·제조하는 IP 포털 기업.',
     url: 'https://www.keryx.kr',
     siteName: 'KERYX',
     locale: 'ko_KR',
@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'KERYX (케릭스) — 중국 공장 매칭 B2B 플랫폼',
-    description: '중국 공장과 한국 바이어를 연결하는 B2B 매칭 플랫폼. 전담 MD 배정, 현장 품질 검수, 물류 대행까지 원스톱.',
+    title: 'KERYX (케릭스) — IP 캐릭터 개발 & 굿즈 제조 포털',
+    description: '오리지널 IP 캐릭터를 개발하고, 스토리를 연재하며, 굿즈를 기획·제조하는 IP 포털 기업.',
   },
   robots: {
     index: true,

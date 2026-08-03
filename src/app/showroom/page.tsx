@@ -5,6 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { useLangContext } from '@/components/layout/LangContext';
+import { PublicHeader } from '@/components/layout/PublicHeader';
+import { PublicFooter } from '@/components/layout/PublicFooter';
 
 // ─── IP 캐릭터 정의 ───────────────────────────────────────────
 const IP_CHARACTERS = [
@@ -15,6 +17,7 @@ const IP_CHARACTERS = [
     name_en: 'Ppuchi Friends',
     tagline_ko: '귀여움이 폭발하는 뿌찌 패밀리',
     tagline_zh: '可爱爆炸的噗奇家族',
+    heroImage: '/images/ip-characters/ppuji/dangppu.webp',
     description_ko: '뿌찌프랜즈는 KERYX가 독자 개발한 오리지널 IP입니다. 통통하고 귀여운 캐릭터들이 인형, 가방고리 등 다양한 굿즈로 상품화되어 파트너들에게 장기적 성장을 제공합니다.',
     description_zh: '噗奇朋友是KERYX自主开发的原创IP。圆润可爱的角色们以玩偶、包挂件等各种周边形式商品化，为合作伙伴提供长期增长。',
     color_primary: '#FF6B9D',
@@ -37,6 +40,7 @@ const IP_CHARACTERS = [
     name_en: 'Duckle',
     tagline_ko: '노란 행복을 전하는 덕클',
     tagline_zh: '传递黄色幸福的鸭克',
+    heroImage: '/images/ip-characters/duckle/duckle-front.png',
     description_ko: '덕클은 노란 오리 캐릭터로, 밝고 유쾌한 에너지를 가진 KERYX 오리지널 IP입니다. 뽑기용 굿즈와 인형에서 특히 인기가 높으며, 파트너에게 높은 수익성을 제공합니다.',
     description_zh: '鸭克是KERYX原创IP，充满明亮愉快的能量。在扭蛋商品和玩偶中特别受欢迎，为合作伙伴提供高收益。',
     color_primary: '#FFD93D',
@@ -58,6 +62,7 @@ const IP_CHARACTERS = [
     name_en: 'Dinomon',
     tagline_ko: '공룡 세계를 탐험하는 디노몬',
     tagline_zh: '探索恐龙世界的迪诺蒙',
+    heroImage: '/images/ip-characters/dinomon/tino.png',
     description_ko: '디노몬은 귀여운 공룡 캐릭터들의 세계관을 가진 KERYX 오리지널 IP입니다. 다양한 공룡 캐릭터들이 아이들과 어른 모두에게 사랑받으며, 다양한 상품 라인업 확장이 가능합니다.',
     description_zh: '迪诺蒙是KERYX原创IP，拥有可爱恐龙角色的世界观。深受儿童和成人喜爱，可持续扩展多样化商品线。',
     color_primary: '#6BCB77',
@@ -141,26 +146,29 @@ export default function ShowroomPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Public Header */}
+      <PublicHeader lang={lang} theme="dark" />
+
       {/* 상단 히어로 배너 */}
       <div className="bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 text-white">
         <div className="max-w-7xl mx-auto px-4 py-12 text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-4 py-1.5 text-sm mb-4">
             <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-            <span>{t('KERYX 오리지널 IP · 장기 사업플랜 제시', 'KERYX 原创IP · 提供长期事业规划')}</span>
+            <span>{t('KERYX 오리지널 IP · 무료 라이선스 제공', 'KERYX 原创IP · 免费授权提供')}</span>
           </div>
           <h1 className="text-3xl md:text-5xl font-black mb-4">
             {t('IP 쇼룸', 'IP 展厅')}
           </h1>
           <p className="text-lg text-white/80 max-w-2xl mx-auto">
             {t(
-              'KERYX가 독자 개발한 오리지널 IP를 활용하여 인형, 가방고리, 등 다양한 굿즈를 기획·제조·공급합니다. 파트너에게 장기적 성장이 가능한 무역플랜을 제시합니다.',
-              'KERYX利用自主开发的原创IP，企划·制造·供应各种周边商品。为合作伙伴提供可持续增长的贸易规划。'
+              'KERYX가 독자 개발한 오리지널 IP를 활용하여 인형, 가방고리, 등 다양한 굿즈를 기획·제조·공급합니다. 파트너에게 무료 IP 라이선스와 독점/공동 판매 기회를 제공합니다.',
+              'KERYX利用自主开发的原创IP，企划·制造·供应各种周边商品。为合作伙伴提供免费IP授权和独家/共同销售机会。'
             )}
           </p>
           <div className="flex justify-center gap-6 mt-6 text-sm text-white/60">
             <span>{t('굿즈 전문 제조', '周边专业制造')}</span>
             <span>{t('아이템 결정 즉시 진행', '确定商品后立即推进')}</span>
-            <span>{t('장기 사업플랜 제시', '提供长期事业规划')}</span>
+            <span>{t('무료 IP 라이선스 제공', '免费IP授权提供')}</span>
           </div>
         </div>
       </div>
@@ -183,11 +191,18 @@ export default function ShowroomPage() {
                   onClick={() => setSelectedIP(ip.slug)}
                   className="group text-left rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
                 >
-                  {/* 배경 그라디언트 */}
+                  {/* 배경 그라디언트 + 캐릭터 이미지 */}
                   <div className={`bg-gradient-to-br ${ip.bg_gradient} p-8 relative overflow-hidden`}>
-                    <div className="absolute top-0 right-0 text-8xl opacity-20 -rotate-12 translate-x-4 -translate-y-2">
-                      {ip.emoji}
-                    </div>
+                    {ip.heroImage && (
+                      <div className="absolute top-2 right-2 w-24 h-24 opacity-90">
+                        <Image src={ip.heroImage} alt={ip.name_ko} fill className="object-contain" sizes="96px" />
+                      </div>
+                    )}
+                    {!ip.heroImage && (
+                      <div className="absolute top-0 right-0 text-8xl opacity-20 -rotate-12 translate-x-4 -translate-y-2">
+                        {ip.emoji}
+                      </div>
+                    )}
                     <div className="relative z-10">
                       <span className={`inline-block ${ip.badge_color} text-white text-xs px-3 py-1 rounded-full font-bold mb-3`}>
                         ORIGINAL IP
@@ -220,7 +235,7 @@ export default function ShowroomPage() {
                       <span className="text-xs text-gray-400">
                         {ipStats[ip.slug]
                           ? t(`상품 ${ipStats[ip.slug]}개`, `${ipStats[ip.slug]}件商品`)
-                          : t('상품 준비중', '商品准备中')}
+                          : t('IP 굿즈 보기', '查看IP周边')}
                       </span>
                       <span className="text-indigo-600 text-sm font-semibold group-hover:translate-x-1 transition-transform">
                         {t('상품 보기', '查看商品')} →
@@ -404,6 +419,9 @@ export default function ShowroomPage() {
           </>
         )}
       </div>
+
+      {/* Public Footer */}
+      <PublicFooter />
     </div>
   );
 }

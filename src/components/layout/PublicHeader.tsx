@@ -110,6 +110,7 @@ export function PublicHeader({ lang = 'ko', onLangChange, theme = 'dark' }: Publ
 
   const mainNavItems = [
     { href: "/ip-story", label: t.ipStory },
+    { href: "/ip-serial", label: lang === 'zh' ? 'IP连载' : 'IP 연재' },
     { href: "/ip-goods", label: t.ipGoods },
     { href: "/showroom", label: t.showroom },
     { href: "/catalog", label: t.catalog },

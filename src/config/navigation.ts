@@ -114,6 +114,16 @@ export const adminNavItems: NavEntry[] = [
     ],
   },
   {
+    groupLabel: 'B2B 구독·마케팅',
+    groupLabelZh: 'B2B订阅·营销',
+    groupIcon: '📬',
+    defaultOpen: false,
+    items: [
+      { href: '/admin/b2b-subscribers', label: 'B2B 구독자 관리', labelZh: 'B2B订阅者管理', icon: '👥' },
+      { href: '/admin/weekly-report', label: '주간 리포트 발송', labelZh: '周报发送', icon: '📨' },
+    ],
+  },
+  {
     groupLabel: '성과·분석',
     groupLabelZh: '绩效·分析',
     groupIcon: '📈',

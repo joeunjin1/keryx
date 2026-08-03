@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { PublicHeader } from '@/components/layout/PublicHeader';
+import { PublicFooter } from '@/components/layout/PublicFooter';
 
 type Lang = 'ko' | 'zh';
 
@@ -187,8 +189,11 @@ export default function IpStoryPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Public Header */}
+      <PublicHeader lang={lang} theme="dark" />
+
       {/* Language Toggle */}
-      <div className="fixed top-4 right-4 z-50 flex gap-2">
+      <div className="fixed top-4 right-20 z-40 flex gap-2">
         <button onClick={() => setLang('ko')} className={`px-3 py-1 rounded-full text-sm font-medium transition-all ${lang === 'ko' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>한국어</button>
         <button onClick={() => setLang('zh')} className={`px-3 py-1 rounded-full text-sm font-medium transition-all ${lang === 'zh' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>中文</button>
       </div>
@@ -365,6 +370,9 @@ export default function IpStoryPage() {
           </Link>
         </div>
       </section>
+
+      {/* Public Footer */}
+      <PublicFooter />
     </div>
   );
 }
