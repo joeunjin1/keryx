@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     default: '바이어 대시보드',
     template: '%s | KERYX 바이어',
   },
-  description: 'KERYX 바이어 포털 — 중국 공장 매칭, 시장조사, 샘플 요청, 주문 관리를 한 곳에서.',
+  description: 'KERYX 바이어 포털 — IP 굿즈 기획, 공장 매칭, 샘플 요청, 주문 관리를 한 곳에서.',
   robots: { index: false, follow: false },
 };
 

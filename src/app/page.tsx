@@ -35,7 +35,7 @@ const texts = {
     partner_cta: '파트너 문의하기',
     partner_benefit_title: '파트너가 되면',
     partner_benefits: [
-      '장기적 성장이 가능한 무역플랜 제시',
+      '장기적 성장이 가능한 IP 사업플랜 제시',
       '자체 IP를 활용한 독점 굿즈 기획',
       '샘플 개발 + 패키지/인쇄 디자인 무료 지원',
       '전담 MD 1:1 배정으로 빠른 소통',
@@ -292,17 +292,22 @@ export default function HomePage() {
 
   useEffect(() => {
     const supabase = createClient();
+    // IP 굿즈 상품만 우선 노출 (ip_character_id가 있는 상품)
     supabase
       .from('products')
       .select('id, product_code, name_ko, name_zh, name_en, sell_price_cny, moq, image_url, is_featured, is_new, is_hot, ip_character_id')
       .eq('catalog_visible', true)
       .eq('is_active', true)
       .eq('approval_status', 'approved')
+      .not('ip_character_id', 'is', null)
       .is('deleted_at', null)
       .order('is_featured', { ascending: false })
       .order('created_at', { ascending: false })
       .limit(8)
-      .then(({ data }) => { if (data) setProducts(data); });
+      .then(({ data }) => {
+        // IP 상품이 없으면 products를 비워두어 정적 IP 굿즈 카드가 표시되도록 함
+        if (data && data.length > 0) setProducts(data);
+      });
   }, []);
 
   return (

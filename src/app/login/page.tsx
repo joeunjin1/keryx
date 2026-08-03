@@ -9,7 +9,7 @@ import { createClient } from '@/lib/supabase/client';
 const T = {
   ko: {
     title: '로그인',
-    subtitle: 'KERYX 무역 서비스에 오신 것을 환영합니다',
+    subtitle: 'KERYX IP 포털에 오신 것을 환영합니다',
     email: '이메일',
     password: '비밀번호',
     loginBtn: '로그인',
@@ -29,7 +29,7 @@ const T = {
   },
   zh: {
     title: '登录',
-    subtitle: '欢迎使用 KERYX 贸易服务',
+    subtitle: '欢迎使用 KERYX IP平台',
     email: '邮箱',
     password: '密码',
     loginBtn: '登录',
