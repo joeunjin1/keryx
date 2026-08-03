@@ -24,7 +24,7 @@ const footerContent = {
     ],
     biz: '사업자등록번호: 609-81-63010 | 대표: 조은진 | 이메일: support@keryx.kr | 상호: (주)가자트레이드',
     addr: 'IP 개발 · 스토리 연재 · 상품 기획 · 생산 | 중국 이우 현지 운영 | 한국 통관·물류: (주)가자트레이드',
-    copy: '© 2025 KERYX. All rights reserved.',
+    copy: '© 2026 KERYX. All rights reserved.',
   },
   zh: {
     slogan: '开发IP，创造故事，生产商品',
@@ -38,7 +38,7 @@ const footerContent = {
       { href: '/terms', label: '使用条款' },
     ],    biz: '营业执照: 609-81-63010 | 代表: 赵恩进 | 邮筱: support@keryx.kr | 公司名: 加兹贸易有限公司',
     addr: 'IP开发 · 故事连载 · 商品策划 · 生产 | 中国义乌现地运营 | 韩国清关·物流: 加兹贸易有限公司',
-    copy: '© 2025 KERYX. All rights reserved.',
+    copy: '© 2026 KERYX. All rights reserved.',
   },
   en: {
     slogan: 'We develop IP, create stories, and produce goods.',
@@ -53,7 +53,7 @@ const footerContent = {
     ],
     biz: 'Business Reg: 609-81-63010 | CEO: Eunjin Jo | Email: support@keryx.kr | Company: Gaza Trade Co., Ltd.',
     addr: 'Yiwu, China — Local Operations Team (Direct) | Korea Customs & Logistics: Gaza Trade Co., Ltd. | Customer data protected under Privacy Policy',
-    copy: '© 2025 KERYX. All rights reserved.',
+    copy: '© 2026 KERYX. All rights reserved.',
   },
 };
 

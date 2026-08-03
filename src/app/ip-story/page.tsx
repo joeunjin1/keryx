@@ -12,12 +12,12 @@ type Tier = 'all' | 'A' | 'B' | 'C';
 const texts = {
   ko: {
     hero_badge: 'KERYX IP Universe',
-    hero_title: '50개의 IP를 만들고\n스토리를 연재합니다',
+    hero_title: '오리지널 IP를 만들고\n스토리를 연재합니다',
     hero_desc: 'KERYX는 오리지널 IP 캐릭터를 개발하고, 세계관을 구축하며, 스토리를 연재하고, 그에 맞는 상품과 콘텐츠를 기획·생산하는 IP 포털 기업입니다.',
     stats: [
-      { num: '50+', label: 'IP 프로젝트' },
-      { num: '9개', label: '핵심 IP (A등급)' },
-      { num: '23개', label: '성장 IP (B등급)' },
+      { num: 'IP', label: '오리지널 캐릭터' },
+      { num: '핵심', label: '대표 IP 라인업' },
+      { num: '성장', label: '확장 IP 포트폴리오' },
       { num: '연재중', label: '스토리·동화' },
     ],
     section_worlds: 'IP 포트폴리오',
@@ -43,12 +43,12 @@ const texts = {
   },
   zh: {
     hero_badge: 'KERYX IP Universe',
-    hero_title: '50个IP\n连载故事',
+    hero_title: '原创IP\n连载故事',
     hero_desc: 'KERYX是一家开发原创IP角色、构建世界观、连载故事，并策划·生产相关商品和内容的IP门户企业。',
     stats: [
-      { num: '50+', label: 'IP项目' },
-      { num: '9个', label: '核心IP (A级)' },
-      { num: '23个', label: '成长IP (B级)' },
+      { num: 'IP', label: '原创角色' },
+      { num: '核心', label: '代表IP阵容' },
+      { num: '成长', label: '扩展IP作品集' },
       { num: '连载中', label: '故事·童话' },
     ],
     section_worlds: 'IP作品集',

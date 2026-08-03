@@ -6,6 +6,7 @@ import './globals.css';
 import './microinteractions.css';
 import './mobile-first.css';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
+import { FloatingChatButton } from '@/components/ui/FloatingChatButton';
 
 export const metadata: Metadata = {
   title: {
@@ -67,6 +68,7 @@ export default async function RootLayout({
         <GoogleAnalytics />
         <NextIntlClientProvider messages={messages}>
           {children}
+          <FloatingChatButton />
         </NextIntlClientProvider>
       </body>
     </html>

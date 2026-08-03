@@ -18,12 +18,12 @@ const texts = {
     hero_cta_start: '파트너 시작하기',
     hero_cta_showroom: 'IP 쇼룸 보기',
     hero_cta_how: '진행 방법 보기',
-    stat1_num: '3+', stat1_label: '오리지널 IP 시리즈',
-    stat2_num: '연재중', stat2_label: 'IP 스토리 & 콘텐츠',
-    stat3_num: '50+', stat3_label: '종 IP 굿즈 라인업',
+    stat1_num: 'IP', stat1_label: '오리지널 캐릭터',
+    stat2_num: '연재', stat2_label: '스토리 & 콘텐츠',
+    stat3_num: '굿즈', stat3_label: 'IP 상품 라인업',
     stat4_num: '직접', stat4_label: '기획부터 생산까지',
     // 파트너 모집 섹션
-    partner_badge: 'Partner Recruitment',
+    partner_badge: '파트너 모집',
     partner_title: 'IP 사업을 함께할 파트너를 찾습니다',
     partner_desc: 'KERYX는 자체 개발한 IP 캐릭터와 스토리 콘텐츠를 기반으로, 파트너와 함께 상품을 기획하고 생산하여 시장에 내놓는 장기적 IP 사업 파트너십을 추구합니다.',
     partner_steps: [
@@ -47,7 +47,7 @@ const texts = {
     ip_cta: 'IP 스토리 & 세계관 보기',
     ip_propose: 'IP 굿즈 보기',
     // 카탈로그 섹션
-    catalog_badge: 'B2B Product Catalog',
+    catalog_badge: 'IP 굿즈 카탈로그',
     catalog_title: '바로 진행 가능한 검증 상품',
     catalog_desc: '인형, 가방고리, 뽑기 굿즈, 보냉백 등 — 모든 상품은 전문 공장에서 즉시 생산 가능하며, KERYX 품질 기준을 통과한 검증 제품입니다.',
     catalog_cta: '전체 카탈로그 보기',
@@ -55,7 +55,7 @@ const texts = {
     catalog_featured: '추천',
     catalog_new: 'NEW',
     // 서비스 섹션
-    svc_badge: 'What We Do',
+    svc_badge: '서비스 안내',
     svc_title: 'IP에서 상품까지, 이렇게 만듭니다',
     svc_desc: '캐릭터 개발부터 스토리 연재, 상품 기획, 생산, 콘텐츠 제작까지 — IP의 모든 과정을 직접 수행합니다.',
     svc_items: [
@@ -67,7 +67,7 @@ const texts = {
       { icon: 'protect', title: '파트너 & 유통', desc: '파트너와 함께 IP 굿즈를 시장에 내놓고 함께 성장합니다' },
     ],
     // IP 라이선스 무료 제공
-    license_badge: 'IP License — FREE',
+    license_badge: 'IP 라이선스 — 무료 제공',
     license_title: 'IP 라이선스를 무료로 제공합니다',
     license_desc: 'KERYX는 자체 개발 IP(뿌찌프랜즈, 덕클, 디노몬)의 라이선스를 파트너에게 무료로 제공합니다. 유통업체와 독점 또는 공동 판매 계약을 통해 함께 성장하는 모델입니다.',
     license_items: [
@@ -77,7 +77,7 @@ const texts = {
       { title: '장기 파트너십', desc: '일회성 거래가 아닌, IP를 함께 키워가는 장기 사업 파트너입니다.' },
     ],
     // B2B 구독 서비스
-    subscribe_badge: 'B2B Weekly Report',
+    subscribe_badge: 'B2B 주간 리포트',
     subscribe_title: '매주 B2B 트렌드 정보를 받아보세요',
     subscribe_desc: '이메일과 사업자 정보를 등록하시면, 사업자 확인 후 매주 IP 굿즈 트렌드, 신상품 정보, 시장 동향을 보내드립니다.',
     subscribe_placeholder_email: '이메일 주소',
@@ -92,7 +92,7 @@ const texts = {
     cta_btn1: '무료 견적 의뢰',
     cta_btn2: '서비스 자세히 보기',
     // Why KERYX
-    trust_badge: 'Why KERYX',
+    trust_badge: '왜 KERYX인가',
     trust_title: 'KERYX가 특별한 이유',
     trust_items: [
       { title: '직접 만드는 IP', desc: '외부 라이선스가 아닌, 자체 개발 캐릭터와 세계관으로 독보적 경쟁력을 가집니다.' },
@@ -109,9 +109,9 @@ const texts = {
     hero_cta_start: '成为合作伙伴',
     hero_cta_showroom: 'IP展厅',
     hero_cta_how: '了解流程',
-    stat1_num: '3+', stat1_label: '原创IP系列',
-    stat2_num: '连载中', stat2_label: 'IP故事&内容',
-    stat3_num: '50+', stat3_label: '种IP周边产品线',
+    stat1_num: 'IP', stat1_label: '原创角色',
+    stat2_num: '连载', stat2_label: '故事&内容',
+    stat3_num: '周边', stat3_label: 'IP商品阵容',
     stat4_num: '直接', stat4_label: '从策划到生产',
     partner_badge: '合作伙伴招募',
     partner_title: '寻找共同成长的合作伙伴',
@@ -154,7 +154,7 @@ const texts = {
       { icon: 'protect', title: '合作伙伴&渠道', desc: '与合作伙伴一起将IP周边推向市场，共同成长' },
     ],
     // IP 授权免费提供
-    license_badge: 'IP License — FREE',
+    license_badge: 'IP 라이선스 — 무료 제공',
     license_title: '免费提供IP授权',
     license_desc: 'KERYX将自主开发的IP（噗奇朋友、鸭克、恐龙萌）授权免费提供给合作伙伴。通过与渠道商签订独家或联合销售协议，实现共同成长。',
     license_items: [
@@ -164,7 +164,7 @@ const texts = {
       { title: '长期合作', desc: '不是一次性交易，而是共同培育IP的长期事业伙伴。' },
     ],
     // B2B订阅服务
-    subscribe_badge: 'B2B Weekly Report',
+    subscribe_badge: 'B2B 주간 리포트',
     subscribe_title: '每周接收B2B趋势信息',
     subscribe_desc: '注册邮箱和企业信息后，经营业执照确认后，每周发送IP周边趋势、新品信息、市场动态。',
     subscribe_placeholder_email: '邮箱地址',
@@ -178,7 +178,7 @@ const texts = {
     cta_desc: '咨询阶段不产生费用。2个工作日内专属MD联系您。',
     cta_btn1: '免费询价',
     cta_btn2: '了解服务详情',
-    trust_badge: 'Why KERYX',
+    trust_badge: '왜 KERYX인가',
     trust_title: 'KERYX的特别之处',
     trust_items: [
       { title: '直接创造的IP', desc: '不是外部授权，而是自主开发的角色和世界观，拥有独特竞争力。' },

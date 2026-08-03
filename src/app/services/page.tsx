@@ -97,7 +97,7 @@ const T = {
     hero_cta: "파트너 시작하기",
     hero_cta2: "자주 묻는 질문",
     stats: [
-      { value: "15종", label: "오리지널 캐릭터" },
+      { value: "IP", label: "오리지널 캐릭터" },
       { value: "즉시", label: "아이템 결정 후 진행" },
       { value: "100%", label: "전수 검수 원칙" },
       { value: "원스톱", label: "디자인·샘플·생산·납품" },
@@ -125,7 +125,7 @@ const T = {
     hero_cta: "成为合作伙伴",
     hero_cta2: "常见问题",
     stats: [
-      { value: "15种", label: "原创角色" },
+      { value: "IP", label: "原创角色" },
       { value: "即时", label: "确定商品后启动" },
       { value: "100%", label: "全检原则" },
       { value: "一站式", label: "设计·样品·生产·交货" },

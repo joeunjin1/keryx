@@ -42,6 +42,8 @@ const T = {
     has_sample_yes: '있음 (샘플 보유)',
     has_sample_no: '없음',
     contact_method_label: '선호 연락 수단 (선택)',
+    kakao_id_label: '카카오톡 ID',
+    kakao_id_ph: '카카오톡 아이디를 입력해주세요',
     contact_methods: ['이메일', '카카오톡'],
     // Step 2
     s2_title: '수량과 사양을 알려주세요',
@@ -143,6 +145,8 @@ const T = {
     has_sample_yes: '有（持有样品）',
     has_sample_no: '无',
     contact_method_label: '首选联系方式（选填）',
+    kakao_id_label: 'KakaoTalk ID',
+    kakao_id_ph: '请输入KakaoTalk ID',
     contact_methods: ['电子邮件', 'KakaoTalk'],
     s2_title: '请告知数量和规格',
     s2_sub: '数量和规格越精确，报价越准确',
@@ -239,6 +243,8 @@ const T = {
     has_sample_yes: 'Yes (have sample)',
     has_sample_no: 'No',
     contact_method_label: 'Preferred Contact Method (optional)',
+    kakao_id_label: 'KakaoTalk ID',
+    kakao_id_ph: 'Enter your KakaoTalk ID',
     contact_methods: ['Email', 'KakaoTalk'],
     s2_title: 'Quantity & Specifications',
     s2_sub: 'The more precise the spec, the more accurate the quote',
@@ -317,6 +323,7 @@ interface FormData {
   budget_range: string;
   has_sample: string;
   contact_method: string;
+  kakao_id: string;
   // Step 2
   quantity: string;
   unit: string;
@@ -354,6 +361,7 @@ const INIT: FormData = {
   budget_range: '',
   has_sample: '',
   contact_method: '',
+  kakao_id: '',
   quantity: '',
   unit: 'pcs',
   size_spec: '',
@@ -471,6 +479,7 @@ export default function QuotePage() {
           budget_range: form.budget_range || null,
           has_sample: form.has_sample || null,
           contact_method: form.contact_method || null,
+          kakao_id: form.kakao_id || null,
         }),
       });
       const json = await res.json();
@@ -777,6 +786,19 @@ export default function QuotePage() {
                     >{m}</button>
                   ))}
                 </div>
+                {/* 카카오톡 선택 시 ID 입력란 표시 */}
+                {(form.contact_method === '카카오톡' || form.contact_method === 'KakaoTalk') && (
+                  <div className="mt-3">
+                    <label className="block text-sm font-bold text-gray-700 mb-2">{t.kakao_id_label}</label>
+                    <input
+                      type="text"
+                      value={form.kakao_id}
+                      onChange={e => set('kakao_id', e.target.value)}
+                      placeholder={t.kakao_id_ph}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           )}
