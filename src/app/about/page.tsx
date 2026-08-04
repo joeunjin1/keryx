@@ -16,7 +16,7 @@ const texts = {
     section1_title: "KERYX는 이런 기업입니다",
     section1_desc: "KERYX는 오리지널 IP 캐릭터를 개발하고, 세계관을 구축하며, 스토리를 연재합니다. 그리고 그 캐릭터에 맞는 상품과 콘텐츠를 기획하고, 전문 공장에서 직접 생산까지 합니다. 캐릭터의 탄생부터 소비자의 손에 닿기까지, IP의 전 과정을 운영하는 포털 기업입니다.",
     pillars: [
-      { title: "오리지널 IP 개발", desc: "뿌지프랜즈, 디노몬, 덕클 등 다양한 오리지널 캐릭터를 직접 개발하고 세계관을 구축합니다.", icon: "🎨" },
+      { title: "오리지널 IP 개발", desc: "뿌찌프랜즈, 디노몬, 덕클 등 다양한 오리지널 캐릭터를 직접 개발하고 세계관을 구축합니다.", icon: "🎨" },
       { title: "스토리 & 콘텐츠 연재", desc: "동화, 웹툰, 숏폼 등 다양한 형태로 캐릭터의 이야기를 연재하며 IP 가치를 키워갑니다.", icon: "📖" },
       { title: "상품 기획 & 생산", desc: "캐릭터에 맞는 인형, 키링, 가방고리, 뽑기굿즈 등을 기획하고 전문 공장에서 직접 생산합니다.", icon: "🏭" },
       { title: "파트너와 함께 성장", desc: "IP를 활용한 장기 사업플랜을 파트너에게 제시하고, 함께 성장하는 생태계를 만듭니다.", icon: "🤝" },
@@ -31,7 +31,7 @@ const texts = {
       { step: "06", title: "물류 & 납품", desc: "해상/항공 물류 + 한국 택배 지정 대행" },
     ],
     ip_title: "KERYX가 만드는 IP 유니버스",
-    ip_desc: "뿌지프랜즈(뿌지빌리지 세계관, 동화 연재중), 디노몬(디노몬 아일랜드, 6종 공룡), 덕클(덕클 연못, 일상 에피소드) — 각 IP는 고유한 세계관과 스토리를 가지고 있으며, 캐릭터에 맞는 상품을 기획·생산합니다.",
+    ip_desc: "뿌찌프랜즈(뿌찌빌리지 세계관, 동화 연재중), 디노몬(디노몬 아일랜드, 6종 공룡), 덕클(덕클 연못, 일상 에피소드) — 각 IP는 고유한 세계관과 스토리를 가지고 있으며, 캐릭터에 맞는 상품을 기획·생산합니다.",
     stats: [
       { value: "IP", label: "오리지널 캐릭터" },
       { value: "디자인", label: "완성 상품 디자인" },
@@ -91,7 +91,7 @@ const texts = {
 };
 
 const IP_SHOWCASE = [
-  { name_ko: "뿌찌프랜즈", name_zh: "噗奇朋友", color: "#FF6B9D", gradient: "from-pink-400 to-rose-300", emoji: "🌸", slug: "ppuchi-friends", image: "/images/ip-characters/ppuji/dangppu.webp", desc_ko: "뿌지빌리지 8명의 친구들", desc_zh: "噗吉村庄8位朋友" },
+  { name_ko: "뿌찌프랜즈", name_zh: "噗奇朋友", color: "#FF6B9D", gradient: "from-pink-400 to-rose-300", emoji: "🌸", slug: "ppuchi-friends", image: "/images/ip-characters/ppuji/dangppu.webp", desc_ko: "뿌찌빌리지 8명의 친구들", desc_zh: "噗吉村庄8位朋友" },
   { name_ko: "덕클", name_zh: "鸭克", color: "#FFB800", gradient: "from-amber-400 to-yellow-300", emoji: "🦆", slug: "duckle", image: "/images/ip-characters/duckle/duckle-front.png", desc_ko: "호기심 많은 노란 오리", desc_zh: "好奇心旺盛的黄色鸭子" },
   { name_ko: "디노몬", name_zh: "恐龙萌", color: "#10B981", gradient: "from-emerald-400 to-teal-300", emoji: "🦕", slug: "dinomon", image: "/images/ip-characters/dinomon/tino.png", desc_ko: "디노몬 아일랜드 6종 공룡", desc_zh: "恐龙怪兽岛6种恐龙" },
 ];

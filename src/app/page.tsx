@@ -137,7 +137,7 @@ const texts = {
     ip_propose: 'IP周边产品',
     catalog_badge: 'IP商品目录',
     catalog_title: 'KERYX IP商品系列',
-    catalog_desc: '噗奇朋友、鸭克、迪诺蒙 — KERYX原创IP制作的毛绒公仔、钥匙扣、包挂件、扮蛋周边。免费授权可立即开始。',
+    catalog_desc: '噗奇朋友、鸭克、恐龙萌 — KERYX原创IP制作的毛绒公仔、钥匙扣、包挂件、扮蛋周边。免费授权可立即开始。',
     catalog_cta: '查看全部目录',
     catalog_moq: '起订量',
     catalog_featured: '推荐',
@@ -566,7 +566,7 @@ export default function HomePage() {
               {[
                 { img: '/images/ip-goods/ppuchi-plush-doll.webp', name: lang === 'zh' ? '噗奇毛绒公仔' : '뿌찌프랜즈 봉제인형', price: '18.0', moq: '100', ip: '뿌찌' },
                 { img: '/images/ip-goods/duckle-keychain.webp', name: lang === 'zh' ? '鸭克钥匙扣' : '덕클 키링', price: '5.5', moq: '200', ip: '덕클' },
-                { img: '/images/ip-goods/dinomon-bag-charm.webp', name: lang === 'zh' ? '迪诺蒙包挂件' : '디노몬 가방고리', price: '8.0', moq: '300', ip: '디노몬' },
+                { img: '/images/ip-goods/dinomon-bag-charm.webp', name: lang === 'zh' ? '恐龙萌包挂件' : '디노몬 가방고리', price: '8.0', moq: '300', ip: '디노몬' },
                 { img: '/images/ip-goods/ppuchi-gacha-set.webp', name: lang === 'zh' ? '噗奇扮蛋套装' : '뿌찌 뽑기 세트', price: '3.5', moq: '500', ip: '뿌찌' },
               ].map((item, i) => (
                 <div key={i} className="group rounded-2xl border border-gray-100 bg-white overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">

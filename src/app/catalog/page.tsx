@@ -61,7 +61,7 @@ const IP_FILTERS = [
   { id: 'all', ko: '전체 IP', zh: '全部IP' },
   { id: 'ppuchi-friends', ko: '뿌찌프랜즈', zh: '噗奇朋友', color: '#FF6B9D' },
   { id: 'duckle', ko: '덕클', zh: '鸭克', color: '#FFD93D' },
-  { id: 'dinomon', ko: '디노몬', zh: '迪诺蒙', color: '#6BCB77' },
+  { id: 'dinomon', ko: '디노몬', zh: '恐龙萌', color: '#6BCB77' },
 ];
 
 const PAGE_SIZE = 24;
