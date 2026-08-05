@@ -1,161 +1,91 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase/client';
 import { useLangContext } from '@/components/layout/LangContext';
 
-// ─── 타입 정의 ───────────────────────────────────────────────
-interface Product {
+// ─── IP 캐릭터 정의 ───────────────────────────────────────────────
+const IP_CHARACTERS = [
+  { id: 'all', ko: '전체', zh: '全部', color: '' },
+  { id: 'gilduck', ko: '길덕이', zh: '吉鸭', color: '#4FC3F7' },
+  { id: 'inyeoseok', ko: '이녀석', zh: '这家伙', color: '#FF8A65' },
+  { id: 'kkomul', ko: '꼬물이들', zh: '小怪物们', color: '#AB47BC' },
+  { id: 'heartbbung', ko: '하트뿅 햄스터', zh: '心动仓鼠', color: '#FFB74D' },
+  { id: 'piggly', ko: '피글리', zh: '小猪猪', color: '#F48FB1' },
+];
+
+// ─── 카테고리 정의 ───────────────────────────────────────────────
+const CATEGORIES = [
+  { id: 'all', ko: '전체', zh: '全部', icon: 'M4 6h16M4 10h16M4 14h16M4 18h16' },
+  { id: 'plush', ko: '인형/봉제', zh: '毛绒玩具', icon: 'M12 21a9 9 0 110-18 9 9 0 010 18z' },
+  { id: 'keyring', ko: '키링/가방고리', zh: '钥匙扣/包挂件', icon: 'M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z' },
+  { id: 'figure', ko: '피규어', zh: '手办', icon: 'M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0' },
+  { id: 'gacha', ko: '뽑기 굿즈', zh: '扭蛋商品', icon: 'M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z' },
+];
+
+// ─── 상품 데이터 (IP 굿즈) ───────────────────────────────────────
+interface CatalogProduct {
   id: string;
-  product_code: string;
   name_ko: string;
   name_zh: string;
-  name_en?: string;
   category: string;
-  supplier_type: string;
-  sell_price_cny: number;
+  ip: string;
+  image: string;
+  price_range: string;
   moq: number;
-  lead_time_days: number;
-  stock_qty: number;
-  image_url: string;
-  image_urls?: string[];
-  is_featured: boolean;
+  description_ko: string;
+  description_zh: string;
   is_new: boolean;
   is_hot: boolean;
-  cbm_per_box?: number;
-  pcs_per_box?: number;
-  pcs_per_carton?: number;
-  weight_kg?: number;
-  size_cm?: string;
-  material_ko?: string;
-  material_zh?: string;
-  description_ko?: string;
-  description_zh?: string;
-  oem_available: boolean;
-  odm_available: boolean;
-  customizable: boolean;
-  tags?: string[];
-  ip_character_id?: string;
-  ip_character_name_ko?: string;
-  ip_character_name_zh?: string;
-  ip_character_slug?: string;
-  ip_color_primary?: string;
-  category_name_ko?: string;
-  category_name_zh?: string;
 }
 
-const CATEGORY_FILTERS = [
-  { id: 'all', ko: '전체', zh: '全部' },
-  { id: '인형/봉제', ko: '인형/봉제', zh: '毛绒玩具' },
-  { id: '뽑기 굿즈', ko: '뽑기 굿즈', zh: '扭蛋商品' },
-  { id: '가방고리/키링', ko: '가방고리/키링', zh: '包挂件/钥匙扣' },
-  { id: '피규어', ko: '피규어', zh: '手办' },
-  { id: '문구/팬시', ko: '문구/팬시', zh: '文具/精品' },
-  { id: '보냉백/가방', ko: '보냉백/가방', zh: '保冷袋/包' },
-];
+const CATALOG_PRODUCTS: CatalogProduct[] = [
+  // 길덕이
+  { id: 'GD-PL-001', name_ko: '길덕이 봉제인형 30cm', name_zh: '吉鸭毛绒公仔 30cm', category: 'plush', ip: 'gilduck', image: '/images/catalog-goods/gilduck-plush.webp', price_range: '¥18~25', moq: 500, description_ko: '변신천재 유연한 오리 길덕이 대형 봉제인형', description_zh: '变身天才柔软鸭吉鸭大型毛绒公仔', is_new: true, is_hot: true },
+  { id: 'GD-KR-001', name_ko: '길덕이 봉제 키링', name_zh: '吉鸭毛绒钥匙扣', category: 'keyring', ip: 'gilduck', image: '/images/catalog-goods/gilduck-keyring.webp', price_range: '¥5~8', moq: 1000, description_ko: '가방에 달면 시선 집중! 길덕이 미니 봉제 키링', description_zh: '挂在包上超吸睛！吉鸭迷你毛绒钥匙扣', is_new: true, is_hot: false },
+  { id: 'GD-FG-001', name_ko: '길덕이 아트토이 피규어', name_zh: '吉鸭艺术玩具手办', category: 'figure', ip: 'gilduck', image: '/images/catalog-goods/gilduck-figure.webp', price_range: '¥22~30', moq: 300, description_ko: '비닐 소재 프리미엄 아트토이 컬렉션', description_zh: '乙烯基材质高端艺术玩具收藏品', is_new: true, is_hot: false },
+  { id: 'GD-GA-001', name_ko: '길덕이 가챠 캡슐 시리즈', name_zh: '吉鸭扭蛋胶囊系列', category: 'gacha', ip: 'gilduck', image: '/images/catalog-goods/gilduck-gacha.webp', price_range: '¥3~5', moq: 2000, description_ko: '4종 랜덤 캡슐 피규어 (뽑기기계용)', description_zh: '4款随机胶囊手办（适用扭蛋机）', is_new: false, is_hot: true },
 
-const IP_FILTERS = [
-  { id: 'all', ko: '전체 IP', zh: '全部IP' },
-  { id: 'ppuchi-friends', ko: '뿌찌프랜즈', zh: '噗奇朋友', color: '#FF6B9D' },
-  { id: 'duckle', ko: '덕클', zh: '鸭克', color: '#FFD93D' },
-  { id: 'dinomon', ko: '디노몬', zh: '恐龙萌', color: '#6BCB77' },
-];
+  // 이녀석
+  { id: 'IN-PL-001', name_ko: '이녀석 봉제 키링 세트 (9종)', name_zh: '这家伙毛绒钥匙扣套装 (9款)', category: 'plush', ip: 'inyeoseok', image: '/images/catalog-goods/inyeoseok-plush.webp', price_range: '¥4~6', moq: 1000, description_ko: '재미있는 낙서 캐릭터 9종 봉제 키링 세트', description_zh: '有趣涂鸦角色9款毛绒钥匙扣套装', is_new: true, is_hot: true },
+  { id: 'IN-KR-001', name_ko: '이녀석 아크릴 키링 세트', name_zh: '这家伙亚克力钥匙扣套装', category: 'keyring', ip: 'inyeoseok', image: '/images/catalog-goods/inyeoseok-keyring.webp', price_range: '¥2~4', moq: 2000, description_ko: '투명 아크릴 키링 (랜덤 3종)', description_zh: '透明亚克力钥匙扣（随机3款）', is_new: true, is_hot: false },
+  { id: 'IN-FG-001', name_ko: '이녀석 블라인드박스 피규어', name_zh: '这家伙盲盒手办', category: 'figure', ip: 'inyeoseok', image: '/images/catalog-goods/inyeoseok-figure.webp', price_range: '¥8~12', moq: 500, description_ko: '5종 미니 비닐 피규어 블라인드박스', description_zh: '5款迷你乙烯基手办盲盒', is_new: false, is_hot: true },
+  { id: 'IN-GA-001', name_ko: '이녀석 미스터리백 굿즈', name_zh: '这家伙神秘袋周边', category: 'gacha', ip: 'inyeoseok', image: '/images/catalog-goods/inyeoseok-gacha.webp', price_range: '¥3~5', moq: 2000, description_ko: '아크릴 스탠드 + 미스터리백 (5종 랜덤)', description_zh: '亚克力立牌 + 神秘袋（5款随机）', is_new: true, is_hot: false },
 
-const PAGE_SIZE = 24;
+  // 꼬물이들
+  { id: 'KM-PL-001', name_ko: '꼬물이들 봉제인형 25cm', name_zh: '小怪物们毛绒公仔 25cm', category: 'plush', ip: 'kkomul', image: '/images/catalog-goods/kkomul-plush.webp', price_range: '¥15~20', moq: 500, description_ko: '우주에서 온 보라색 몬스터 대형 봉제인형', description_zh: '来自宇宙的紫色怪物大型毛绒公仔', is_new: true, is_hot: true },
+  { id: 'KM-KR-001', name_ko: '꼬물이들 아크릴 키링', name_zh: '小怪物们亚克力钥匙扣', category: 'keyring', ip: 'kkomul', image: '/images/catalog-goods/kkomul-keyring.webp', price_range: '¥3~5', moq: 1500, description_ko: '별 장식 아크릴 키링 (초승달 뿔 디자인)', description_zh: '星星装饰亚克力钥匙扣（新月角设计）', is_new: true, is_hot: false },
+  { id: 'KM-FG-001', name_ko: '꼬물이들 블라인드박스 4종', name_zh: '小怪物们盲盒4款', category: 'figure', ip: 'kkomul', image: '/images/catalog-goods/kkomul-figure.webp', price_range: '¥12~18', moq: 300, description_ko: '4가지 포즈 비닐 피규어 블라인드박스', description_zh: '4种姿势乙烯基手办盲盒', is_new: true, is_hot: true },
+  { id: 'KM-GA-001', name_ko: '꼬물이들 가챠 시리즈', name_zh: '小怪物们扭蛋系列', category: 'gacha', ip: 'kkomul', image: '/images/catalog-goods/kkomul-gacha.webp', price_range: '¥4~6', moq: 2000, description_ko: '우주 몬스터 4종 캡슐 피규어', description_zh: '宇宙怪物4款胶囊手办', is_new: false, is_hot: true },
+
+  // 하트뿅 햄스터
+  { id: 'HB-PL-001', name_ko: '하트뿅 햄스터 봉제인형', name_zh: '心动仓鼠毛绒公仔', category: 'plush', ip: 'heartbbung', image: '/images/catalog-goods/heartbbung-plush.webp', price_range: '¥14~20', moq: 500, description_ko: '핑거하트 포즈 사랑스러운 햄스터 인형', description_zh: '比心姿势可爱仓鼠公仔', is_new: true, is_hot: true },
+  { id: 'HB-KR-001', name_ko: '하트뿅 햄스터 봉제 키링', name_zh: '心动仓鼠毛绒钥匙扣', category: 'keyring', ip: 'heartbbung', image: '/images/catalog-goods/heartbbung-keyring.webp', price_range: '¥5~8', moq: 1000, description_ko: '미니 사이즈 핑거하트 햄스터 키링', description_zh: '迷你尺寸比心仓鼠钥匙扣', is_new: true, is_hot: false },
+  { id: 'HB-FG-001', name_ko: '하트뿅 햄스터 피규어 컬렉션', name_zh: '心动仓鼠手办收藏', category: 'figure', ip: 'heartbbung', image: '/images/catalog-goods/heartbbung-figure.webp', price_range: '¥10~15', moq: 500, description_ko: '3종 포즈 (핑거하트, 딸기, 잠자기)', description_zh: '3种姿势（比心、草莓、睡觉）', is_new: true, is_hot: false },
+  { id: 'HB-GA-001', name_ko: '하트뿅 햄스터 가챠 세트', name_zh: '心动仓鼠扭蛋套装', category: 'gacha', ip: 'heartbbung', image: '/images/catalog-goods/heartbbung-gacha.webp', price_range: '¥3~5', moq: 2000, description_ko: '3종 미니 피규어 캡슐 (뽑기기계용)', description_zh: '3款迷你手办胶囊（适用扭蛋机）', is_new: false, is_hot: true },
+
+  // 피글리
+  { id: 'PG-PL-001', name_ko: '피글리 봉제인형 20cm', name_zh: '小猪猪毛绒公仔 20cm', category: 'plush', ip: 'piggly', image: '/images/catalog-goods/piggly-plush.webp', price_range: '¥12~18', moq: 500, description_ko: '동글동글 귀여운 돼지 봉제인형', description_zh: '圆滚滚可爱小猪毛绒公仔', is_new: true, is_hot: true },
+  { id: 'PG-KR-001', name_ko: '피글리 봉제 키링', name_zh: '小猪猪毛绒钥匙扣', category: 'keyring', ip: 'piggly', image: '/images/catalog-goods/piggly-keyring.webp', price_range: '¥4~6', moq: 1000, description_ko: '미니 동글 피글리 봉제 키링', description_zh: '迷你圆滚小猪猪毛绒钥匙扣', is_new: true, is_hot: false },
+  { id: 'PG-FG-001', name_ko: '피글리 블라인드박스 4종', name_zh: '小猪猪盲盒4款', category: 'figure', ip: 'piggly', image: '/images/catalog-goods/piggly-figure.webp', price_range: '¥10~15', moq: 300, description_ko: '4가지 포즈 비닐 피규어 (앉기, 눕기, 담요, 뒷모습)', description_zh: '4种姿势乙烯基手办（坐、躺、毯子、背影）', is_new: true, is_hot: true },
+  { id: 'PG-GA-001', name_ko: '피글리 가챠 캡슐 시리즈', name_zh: '小猪猪扭蛋胶囊系列', category: 'gacha', ip: 'piggly', image: '/images/catalog-goods/piggly-gacha.webp', price_range: '¥3~5', moq: 2000, description_ko: '4종 랜덤 캡슐 피규어 (뽑기기계용)', description_zh: '4款随机胶囊手办（适用扭蛋机）', is_new: false, is_hot: true },
+];
 
 export default function CatalogPage() {
   const { lang } = useLangContext();
   const t = (ko: string, zh: string) => lang === 'zh' ? zh : ko;
-  const router = useRouter();
-  const supabase = createClient() as any;
 
-  const [products, setProducts] = useState<Product[]>([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [ipFilter, setIpFilter] = useState('all');
-  const [search, setSearch] = useState('');
-  const [searchInput, setSearchInput] = useState('');
-  const [sortBy, setSortBy] = useState('created_at');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const [inquirySent, setInquirySent] = useState<Set<string>>(new Set());
+  const [selectedProduct, setSelectedProduct] = useState<CatalogProduct | null>(null);
 
-  // 인증 확인 (퍼블릭 접근 허용 - 로그인 없이도 카탈로그 조회 가능)
-  useEffect(() => {
-    (async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data: profile } = await supabase
-          .from('user_profiles')
-          .select('kind')
-          .eq('id', user.id)
-          .single();
-        if (profile) setUserRole(profile.kind);
-      }
-    })();
-  }, []);
-
-  const loadProducts = useCallback(async () => {
-    setLoading(true);
-    const offset = (page - 1) * PAGE_SIZE;
-
-    // v_catalog_products 뷰 사용 (없으면 products 테이블 직접 사용)
-    let query = supabase
-      .from('products')
-      .select(
-        `id, product_code, name_ko, name_zh, category, supplier_type,
-         sell_price_cny, moq, lead_time_days, stock_qty,
-         image_url, is_featured, is_new, is_hot,
-         cbm_per_box, pcs_per_box, weight_kg,
-         oem_available, odm_available, customizable,
-         size_cm, material_ko, material_zh,
-         description_ko, description_zh, tags`,
-        { count: 'exact' }
-      )
-      .eq('is_active', true)
-      .eq('approval_status', 'approved')
-      .order(sortBy === 'price_asc' ? 'sell_price_cny' : sortBy === 'price_desc' ? 'sell_price_cny' : 'created_at', {
-        ascending: sortBy === 'price_asc'
-      })
-      .range(offset, offset + PAGE_SIZE - 1);
-
-    if (categoryFilter !== 'all') query = query.eq('category', categoryFilter);
-    if (ipFilter !== 'all') {
-      const { data: ipData } = await supabase.from('ip_characters').select('id').eq('slug', ipFilter).single();
-      if (ipData) query = query.eq('ip_character_id', ipData.id);
-    }
-    if (search.trim()) {
-      query = query.or(`name_ko.ilike.%${search}%,name_zh.ilike.%${search}%,product_code.ilike.%${search}%`);
-    }
-
-    const { data, error, count } = await query;
-    if (!error) { setProducts(data ?? []); setTotal(count ?? 0); }
-    setLoading(false);
-  }, [page, categoryFilter, ipFilter, search, sortBy]);
-
-  useEffect(() => { loadProducts(); }, [loadProducts]);
-
-  const totalPages = Math.ceil(total / PAGE_SIZE);
-
-  const handleInquiry = async (product: Product) => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { router.push('/login'); return; }
-    await supabase.from('product_inquiries').insert({
-      product_id: product.id,
-      buyer_user_id: user.id,
-      inquiry_type: 'catalog_inquiry',
-      message_ko: `카탈로그에서 문의드립니다. 상품코드: ${product.product_code}`,
-      message_zh: `从目录咨询。商品编号：${product.product_code}`,
-      status: 'pending',
-    });
-    setInquirySent(prev => new Set([...prev, product.id]));
-  };
+  // 필터링
+  const filteredProducts = CATALOG_PRODUCTS.filter(p => {
+    if (categoryFilter !== 'all' && p.category !== categoryFilter) return false;
+    if (ipFilter !== 'all' && p.ip !== ipFilter) return false;
+    return true;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -164,30 +94,16 @@ export default function CatalogPage() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div className="flex items-center gap-3">
-              <Link href="/" className="text-gray-400 hover:text-gray-600 text-sm">← {t('홈', '首页')}</Link>
+              <Link href="/" className="text-gray-400 hover:text-gray-600 text-sm">
+                <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                {t('홈', '首页')}
+              </Link>
               <h1 className="text-xl font-bold text-gray-900">
-                {t('IP 상품 카탈로그', 'IP商品目录')}
+                {t('IP 굿즈 카탈로그', 'IP周边商品目录')}
               </h1>
               <span className="text-sm text-gray-500">
-                {t(`총 ${total}개 상품`, `共 ${total} 件商品`)}
+                {t(`${filteredProducts.length}개 상품`, `${filteredProducts.length} 件商品`)}
               </span>
-            </div>
-            {/* 검색 */}
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={searchInput}
-                onChange={e => setSearchInput(e.target.value)}
-                onKeyDown={e => { if (e.key === 'Enter') { setSearch(searchInput); setPage(1); } }}
-                placeholder={t('상품명, 코드 검색...', '搜索商品名称、编号...')}
-                className="border rounded-lg px-3 py-2 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              />
-              <button
-                onClick={() => { setSearch(searchInput); setPage(1); }}
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-700"
-              >
-                {t('검색', '搜索')}
-              </button>
             </div>
           </div>
         </div>
@@ -196,37 +112,40 @@ export default function CatalogPage() {
       <div className="max-w-7xl mx-auto px-4 py-6">
         <div className="flex gap-6">
           {/* 사이드 필터 */}
-          <aside className="w-52 flex-shrink-0 hidden lg:block">
-            <div className="bg-white rounded-xl shadow-sm p-4 sticky top-24">
+          <aside className="w-56 flex-shrink-0 hidden lg:block">
+            <div className="bg-white rounded-xl shadow-sm p-5 sticky top-24">
               {/* 카테고리 필터 */}
               <div className="mb-6">
                 <h3 className="text-sm font-bold text-gray-700 mb-3">{t('카테고리', '分类')}</h3>
                 <div className="space-y-1">
-                  {CATEGORY_FILTERS.map(cat => (
+                  {CATEGORIES.map(cat => (
                     <button
                       key={cat.id}
-                      onClick={() => { setCategoryFilter(cat.id); setPage(1); }}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                      onClick={() => setCategoryFilter(cat.id)}
+                      className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-colors flex items-center gap-2 ${
                         categoryFilter === cat.id
                           ? 'bg-indigo-50 text-indigo-700 font-semibold'
                           : 'text-gray-600 hover:bg-gray-50'
                       }`}
                     >
+                      <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={cat.icon} />
+                      </svg>
                       {t(cat.ko, cat.zh)}
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* IP 필터 */}
-              <div className="mb-6">
+              {/* IP 캐릭터 필터 */}
+              <div>
                 <h3 className="text-sm font-bold text-gray-700 mb-3">{t('IP 캐릭터', 'IP角色')}</h3>
                 <div className="space-y-1">
-                  {IP_FILTERS.map(ip => (
+                  {IP_CHARACTERS.map(ip => (
                     <button
                       key={ip.id}
-                      onClick={() => { setIpFilter(ip.id); setPage(1); }}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center gap-2 ${
+                      onClick={() => setIpFilter(ip.id)}
+                      className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-colors flex items-center gap-2 ${
                         ipFilter === ip.id
                           ? 'bg-indigo-50 text-indigo-700 font-semibold'
                           : 'text-gray-600 hover:bg-gray-50'
@@ -240,226 +159,106 @@ export default function CatalogPage() {
                   ))}
                 </div>
               </div>
-
-              {/* 정렬 */}
-              <div>
-                <h3 className="text-sm font-bold text-gray-700 mb-3">{t('정렬', '排序')}</h3>
-                <div className="space-y-1">
-                  {[
-                    { id: 'created_at', ko: '최신순', zh: '最新' },
-                    { id: 'price_asc', ko: '가격 낮은순', zh: '价格低→高' },
-                    { id: 'price_desc', ko: '가격 높은순', zh: '价格高→低' },
-                  ].map(s => (
-                    <button
-                      key={s.id}
-                      onClick={() => setSortBy(s.id)}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                        sortBy === s.id ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-gray-600 hover:bg-gray-50'
-                      }`}
-                    >
-                      {t(s.ko, s.zh)}
-                    </button>
-                  ))}
-                </div>
-              </div>
             </div>
           </aside>
 
+          {/* 모바일 필터 */}
+          <div className="lg:hidden fixed bottom-4 left-4 right-4 z-20 bg-white rounded-xl shadow-lg border p-3">
+            <div className="flex gap-2 overflow-x-auto pb-1">
+              {CATEGORIES.map(cat => (
+                <button
+                  key={cat.id}
+                  onClick={() => setCategoryFilter(cat.id)}
+                  className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                    categoryFilter === cat.id
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-gray-100 text-gray-600'
+                  }`}
+                >
+                  {t(cat.ko, cat.zh)}
+                </button>
+              ))}
+            </div>
+            <div className="flex gap-2 overflow-x-auto mt-2">
+              {IP_CHARACTERS.map(ip => (
+                <button
+                  key={ip.id}
+                  onClick={() => setIpFilter(ip.id)}
+                  className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
+                    ipFilter === ip.id
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-gray-100 text-gray-600'
+                  }`}
+                >
+                  {ip.color && <span className="w-2 h-2 rounded-full" style={{ backgroundColor: ip.color }} />}
+                  {t(ip.ko, ip.zh)}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* 상품 그리드 */}
           <main className="flex-1 min-w-0">
-            {/* 뷰 모드 토글 */}
-            <div className="flex items-center justify-end gap-2 mb-4">
-              <button
-                onClick={() => setViewMode('grid')}
-                className={`p-2 rounded-lg transition-colors ${viewMode === 'grid' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-400 hover:bg-gray-100'}`}
-                title={t('카드 뷰', '卡片视图')}
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
-              </button>
-              <button
-                onClick={() => setViewMode('list')}
-                className={`p-2 rounded-lg transition-colors ${viewMode === 'list' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-400 hover:bg-gray-100'}`}
-                title={t('목록 뷰', '列表视图')}
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" /></svg>
-              </button>
-            </div>
-            {loading ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-                {Array.from({ length: 12 }).map((_, i) => (
-                  <div key={i} className="bg-white rounded-xl shadow-sm overflow-hidden animate-pulse">
-                    <div className="aspect-square bg-gray-200" />
-                    <div className="p-3 space-y-2">
-                      <div className="h-4 bg-gray-200 rounded w-3/4" />
-                      <div className="h-3 bg-gray-200 rounded w-1/2" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : products.length === 0 ? (
+            {filteredProducts.length === 0 ? (
               <div className="text-center py-20 text-gray-400">
-                <div className="text-5xl mb-4">📦</div>
+                <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
                 <p className="text-lg">{t('조건에 맞는 상품이 없습니다', '没有符合条件的商品')}</p>
               </div>
             ) : (
-              <>
-                {viewMode === 'list' ? (
-                  /* 목록 뷰 */
-                  <div className="space-y-3">
-                    {products.map(product => (
-                      <div
-                        key={product.id}
-                        className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer flex items-center gap-4 p-4"
-                        onClick={() => setSelectedProduct(product)}
-                      >
-                        <div className="w-20 h-20 relative bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                          {product.image_url ? (
-                            <Image src={product.image_url} alt={t(product.name_ko, product.name_zh)} fill className="object-cover" sizes="80px" />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-gray-300 text-2xl">📦</div>
-                          )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <p className="text-xs text-gray-400">{product.product_code}</p>
-                            {product.is_new && <span className="bg-blue-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">NEW</span>}
-                            {product.oem_available && <span className="bg-purple-600 text-white text-[10px] px-1.5 py-0.5 rounded font-bold">OEM</span>}
-                          </div>
-                          <h3 className="text-sm font-semibold text-gray-800 truncate">{t(product.name_ko, product.name_zh)}</h3>
-                          <div className="flex items-center gap-4 mt-1">
-                            <span className="text-base font-bold text-indigo-700">&yen;{product.sell_price_cny?.toFixed(2)}</span>
-                            <span className="text-xs text-gray-400">MOQ {product.moq}{t('개', '件')}</span>
-                            {product.cbm_per_box && <span className="text-xs text-gray-400">CBM: {product.cbm_per_box}m³</span>}
-                          </div>
-                        </div>
-                        <button
-                          onClick={e => { e.stopPropagation(); handleInquiry(product); }}
-                          className={`text-xs px-3 py-2 rounded-lg font-medium transition-colors flex-shrink-0 ${
-                            inquirySent.has(product.id) ? 'bg-green-100 text-green-700' : 'bg-indigo-600 text-white hover:bg-indigo-700'
-                          }`}
-                        >
-                          {inquirySent.has(product.id) ? t('의뢰완료', '已提交') : t('진행하기', '开始')}
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  /* 카드 뷰 */
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-                  {products.map(product => (
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                {filteredProducts.map(product => {
+                  const ipInfo = IP_CHARACTERS.find(ip => ip.id === product.ip);
+                  return (
                     <div
                       key={product.id}
-                      className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer group"
+                      className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-200 cursor-pointer group"
                       onClick={() => setSelectedProduct(product)}
                     >
                       {/* 이미지 */}
-                      <div className="aspect-square relative bg-gray-100 overflow-hidden">
-                        {product.image_url ? (
-                          <Image
-                            src={product.image_url}
-                            alt={t(product.name_ko, product.name_zh)}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
-                            sizes="(max-width: 768px) 50vw, 25vw"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-gray-300 text-4xl">📦</div>
-                        )}
+                      <div className="aspect-square relative bg-gray-50 overflow-hidden">
+                        <Image
+                          src={product.image}
+                          alt={t(product.name_ko, product.name_zh)}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                        />
                         {/* 배지 */}
-                        <div className="absolute top-2 left-2 flex flex-col gap-1">
+                        <div className="absolute top-2 left-2 flex gap-1">
                           {product.is_new && (
-                            <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">NEW</span>
+                            <span className="bg-blue-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">NEW</span>
                           )}
                           {product.is_hot && (
-                            <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">HOT</span>
-                          )}
-                          {product.is_featured && (
-                            <span className="bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">⭐</span>
+                            <span className="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">HOT</span>
                           )}
                         </div>
-                        {/* OEM/ODM 배지 */}
-                        <div className="absolute bottom-2 right-2 flex gap-1">
-                          {product.oem_available && (
-                            <span className="bg-purple-600 text-white text-xs px-1.5 py-0.5 rounded font-bold">OEM</span>
-                          )}
-                          {product.odm_available && (
-                            <span className="bg-indigo-600 text-white text-xs px-1.5 py-0.5 rounded font-bold">ODM</span>
-                          )}
-                        </div>
+                        {/* IP 태그 */}
+                        {ipInfo && (
+                          <div
+                            className="absolute bottom-2 left-2 text-[10px] px-2 py-0.5 rounded-full font-medium text-white"
+                            style={{ backgroundColor: ipInfo.color }}
+                          >
+                            {t(ipInfo.ko, ipInfo.zh)}
+                          </div>
+                        )}
                       </div>
-
                       {/* 정보 */}
                       <div className="p-3">
-                        <p className="text-xs text-gray-400 mb-0.5">{product.product_code}</p>
+                        <p className="text-[10px] text-gray-400 mb-1">{product.id}</p>
                         <h3 className="text-sm font-semibold text-gray-800 line-clamp-2 leading-tight mb-2">
                           {t(product.name_ko, product.name_zh)}
                         </h3>
                         <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-base font-bold text-indigo-700">
-                              ¥{product.sell_price_cny?.toFixed(2)}
-                            </p>
-                            <p className="text-xs text-gray-400">MOQ {product.moq}{t('개', '件')}</p>
-                          </div>
-                          <button
-                            onClick={e => { e.stopPropagation(); handleInquiry(product); }}
-                            className={`text-xs px-2 py-1.5 rounded-lg font-medium transition-colors ${
-                              inquirySent.has(product.id)
-                                ? 'bg-green-100 text-green-700'
-                                : 'bg-indigo-600 text-white hover:bg-indigo-700'
-                            }`}
-                          >
-                            {inquirySent.has(product.id) ? t('의뢰완료', '已提交') : t('진행하기', '开始')}
-                          </button>
+                          <span className="text-indigo-700 font-bold text-sm">{product.price_range}</span>
+                          <span className="text-[10px] text-gray-400">MOQ {product.moq}</span>
                         </div>
-                        {/* CBM 정보 */}
-                        {product.cbm_per_box && (
-                          <p className="text-xs text-gray-400 mt-1">
-                            CBM: {product.cbm_per_box}m³ / {product.pcs_per_box}{t('개', '件')}
-                          </p>
-                        )}
                       </div>
                     </div>
-                  ))}
-                </div>
-                )}
-
-                {/* 페이지네이션 */}
-                {totalPages > 1 && (
-                  <div className="flex justify-center items-center gap-2 mt-8">
-                    <button
-                      onClick={() => setPage(p => Math.max(1, p - 1))}
-                      disabled={page === 1}
-                      className="px-4 py-2 rounded-lg border text-sm disabled:opacity-40 hover:bg-gray-50"
-                    >
-                      {t('이전', '上一页')}
-                    </button>
-                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                      const start = Math.max(1, page - 2);
-                      const p = start + i;
-                      if (p > totalPages) return null;
-                      return (
-                        <button
-                          key={p}
-                          onClick={() => setPage(p)}
-                          className={`w-9 h-9 rounded-lg text-sm font-medium ${
-                            p === page ? 'bg-indigo-600 text-white' : 'border hover:bg-gray-50 text-gray-700'
-                          }`}
-                        >
-                          {p}
-                        </button>
-                      );
-                    })}
-                    <button
-                      onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                      disabled={page === totalPages}
-                      className="px-4 py-2 rounded-lg border text-sm disabled:opacity-40 hover:bg-gray-50"
-                    >
-                      {t('다음', '下一页')}
-                    </button>
-                  </div>
-                )}
-              </>
+                  );
+                })}
+              </div>
             )}
           </main>
         </div>
@@ -467,122 +266,78 @@ export default function CatalogPage() {
 
       {/* 상품 상세 모달 */}
       {selectedProduct && (
-        <div
-          className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedProduct(null)}
-        >
-          <div
-            className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-            onClick={e => e.stopPropagation()}
-          >
-            <div className="flex items-start justify-between p-5 border-b">
-              <div>
-                <p className="text-xs text-gray-400">{selectedProduct.product_code}</p>
-                <h2 className="text-lg font-bold text-gray-900 mt-0.5">
-                  {t(selectedProduct.name_ko, selectedProduct.name_zh)}
-                </h2>
-              </div>
-              <button onClick={() => setSelectedProduct(null)} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">×</button>
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setSelectedProduct(null)}>
+          <div className="bg-white rounded-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto shadow-2xl" onClick={e => e.stopPropagation()}>
+            {/* 모달 이미지 */}
+            <div className="aspect-square relative bg-gray-50">
+              <Image
+                src={selectedProduct.image}
+                alt={t(selectedProduct.name_ko, selectedProduct.name_zh)}
+                fill
+                className="object-cover rounded-t-2xl"
+                sizes="500px"
+              />
+              <button
+                onClick={() => setSelectedProduct(null)}
+                className="absolute top-3 right-3 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-gray-600 hover:bg-white shadow"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
             </div>
 
+            {/* 모달 정보 */}
             <div className="p-5">
-              <div className="flex gap-5 flex-col sm:flex-row">
-                {/* 이미지 */}
-                <div className="w-full sm:w-56 flex-shrink-0">
-                  <div className="aspect-square relative rounded-xl overflow-hidden bg-gray-100">
-                    {selectedProduct.image_url ? (
-                      <Image src={selectedProduct.image_url} alt="" fill className="object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-300 text-5xl">📦</div>
-                    )}
-                  </div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xs text-gray-400">{selectedProduct.id}</span>
+                {selectedProduct.is_new && <span className="bg-blue-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">NEW</span>}
+                {selectedProduct.is_hot && <span className="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">HOT</span>}
+              </div>
+              <h2 className="text-lg font-bold text-gray-900 mb-1">
+                {t(selectedProduct.name_ko, selectedProduct.name_zh)}
+              </h2>
+              <p className="text-sm text-gray-600 mb-4">
+                {t(selectedProduct.description_ko, selectedProduct.description_zh)}
+              </p>
+
+              {/* 스펙 */}
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="text-gray-500 text-xs mb-1">{t('단가 범위', '单价范围')}</p>
+                  <p className="font-bold text-indigo-700 text-lg">{selectedProduct.price_range}</p>
                 </div>
-
-                {/* 상세 정보 */}
-                <div className="flex-1 space-y-3">
-                  <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      <p className="text-gray-500 text-xs mb-1">{t('판매가', '售价')}</p>
-                      <p className="font-bold text-indigo-700 text-lg">¥{selectedProduct.sell_price_cny?.toFixed(2)}</p>
-                    </div>
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      <p className="text-gray-500 text-xs mb-1">MOQ</p>
-                      <p className="font-bold text-gray-800 text-lg">{selectedProduct.moq}{t('개', '件')}</p>
-                    </div>
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      <p className="text-gray-500 text-xs mb-1">{t('리드타임', '交期')}</p>
-                      <p className="font-semibold text-gray-800">{selectedProduct.lead_time_days}{t('일', '天')}</p>
-                    </div>
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      <p className="text-gray-500 text-xs mb-1">{t('재고', '库存')}</p>
-                      <p className="font-semibold text-gray-800">{selectedProduct.stock_qty ?? 0}{t('개', '件')}</p>
-                    </div>
-                  </div>
-
-                  {/* CBM 정보 */}
-                  {selectedProduct.cbm_per_box && (
-                    <div className="bg-blue-50 rounded-lg p-3 text-sm">
-                      <p className="text-blue-700 font-semibold mb-1">📦 {t('박스 정보', '箱规信息')}</p>
-                      <div className="grid grid-cols-2 gap-1 text-blue-600">
-                        <span>CBM: {selectedProduct.cbm_per_box}m³</span>
-                        {selectedProduct.pcs_per_box && <span>{t('박스당', '每箱')}: {selectedProduct.pcs_per_box}{t('개', '件')}</span>}
-                        {selectedProduct.weight_kg && <span>{t('중량', '重量')}: {selectedProduct.weight_kg}kg</span>}
-                        {selectedProduct.size_cm && <span>{t('사이즈', '尺寸')}: {selectedProduct.size_cm}</span>}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* 소재 */}
-                  {(selectedProduct.material_ko || selectedProduct.material_zh) && (
-                    <div className="text-sm text-gray-600">
-                      <span className="font-medium">{t('소재', '材质')}: </span>
-                      {t(selectedProduct.material_ko || '', selectedProduct.material_zh || '')}
-                    </div>
-                  )}
-
-                  {/* OEM/ODM */}
-                  <div className="flex gap-2 flex-wrap">
-                    {selectedProduct.oem_available && (
-                      <span className="bg-purple-100 text-purple-700 text-xs px-3 py-1 rounded-full font-medium">OEM {t('가능', '可定制')}</span>
-                    )}
-                    {selectedProduct.odm_available && (
-                      <span className="bg-indigo-100 text-indigo-700 text-xs px-3 py-1 rounded-full font-medium">ODM {t('가능', '可定制')}</span>
-                    )}
-                    {selectedProduct.customizable && (
-                      <span className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full font-medium">{t('커스텀 가능', '可定制')}</span>
-                    )}
-                  </div>
-
-                  {/* 설명 */}
-                  {(selectedProduct.description_ko || selectedProduct.description_zh) && (
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      {t(selectedProduct.description_ko || '', selectedProduct.description_zh || '')}
-                    </p>
-                  )}
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="text-gray-500 text-xs mb-1">{t('최소주문량', '最低起订量')}</p>
+                  <p className="font-bold text-gray-800 text-lg">{selectedProduct.moq}{t('개', '件')}</p>
                 </div>
+              </div>
+
+              {/* IP 정보 */}
+              {(() => {
+                const ipInfo = IP_CHARACTERS.find(ip => ip.id === selectedProduct.ip);
+                return ipInfo ? (
+                  <div className="flex items-center gap-2 mb-4 bg-gray-50 rounded-lg p-3">
+                    <span className="w-4 h-4 rounded-full" style={{ backgroundColor: ipInfo.color }} />
+                    <span className="text-sm font-medium text-gray-700">
+                      {t(ipInfo.ko, ipInfo.zh)}
+                    </span>
+                    <span className="text-xs text-gray-400">IP</span>
+                  </div>
+                ) : null;
+              })()}
+
+              {/* OEM 가능 */}
+              <div className="flex gap-2 flex-wrap mb-4">
+                <span className="bg-purple-100 text-purple-700 text-xs px-3 py-1 rounded-full font-medium">OEM {t('가능', '可定制')}</span>
+                <span className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full font-medium">{t('커스텀 가능', '可定制')}</span>
               </div>
 
               {/* 문의 버튼 */}
-              <div className="mt-5 flex gap-3">
-                <button
-                  onClick={() => handleInquiry(selectedProduct)}
-                  className={`flex-1 py-3 rounded-xl font-semibold text-sm transition-colors ${
-                    inquirySent.has(selectedProduct.id)
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-indigo-600 text-white hover:bg-indigo-700'
-                  }`}
-                >
-                  {inquirySent.has(selectedProduct.id)
-                    ? t('✓ 의뢰 완료', '✓ 已提交')
-                    : t('이 상품으로 진행하기', '用这个商品开始合作')}
-                </button>
-                <button
-                  onClick={() => setSelectedProduct(null)}
-                  className="px-5 py-3 rounded-xl border text-sm text-gray-600 hover:bg-gray-50"
-                >
-                  {t('닫기', '关闭')}
-                </button>
-              </div>
+              <Link
+                href="/login"
+                className="block w-full py-3 rounded-xl font-semibold text-sm text-center bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
+              >
+                {t('이 상품으로 진행하기', '用这个商品开始合作')}
+              </Link>
             </div>
           </div>
         </div>
