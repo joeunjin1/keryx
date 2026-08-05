@@ -162,37 +162,22 @@ const IP_CHARACTERS = [
   },
 ];
 
-// ── 히어로 캐릭터 슬라이드 이미지 ──────────────────────────────
+// ── 히어로 캐릭터 슬라이드 이미지 (각 캐릭터 1장, 800x800 정사각형) ──
 const HERO_SLIDES = [
   { // 길덕이
-    images: [
-      '/images/hero-characters/gilduck-1.webp',
-      '/images/hero-characters/gilduck-2.webp',
-    ],
+    images: ['/images/hero-characters/gilduck.webp'],
   },
   { // 이녀석
-    images: [
-      '/images/hero-characters/inyeoseok-plush-1.webp',
-      '/images/hero-characters/inyeoseok-illust-1.webp',
-      '/images/hero-characters/inyeoseok-plush-2.webp',
-    ],
+    images: ['/images/hero-characters/inyeoseok.webp'],
   },
   { // 꼬물이들
-    images: [
-      '/images/hero-characters/kkomul-group.webp',
-      '/images/hero-characters/kkomul-6types.webp',
-      '/images/hero-characters/kkomul-char-1.webp',
-    ],
+    images: ['/images/hero-characters/kkomul.webp'],
   },
   { // 하트뿅 햄스터
-    images: [
-      '/images/hero-characters/heartbbung-hamster.webp',
-    ],
+    images: ['/images/hero-characters/heartbbung.webp'],
   },
   { // 피글리
-    images: [
-      '/images/hero-characters/piggly.webp',
-    ],
+    images: ['/images/hero-characters/piggly.webp'],
   },
 ];
 
