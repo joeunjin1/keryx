@@ -17,7 +17,7 @@ const texts = {
     hero_desc: 'KERYX는 오리지널 캐릭터 IP를 개발하고, 스토리와 세계관을 담은 상품을 기획·생산하는 IP 굿즈 전문 기업입니다.',
     hero_cta_showroom: 'IP 쇼룸 보기',
     hero_cta_catalog: '상품 카탈로그',
-    stat1_num: '4', stat1_label: '오리지널 IP',
+    stat1_num: '5', stat1_label: '오리지널 IP',
     stat2_num: '직접', stat2_label: '기획·생산',
     stat3_num: '100%', stat3_label: '전수 검수',
     // IP 캐릭터 슬라이드 데이터
@@ -26,6 +26,7 @@ const texts = {
       { name: '이녀석', desc: '재미있는 낙서 캐릭터', color: '#7C3AED' },
       { name: '꼬물이들', desc: '우주에서 온 몬스터', color: '#6366F1' },
       { name: '하트뿅 햄스터', desc: '사랑스러운 햄스터', color: '#F472B6' },
+      { name: '피글리', desc: '동글동글 귀여운 돼지', color: '#FFB6C1' },
     ],
     // IP 섹션
     ip_section_badge: 'IP Universe — 연재중',
@@ -58,7 +59,7 @@ const texts = {
       { title: '직접 만드는 IP', desc: '외부 라이선스가 아닌, 자체 개발 캐릭터와 세계관으로 독보적 경쟁력을 가집니다.' },
       { title: '스토리가 있는 상품', desc: '단순 캐릭터 상품이 아닌, 스토리와 세계관이 담긴 콘텐츠 기반 굿즈입니다.' },
       { title: '기획부터 생산까지', desc: '캐릭터 디자인, 스토리 개발, 상품 기획, 생산을 모두 직접 수행합니다.' },
-      { title: '함께 성장하는 파트너십', desc: 'IP 사업을 함께할 파트너에게 장기적 성장 로드맵을 제시합니다.' },
+      { title: '글로벌 품질 기준', desc: '중국 현지 전문 공장에서 생산하고, 100% 전수 검수로 품질을 보증합니다.' },
     ],
     // 신상품 구독
     subscribe_badge: '신상품 소식',
@@ -77,7 +78,7 @@ const texts = {
     hero_desc: 'KERYX是一家开发原创角色IP、策划并生产融入故事与世界观的商品的IP周边专业企业。',
     hero_cta_showroom: 'IP展厅',
     hero_cta_catalog: '商品目录',
-    stat1_num: '4', stat1_label: '原创IP',
+    stat1_num: '5', stat1_label: '原创IP',
     stat2_num: '直接', stat2_label: '策划·生产',
     stat3_num: '100%', stat3_label: '全检',
     hero_characters: [
@@ -85,6 +86,7 @@ const texts = {
       { name: '这家伙', desc: '有趣的涂鸦角色', color: '#7C3AED' },
       { name: '小怪物们', desc: '来自宇宙的怪物', color: '#6366F1' },
       { name: '心动仓鼠', desc: '可爱的仓鼠', color: '#F472B6' },
+      { name: '小猪丽', desc: '圆滚滚可爱小猪', color: '#FFB6C1' },
     ],
     ip_section_badge: 'IP Universe — 连载中',
     ip_section_title: '我们正在创造的角色与世界观',
@@ -113,7 +115,7 @@ const texts = {
       { title: '直接创造的IP', desc: '不是外部授权，而是自主开发的角色和世界观，拥有独特竞争力。' },
       { title: '有故事的产品', desc: '不是简单的角色商品，而是融入故事和世界观的内容型周边。' },
       { title: '从策划到生产', desc: '角色设计、故事开发、产品策划、生产全部直接执行。' },
-      { title: '共同成长的合作', desc: '为IP事业合作伙伴提供长期成长路线图。' },
+      { title: '全球品质标准', desc: '中国当地专业工厂生产，100%全检保证品质。' },
     ],
     subscribe_badge: '新品资讯',
     subscribe_title: '接收新品信息',
@@ -185,6 +187,11 @@ const HERO_SLIDES = [
   { // 하트뿅 햄스터
     images: [
       '/images/hero-characters/heartbbung-hamster.webp',
+    ],
+  },
+  { // 피글리
+    images: [
+      '/images/hero-characters/piggly.webp',
     ],
   },
 ];
@@ -520,10 +527,10 @@ export default function HomePage() {
                 <div className="relative h-40 rounded-2xl overflow-hidden mb-6 bg-gray-100">
                   <Image
                     src={[
-                      '/images/hero-characters/inyeoseok-illust-1.webp',
-                      '/images/hero-characters/kkomul-6types.webp',
-                      '/images/hero-characters/gilduck-1.webp',
-                      '/images/hero-characters/heartbbung-hamster.webp',
+                      '/images/process/step1-design.webp',
+                      '/images/process/step2-planning.webp',
+                      '/images/process/step3-factory.webp',
+                      '/images/process/step4-inspection.webp',
                     ][i]}
                     alt={step.title}
                     fill
