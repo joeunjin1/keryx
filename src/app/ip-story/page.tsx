@@ -26,9 +26,9 @@ const texts = {
     section_process_desc: '캐릭터 탄생부터 상품화까지, KERYX의 IP 개발 과정을 소개합니다.',
     section_products: 'IP에서 상품으로',
     section_products_desc: '캐릭터가 실제 상품이 되어 소비자에게 전달되기까지의 여정입니다.',
-    cta_title: '함께 만들어갈 파트너를 찾습니다',
-    cta_desc: 'KERYX의 IP를 활용한 상품 기획부터 생산까지, 장기적인 사업 파트너십을 제안합니다.',
-    cta_button: '파트너 상담 시작하기',
+    cta_title: 'IP 상품을 직접 확인해보세요',
+    cta_desc: 'KERYX의 오리지널 IP로 만든 봉제인형, 키링, 피규어, 뽑기 굿즈를 카탈로그에서 확인하세요.',
+    cta_button: '카탈로그 보기',
     filter_all: '전체',
     filter_a: '핵심 A등급',
     filter_b: '성장 B등급',
@@ -57,9 +57,9 @@ const texts = {
     section_process_desc: '从角色诞生到商品化，介绍KERYX的IP开发过程。',
     section_products: '从IP到商品',
     section_products_desc: '角色变成实际商品并传递给消费者的旅程。',
-    cta_title: '寻找共同成长的合作伙伴',
-    cta_desc: '从利用KERYX IP的商品策划到生产，提供长期商业合作伙伴关系。',
-    cta_button: '开始合作咨询',
+    cta_title: '直接查看IP商品',
+    cta_desc: '在目录中查看KERYX原创IP制作的毛绒公仔、钥匙扣、手办、扭蛋周边。',
+    cta_button: '查看目录',
     filter_all: '全部',
     filter_a: '核心A级',
     filter_b: '成长B级',
@@ -712,7 +712,7 @@ export default function IpStoryPage() {
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold mb-6">{t.cta_title}</h2>
           <p className="text-lg text-gray-300 mb-8">{t.cta_desc}</p>
-          <Link href="/quote" className="inline-block px-8 py-4 bg-white text-gray-900 font-bold rounded-full hover:bg-gray-100 transition-colors">
+          <Link href="/catalog" className="inline-block px-8 py-4 bg-white text-gray-900 font-bold rounded-full hover:bg-gray-100 transition-colors">
             {t.cta_button}
           </Link>
         </div>

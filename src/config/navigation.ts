@@ -59,7 +59,6 @@ export const adminNavItems: NavEntry[] = [
     items: [
       { href: '/admin/ip-proposals', label: 'IP 제안 보드', labelZh: 'IP提案看板', icon: '📌' },
       { href: '/admin/ip-studio', label: 'IP Studio', labelZh: 'IP工作室', icon: '🌟' },
-      { href: '/admin/ip-license', label: 'IP 라이센스 관리', labelZh: 'IP许可管理', icon: '📄' },
       { href: '/admin/ip-approvals', label: 'IP 승인 대기', labelZh: 'IP审批待处理', icon: '✅' },
     ],
   },

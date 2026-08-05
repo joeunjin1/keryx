@@ -22,9 +22,9 @@ const texts = {
     episode: '화',
     read: '읽기',
     new_badge: 'NEW',
-    cta_title: 'IP 콘텐츠 파트너를 찾습니다',
-    cta_desc: '우리의 IP를 활용한 콘텐츠 제작, 출판, 애니메이션 등 다양한 협업을 제안합니다.',
-    cta_btn: '파트너 상담 시작',
+    cta_title: 'IP 상품을 직접 확인해보세요',
+    cta_desc: 'KERYX의 오리지널 IP로 만든 봉제인형, 키링, 피규어, 뽑기 굿즈를 카탈로그에서 확인하세요.',
+    cta_btn: '카탈로그 보기',
   },
   zh: {
     hero_badge: 'IP Serial Contents',
@@ -39,9 +39,9 @@ const texts = {
     episode: '话',
     read: '阅读',
     new_badge: 'NEW',
-    cta_title: '寻找IP内容合作伙伴',
-    cta_desc: '提供利用我们IP进行内容制作、出版、动画等多种合作。',
-    cta_btn: '开始合作咨询',
+    cta_title: '直接查看IP商品',
+    cta_desc: '在目录中查看KERYX原创IP制作的毛绒公仔、钥匙扣、手办、扭蛋周边。',
+    cta_btn: '查看目录',
   },
 };
 
@@ -326,7 +326,7 @@ export default function IPSerialPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-black text-white mb-6">{t.cta_title}</h2>
           <p className="text-white/60 text-lg mb-10">{t.cta_desc}</p>
-          <Link href="/quote" className="inline-block px-10 py-5 text-lg font-bold text-gray-900 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all" style={{ background: 'linear-gradient(135deg, #d4a843, #f59e0b)' }}>
+          <Link href="/catalog" className="inline-block px-10 py-5 text-lg font-bold text-gray-900 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all" style={{ background: 'linear-gradient(135deg, #d4a843, #f59e0b)' }}>
             {t.cta_btn}
           </Link>
         </div>

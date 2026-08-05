@@ -65,11 +65,9 @@ export async function updateSession(request: NextRequest) {
     path.startsWith('/api/quote/upload-image') ||
     path.startsWith('/ip-story') ||
     path.startsWith('/ip-serial') ||
-    path.startsWith('/ip-goods') ||
     path.startsWith('/showroom') ||
     path.startsWith('/catalog') ||
-    path.startsWith('/api/subscribe') ||
-    path.startsWith('/ip-license');
+    path.startsWith('/api/subscribe');
 
   if (!user && !isPublic) {
     const url = request.nextUrl.clone();

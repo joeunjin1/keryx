@@ -12,7 +12,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/pricing', priority: 0.7, changeFrequency: 'monthly' as const },
     { path: '/ip-story', priority: 0.9, changeFrequency: 'weekly' as const },
     { path: '/ip-serial', priority: 0.9, changeFrequency: 'daily' as const },
-    { path: '/ip-goods', priority: 0.9, changeFrequency: 'weekly' as const },
     { path: '/showroom', priority: 0.8, changeFrequency: 'weekly' as const },
     { path: '/catalog', priority: 0.8, changeFrequency: 'weekly' as const },
     { path: '/quote', priority: 0.7, changeFrequency: 'monthly' as const },
