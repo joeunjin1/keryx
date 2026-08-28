@@ -52,14 +52,13 @@ export const adminNavItems: NavEntry[] = [
     ],
   },
   {
-    groupLabel: 'IP 제안·사업플랜',
-    groupLabelZh: 'IP提案·事业规划',
+    groupLabel: 'IP·콘텐츠 관리',
+    groupLabelZh: 'IP·内容管理',
     groupIcon: '🎨',
     defaultOpen: true,
     items: [
+      { href: '/admin/ip-studio', label: 'IP·캐릭터·연재 등록', labelZh: 'IP·角色·连载登记', icon: '🌟' },
       { href: '/admin/ip-proposals', label: 'IP 제안 보드', labelZh: 'IP提案看板', icon: '📌' },
-      { href: '/admin/ip-studio', label: 'IP Studio', labelZh: 'IP工作室', icon: '🌟' },
-      { href: '/admin/ip-approvals', label: 'IP 승인 대기', labelZh: 'IP审批待处理', icon: '✅' },
     ],
   },
   {
@@ -96,6 +95,7 @@ export const adminNavItems: NavEntry[] = [
     defaultOpen: false,
     items: [
       { href: '/admin/orders', label: '파트너 주문 관리', labelZh: '合作伙伴订单管理', icon: '📋' },
+      { href: '/admin/preorder-purchase', label: '주문 전 발주 상품', labelZh: '预采购商品', icon: '🗃️' },
       { href: '/admin/retail-orders', label: '스토어 주문·배송', labelZh: '商店订单·配送', icon: '🚚' },
       { href: '/admin/payments', label: '주문·결제 승인', labelZh: '订单·付款审批', icon: '💳' },
       { href: '/admin/trade', label: '거래 센터', labelZh: '交易中心', icon: '🤝' },
@@ -143,6 +143,7 @@ export const adminNavItems: NavEntry[] = [
     items: [
       { href: '/admin/platform-settings', label: '매칭 할인율 설정', labelZh: '匹配折扣率设置', icon: '💹' },
       { href: '/admin/members/staff', label: '직원 관리', labelZh: '员工管理', icon: '👤' },
+      { href: '/admin/operator-activity', label: '운영 이력', labelZh: '运营记录', icon: '🛡️' },
     ],
   },
 ];

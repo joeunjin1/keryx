@@ -98,27 +98,22 @@ export default function AdminHomeClient({
         </div>
       </div>
 
-      {/* ── 빠른 등록 ── */}
+      {/* ── 통합 등록 바로가기 ── */}
       <p className="text-xs font-bold text-[var(--text-tertiary)] uppercase tracking-widest mb-3">
-        {t('빠른 등록', '快速注册')}
+        {t('통합 등록 바로가기', '综合登记快捷入口')}
       </p>
-      <div className="grid grid-cols-3 gap-2.5 mb-6">
+      <div className="grid grid-cols-2 gap-2.5 mb-6 lg:grid-cols-4">
         {[
-          { label: t('파트너 등록', '注册合作伙伴'), icon: '🤝', color: 'text-indigo-500', bg: 'bg-indigo-500/8', border: 'border-indigo-500/15', onClick: () => setShowSellerModal(true) },
-          { label: t('카테고리 등록', '注册类别'), icon: '🏷️', color: 'text-violet-500', bg: 'bg-violet-500/8', border: 'border-violet-500/15', onClick: () => setShowCategoryModal(true) },
-          { label: t('공장 등록', '注册工厂'), icon: '🏭', color: 'text-rose-500', bg: 'bg-rose-500/8', border: 'border-rose-500/15', onClick: () => setShowFactoryModal(true) },
+          { label: t('IP·캐릭터·연재', 'IP·角色·连载'), icon: '🌟', color: 'text-violet-600', bg: 'bg-violet-500/10', border: 'border-violet-500/20', href: '/admin/ip-studio', desc: t('IP와 콘텐츠 등록', '登记IP与内容') },
+          { label: t('새 상품 등록', '登记新商品'), icon: '📦', color: 'text-indigo-600', bg: 'bg-indigo-500/10', border: 'border-indigo-500/20', href: '/admin/products/new', desc: t('이미지·옵션·규격', '图片·选项·规格') },
+          { label: t('주문 전 발주', '预采购商品'), icon: '🗃️', color: 'text-amber-600', bg: 'bg-amber-500/10', border: 'border-amber-500/20', href: '/admin/preorder-purchase', desc: t('발주대기 품목 등록', '登记待采购商品') },
+          { label: t('샘플 구독 검토', '审核样品订阅'), icon: '📬', color: 'text-rose-600', bg: 'bg-rose-500/10', border: 'border-rose-500/20', href: '/admin/b2b-subscribers', desc: t('구독자·관심 정보', '订阅者·兴趣信息') },
         ].map((item) => (
-          <button
-            key={item.label}
-            onClick={item.onClick}
-            className={`active:scale-95 transition-all flex flex-col items-center gap-2 p-4 rounded-2xl border ${item.bg} ${item.border} cursor-pointer text-center`}
-          >
-            <div className={`w-11 h-11 rounded-xl ${item.bg} flex items-center justify-center text-[22px]`}>
-              {item.icon}
-            </div>
+          <Link key={item.href} href={item.href} className={`active:scale-95 transition-all flex flex-col items-start gap-2 p-4 rounded-2xl border ${item.bg} ${item.border} cursor-pointer text-left no-underline`}>
+            <div className={`w-11 h-11 rounded-xl ${item.bg} flex items-center justify-center text-[22px]`}>{item.icon}</div>
             <span className="text-xs font-bold text-[var(--text-primary)] leading-tight">{item.label}</span>
-            <span className={`text-[10px] font-semibold ${item.color}`}>+ {t('추가', '添加')}</span>
-          </button>
+            <span className={`text-[10px] font-semibold ${item.color}`}>{item.desc} →</span>
+          </Link>
         ))}
       </div>
 

@@ -188,7 +188,7 @@ export default function AdminProductsPage() {
           <Link href="/admin/products/price-approvals" className="px-3 py-2 rounded-xl bg-amber-500 text-white text-xs font-bold no-underline">
             <LangText ko="💰 가격승인" zh="💰 价格审批" />
           </Link>
-          <Link href="/factory/products/new" className="px-3 py-2 rounded-xl text-white text-xs font-bold no-underline" style={{ background: '#4f46e5' }}>
+          <Link href="/admin/products/new" className="px-3 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold no-underline">
             <LangText ko="+ 등록" zh="+ 注册" />
           </Link>
         </div>
