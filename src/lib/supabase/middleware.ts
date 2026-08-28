@@ -41,6 +41,9 @@ export async function updateSession(request: NextRequest) {
     path.startsWith('/api/apply') ||
     path.startsWith('/api/auth/link-requests') ||
     path.startsWith('/shop') ||
+    path.startsWith('/ip') ||
+    path.startsWith('/sample-subscription') ||
+    path.startsWith('/api/retail') ||
     path.startsWith('/membership') ||
     path.startsWith('/support') ||
     path.startsWith('/apply') ||

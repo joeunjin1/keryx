@@ -43,8 +43,15 @@ export function createClient() {
  * 절대 클라이언트 컴포넌트에서 사용 금지
  */
 export function createAdminClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key';
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  // 민감한 주문·결제·관리자 작업에서 anon key로 권한을 낮춰 대체하면
+  // RLS 오류가 숨겨지거나 의도하지 않은 접근 경로가 생길 수 있다.
+  if (!url || !serviceKey) {
+    throw new Error('SUPABASE_SERVICE_ROLE_KEY is required for server-side privileged operations.');
+  }
+
   return createSupabaseClient(url, serviceKey, {
     auth: { autoRefreshToken: false, persistSession: false },
   });

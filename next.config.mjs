@@ -28,9 +28,23 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['recharts', 'lucide-react'],
   },
+  // 기존 공개 주소를 보존하면서 중복된 상품·IP 페이지를 새 허브로 단계 전환한다.
+  // 영구 전환은 운영 확인 후에만 적용한다.
+  async redirects() {
+    return [
+      { source: '/catalog', destination: '/shop', permanent: false },
+      { source: '/showroom', destination: '/ip', permanent: false },
+    ];
+  },
   // HTTP 헤더 보안 및 캐시 최적화
   async headers() {
     return [
+      {
+        source: '/api/retail/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'no-store, max-age=0' },
+        ],
+      },
       {
         source: '/api/public/:path*',
         headers: [

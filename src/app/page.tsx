@@ -15,11 +15,11 @@ const texts = {
     hero_title: '스토리가 있는 제품을\n기획하여 공급합니다',
     hero_sub: '오리지널 IP 개발 · 캐릭터 상품 기획 · 전문 공장 생산 · 품질 검수',
     hero_desc: 'KERYX는 오리지널 캐릭터 IP를 개발하고, 스토리와 세계관을 담은 상품을 기획·생산하는 IP 굿즈 전문 기업입니다.',
-    hero_cta_showroom: 'IP 쇼룸 보기',
-    hero_cta_catalog: '상품 카탈로그',
-    stat1_num: '5', stat1_label: '오리지널 IP',
-    stat2_num: '직접', stat2_label: '기획·생산',
-    stat3_num: '100%', stat3_label: '전수 검수',
+    hero_cta_showroom: '자체 디자인 IP 보기',
+    hero_cta_catalog: '스토어 보기',
+    stat1_num: '자체', stat1_label: '디자인 IP',
+    stat2_num: '기획', stat2_label: '상품 개발',
+    stat3_num: '검수', stat3_label: '품질 관리',
     // IP 캐릭터 슬라이드 데이터
     hero_characters: [
       { name: '길덕이', desc: '변신천재 유연한 오리', color: '#FFB800' },
@@ -30,10 +30,10 @@ const texts = {
     ],
 
     // 카탈로그 섹션
-    catalog_badge: 'IP 굿즈 카탈로그',
-    catalog_title: '바로 진행 가능한 검증 상품',
-    catalog_desc: '인형, 가방고리, 뽑기 굿즈, 보냉백 등 — 모든 상품은 전문 공장에서 즉시 생산 가능하며, KERYX 품질 기준을 통과한 검증 제품입니다.',
-    catalog_cta: '전체 카탈로그 보기',
+    catalog_badge: 'KERYX STORE',
+    catalog_title: '캐릭터에서 시작한 굿즈 라인업',
+    catalog_desc: '캐릭터의 개성과 세계관을 봉제·키링·피규어·랜덤 굿즈로 확장합니다. 실제 판매 상품은 스토어에서 별도로 공개합니다.',
+    catalog_cta: '판매 상품 보러 가기',
     catalog_moq: '최소주문',
     catalog_featured: '추천',
     catalog_new: 'NEW',
@@ -45,7 +45,7 @@ const texts = {
       { title: '캐릭터 디자인', desc: '전문 디자이너가 오리지널 캐릭터를 개발합니다' },
       { title: '상품 기획', desc: '캐릭터에 맞는 상품 아이디어를 기획합니다' },
       { title: '샘플 제작', desc: '전문 공장에서 샘플을 제작합니다' },
-      { title: '양산 & 검수', desc: '100% 전수 검수 후 납품합니다' },
+      { title: '양산 & 검수', desc: '생산 후 상태를 확인하고 납품을 준비합니다' },
     ],
     // Why KERYX
     trust_badge: '왜 KERYX인가',
@@ -54,12 +54,12 @@ const texts = {
       { title: '직접 만드는 IP', desc: '외부 라이선스가 아닌, 자체 개발 캐릭터와 세계관으로 독보적 경쟁력을 가집니다.' },
       { title: '스토리가 있는 상품', desc: '단순 캐릭터 상품이 아닌, 스토리와 세계관이 담긴 콘텐츠 기반 굿즈입니다.' },
       { title: '기획부터 생산까지', desc: '캐릭터 디자인, 스토리 개발, 상품 기획, 생산을 모두 직접 수행합니다.' },
-      { title: '글로벌 품질 기준', desc: '중국 현지 전문 공장에서 생산하고, 100% 전수 검수로 품질을 보증합니다.' },
+      { title: '품질 관리 기준', desc: '생산 과정과 납품 전 상태를 확인해 상품의 완성도를 관리합니다.' },
     ],
     // 신상품 구독
-    subscribe_badge: '신상품 소식',
-    subscribe_title: '신상품 정보를 받아보세요',
-    subscribe_desc: '이메일을 등록하시면 새로운 IP 굿즈 출시 소식을 보내드립니다.',
+    subscribe_badge: 'SAMPLE SUBSCRIPTION',
+    subscribe_title: '새로운 상품과 샘플 소식을 받아보세요',
+    subscribe_desc: '관심 IP와 상품군을 남겨주시면 사업자 정보 확인 후 안내를 드립니다.',
     subscribe_placeholder_email: '이메일 주소',
     subscribe_placeholder_company: '회사명',
     subscribe_placeholder_phone: '연락처',
@@ -71,11 +71,11 @@ const texts = {
     hero_title: '策划有故事的产品\n并供应给您',
     hero_sub: '原创IP开发 · 角色商品策划 · 专业工厂生产 · 品质检验',
     hero_desc: 'KERYX是一家开发原创角色IP、策划并生产融入故事与世界观的商品的IP周边专业企业。',
-    hero_cta_showroom: 'IP展厅',
-    hero_cta_catalog: '商品目录',
-    stat1_num: '5', stat1_label: '原创IP',
-    stat2_num: '直接', stat2_label: '策划·生产',
-    stat3_num: '100%', stat3_label: '全检',
+    hero_cta_showroom: '查看原创设计IP',
+    hero_cta_catalog: '查看商店',
+    stat1_num: '原创', stat1_label: '设计IP',
+    stat2_num: '策划', stat2_label: '商品开发',
+    stat3_num: '质检', stat3_label: '品质管理',
     hero_characters: [
       { name: '吉德鸭', desc: '变身天才柔软鸭', color: '#FFB800' },
       { name: '这家伙', desc: '有趣的涂鸦角色', color: '#7C3AED' },
@@ -84,10 +84,10 @@ const texts = {
       { name: '小猪丽', desc: '圆滚滚可爱小猪', color: '#FFB6C1' },
     ],
 
-    catalog_badge: 'IP商品目录',
-    catalog_title: 'KERYX IP商品系列',
-    catalog_desc: '噗奇朋友、鸭克、恐龙萌 — KERYX原创IP制作的毛绒公仔、钥匙扣、包挂件、扭蛋周边。',
-    catalog_cta: '查看全部目录',
+    catalog_badge: 'KERYX STORE',
+    catalog_title: '从角色开始的周边产品线',
+    catalog_desc: '将角色个性与世界观延展为毛绒、钥匙扣、手办和随机周边。实际销售商品将在商店中另行公开。',
+    catalog_cta: '查看销售商品',
     catalog_moq: '起订量',
     catalog_featured: '推荐',
     catalog_new: 'NEW',
@@ -98,7 +98,7 @@ const texts = {
       { title: '角色设计', desc: '专业设计师开发原创角色' },
       { title: '产品策划', desc: '根据角色策划商品创意' },
       { title: '样品制作', desc: '在专业工厂制作样品' },
-      { title: '量产&检验', desc: '100%全检后交货' },
+      { title: '量产&检验', desc: '完成生产后确认状态并准备交付' },
     ],
     trust_badge: '为什么选择KERYX',
     trust_title: 'KERYX的特别之处',
@@ -106,11 +106,11 @@ const texts = {
       { title: '直接创造的IP', desc: '不是外部授权，而是自主开发的角色和世界观，拥有独特竞争力。' },
       { title: '有故事的产品', desc: '不是简单的角色商品，而是融入故事和世界观的内容型周边。' },
       { title: '从策划到生产', desc: '角色设计、故事开发、产品策划、生产全部直接执行。' },
-      { title: '全球品质标准', desc: '中国当地专业工厂生产，100%全检保证品质。' },
+      { title: '品质管理标准', desc: '确认生产过程和发货前状态，管理商品完成度。' },
     ],
-    subscribe_badge: '新品资讯',
-    subscribe_title: '接收新品信息',
-    subscribe_desc: '注册邮箱后，我们会发送新IP周边上市消息。',
+    subscribe_badge: 'SAMPLE SUBSCRIPTION',
+    subscribe_title: '接收新品与样品资讯',
+    subscribe_desc: '留下关注的IP和商品类别，确认企业信息后为您提供相关资讯。',
     subscribe_placeholder_email: '邮箱地址',
     subscribe_placeholder_company: '公司名称',
     subscribe_placeholder_phone: '联系电话',
@@ -245,8 +245,8 @@ export default function HomePage() {
               <p className="text-amber-300/90 text-lg md:text-xl font-semibold mb-4">{t.hero_sub}</p>
               <p className="text-white/50 text-base leading-relaxed mb-10 max-w-lg">{t.hero_desc}</p>
               <div className="flex flex-wrap gap-3">
-                <Link href="/showroom" className="px-7 py-4 text-base font-bold text-gray-900 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all" style={{ background: 'linear-gradient(135deg, #d4a843, #f59e0b)' }}>{t.hero_cta_showroom}</Link>
-                <Link href="/catalog" className="px-7 py-4 text-base font-bold text-white border-2 border-white/30 rounded-2xl hover:bg-white/10 hover:border-white/60 transition-all">{t.hero_cta_catalog}</Link>
+                <Link href="/ip" className="px-7 py-4 text-base font-bold text-gray-900 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all" style={{ background: 'linear-gradient(135deg, #d4a843, #f59e0b)' }}>{t.hero_cta_showroom}</Link>
+                <Link href="/shop" className="px-7 py-4 text-base font-bold text-white border-2 border-white/30 rounded-2xl hover:bg-white/10 hover:border-white/60 transition-all">{t.hero_cta_catalog}</Link>
               </div>
               {/* 통계 배지 */}
               <div className="flex gap-3 mt-8">
@@ -312,27 +312,27 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <span className="inline-block text-xs font-bold tracking-widest text-rose-600 uppercase mb-4 px-4 py-2 bg-rose-50 rounded-full border border-rose-100">
-              {lang === 'zh' ? 'IP周边商品' : 'IP 굿즈'}
+              {lang === 'zh' ? 'KERYX 商店' : 'KERYX 스토어'}
             </span>
             <h2 className="text-3xl md:text-4xl font-black text-gray-900 mt-4">
-              {lang === 'zh' ? 'KERYX IP商品系列' : 'KERYX IP 상품 시리즈'}
+              {t.catalog_title}
             </h2>
             <p className="text-gray-500 text-lg mt-4 max-w-2xl mx-auto">
-              {lang === 'zh' ? '5个原创IP角色 × 4大商品类别 — 毛绒公仔、钥匙扣、手办、扭蛋，全部可立即生产' : '5개 오리지널 IP × 4대 상품 카테고리 — 봉제인형, 키링, 피규어, 뽑기 굿즈 모두 즉시 생산 가능'}
+              {t.catalog_desc}
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {[
-              { img: '/images/catalog-goods/gilduck-plush.webp', name: lang === 'zh' ? '吉鸭毛绒公仔 30cm' : '길덕이 봉제인형 30cm', price: '¥18~25', badge: 'BEST' },
-              { img: '/images/catalog-goods/inyeoseok-plush.webp', name: lang === 'zh' ? '这家伙毛绒钥匙扣套装' : '이녀석 봉제 키링 세트 (9종)', price: '¥4~6', badge: 'HOT' },
-              { img: '/images/catalog-goods/kkomul-figure.webp', name: lang === 'zh' ? '小怪物们盲盒4款' : '꼬물이들 블라인드박스 4종', price: '¥12~18', badge: 'NEW' },
-              { img: '/images/catalog-goods/heartbbung-plush.webp', name: lang === 'zh' ? '心动仓鼠毛绒公仔' : '하트뿅 햄스터 봉제인형', price: '¥14~20', badge: 'BEST' },
-              { img: '/images/catalog-goods/piggly-plush.webp', name: lang === 'zh' ? '小猪猪毛绒公仔 20cm' : '피글리 봉제인형 20cm', price: '¥12~18', badge: 'NEW' },
-              { img: '/images/catalog-goods/gilduck-gacha.webp', name: lang === 'zh' ? '吉鸭扭蛋胶囊系列' : '길덕이 가챠 캡슐 시리즈', price: '¥3~5', badge: 'HOT' },
-              { img: '/images/catalog-goods/piggly-figure.webp', name: lang === 'zh' ? '小猪猪盲盒4款' : '피글리 블라인드박스 4종', price: '¥10~15', badge: 'NEW' },
-              { img: '/images/catalog-goods/kkomul-keyring.webp', name: lang === 'zh' ? '小怪物们亚克力钥匙扣' : '꼬물이들 아크릴 키링', price: '¥3~5', badge: 'HOT' },
+              { img: '/images/catalog-goods/gilduck-plush.webp', name: lang === 'zh' ? '吉鸭毛绒公仔' : '길덕이 봉제인형', badge: lang === 'zh' ? '毛绒' : '봉제' },
+              { img: '/images/catalog-goods/inyeoseok-plush.webp', name: lang === 'zh' ? '这家伙毛绒钥匙扣' : '이녀석 봉제 키링', badge: lang === 'zh' ? '钥匙扣' : '키링' },
+              { img: '/images/catalog-goods/kkomul-figure.webp', name: lang === 'zh' ? '小怪物们盲盒' : '꼬물이들 블라인드 박스', badge: lang === 'zh' ? '手办' : '피규어' },
+              { img: '/images/catalog-goods/heartbbung-plush.webp', name: lang === 'zh' ? '心动仓鼠毛绒公仔' : '하트뿅 햄스터 봉제인형', badge: lang === 'zh' ? '毛绒' : '봉제' },
+              { img: '/images/catalog-goods/piggly-plush.webp', name: lang === 'zh' ? '小猪丽毛绒公仔' : '피글리 봉제인형', badge: lang === 'zh' ? '毛绒' : '봉제' },
+              { img: '/images/catalog-goods/gilduck-gacha.webp', name: lang === 'zh' ? '吉鸭扭蛋系列' : '길덕이 가챠 시리즈', badge: lang === 'zh' ? '随机周边' : '랜덤 굿즈' },
+              { img: '/images/catalog-goods/piggly-figure.webp', name: lang === 'zh' ? '小猪丽盲盒' : '피글리 블라인드 박스', badge: lang === 'zh' ? '手办' : '피규어' },
+              { img: '/images/catalog-goods/kkomul-keyring.webp', name: lang === 'zh' ? '小怪物们亚克力钥匙扣' : '꼬물이들 아크릴 키링', badge: lang === 'zh' ? '钥匙扣' : '키링' },
             ].map((item, i) => (
-              <Link key={i} href="/catalog" className="group rounded-2xl border border-gray-100 bg-white overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
+              <Link key={i} href="/ip" className="group rounded-2xl border border-gray-100 bg-white overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5" aria-label={`${item.name} IP 소개 보기`}>
                 <div className="aspect-square relative bg-gray-50 overflow-hidden">
                   <Image src={item.img} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 768px) 50vw, 25vw" />
                   <div className="absolute top-2 left-2">
@@ -341,13 +341,13 @@ export default function HomePage() {
                 </div>
                 <div className="p-4">
                   <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 mb-2">{item.name}</h3>
-                  <span className="text-lg font-black text-brand-600">{item.price}</span>
+
                 </div>
               </Link>
             ))}
           </div>
           <div className="text-center mt-10">
-            <Link href="/catalog" className="inline-flex items-center gap-2 px-8 py-4 border-2 border-gray-900 text-gray-900 font-bold rounded-2xl hover:bg-gray-900 hover:text-white transition-all">
+            <Link href="/shop" className="inline-flex items-center gap-2 px-8 py-4 border-2 border-gray-900 text-gray-900 font-bold rounded-2xl hover:bg-gray-900 hover:text-white transition-all">
               {t.catalog_cta}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
             </Link>
@@ -386,7 +386,7 @@ export default function HomePage() {
                     sizes="(max-width: 768px) 90vw, 25vw"
                   />
                   <div className="absolute top-3 left-3">
-                    <span className="w-8 h-8 rounded-full bg-brand-600 text-white flex items-center justify-center text-sm font-bold">{i + 1}</span>
+                    <span className="w-8 h-8 rounded-full bg-brand-600 text-white flex items-center justify-center text-sm font-bold">K</span>
                   </div>
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">{step.title}</h3>
@@ -413,7 +413,7 @@ export default function HomePage() {
             {t.trust_items.map((item: any, i: number) => (
               <div key={i} className="text-center p-8 rounded-3xl border border-gray-100 hover:border-amber-200 hover:bg-amber-50/30 transition-all">
                 <div className="w-16 h-16 mx-auto rounded-full bg-amber-100 flex items-center justify-center mb-6">
-                  <span className="text-2xl font-black text-amber-600">{i + 1}</span>
+                  <span className="text-2xl font-black text-amber-600">K</span>
                 </div>
                 <h3 className="text-base font-bold text-gray-900 mb-3">{item.title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
@@ -432,7 +432,7 @@ export default function HomePage() {
               <h2 className="text-2xl md:text-3xl font-black text-gray-900 mt-3">{t.subscribe_title}</h2>
               <p className="text-gray-500 mt-3">{t.subscribe_desc}</p>
             </div>
-            <SubscribeForm lang={lang} t={t} />
+            <Link href="/sample-subscription" className="mx-auto flex max-w-sm min-h-14 items-center justify-center rounded-2xl bg-gray-900 px-6 text-sm font-bold text-white no-underline transition hover:bg-gray-800 active:scale-95">{lang === 'zh' ? '申请样品订阅' : '샘플 구독 신청하기'}</Link>
             <p className="text-xs text-gray-400 text-center mt-4">{t.subscribe_note}</p>
           </div>
         </div>

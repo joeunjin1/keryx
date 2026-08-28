@@ -80,7 +80,7 @@ export default function AdminProductsPage() {
     let query = supabase
       .from('products')
       .select(
-        'id, product_code, sku, name_ko, name_zh, category, supplier_type, supply_price_cny, sell_price_cny, price_cny, moq, approval_status, is_active, is_featured, is_new, is_hot, stock_qty, created_at, image_url, brand_name, origin_country, cbm_per_box, pcs_per_box, lead_time_days, customizable, oem_available, odm_available, factory:factories(id, company_name, company_name_ko, factory_code)',
+        'id, product_code, sku, name_ko, name_zh, category, supplier_type, supply_price_cny, sell_price_cny, price_cny, moq, approval_status, is_active, is_featured, is_new, is_hot, stock_qty, created_at, image_url, brand_name, origin_country, box_length_cm, box_width_cm, box_height_cm, cbm_per_box, pcs_per_carton, pcs_per_box, lead_time_days, customizable, oem_available, odm_available, factory:factories(id, company_name, company_name_ko, factory_code)',
         { count: 'exact' }
       )
       .order(sortBy, { ascending: sortAsc })
@@ -155,7 +155,9 @@ export default function AdminProductsPage() {
       moq: editProduct.moq, lead_time_days: editProduct.lead_time_days,
       stock_qty: editProduct.stock_qty, is_featured: editProduct.is_featured,
       is_new: editProduct.is_new, is_hot: editProduct.is_hot, is_active: editProduct.is_active,
-      cbm_per_box: editProduct.cbm_per_box, pcs_per_box: editProduct.pcs_per_box,
+      box_length_cm: editProduct.box_length_cm, box_width_cm: editProduct.box_width_cm,
+      box_height_cm: editProduct.box_height_cm, cbm_per_box: editProduct.cbm_per_box,
+      pcs_per_carton: editProduct.pcs_per_carton, pcs_per_box: editProduct.pcs_per_box,
     }).eq('id', editProduct.id);
     if (!error) { setProducts(prev => prev.map(p => p.id === editProduct.id ? { ...p, ...editProduct } : p)); setShowEdit(false); }
     setEditLoading(false);
@@ -163,6 +165,16 @@ export default function AdminProductsPage() {
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
   const allSelected = products.length > 0 && products.every(p => selectedIds.has(p.id));
+  const updateBoxDimension = (key: 'box_length_cm' | 'box_width_cm' | 'box_height_cm', rawValue: string) => {
+    setEditProduct((product: any) => {
+      const next = { ...product, [key]: rawValue === '' ? 0 : Number(rawValue) };
+      const length = Number(next.box_length_cm) || 0;
+      const width = Number(next.box_width_cm) || 0;
+      const height = Number(next.box_height_cm) || 0;
+      return { ...next, cbm_per_box: length > 0 && width > 0 && height > 0 ? Number(((length * width * height) / 1000000).toFixed(6)) : 0 };
+    });
+  };
+
   const inp = 'w-full px-3 py-2 rounded-lg border border-stone-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 transition';
 
   return (
@@ -413,11 +425,15 @@ export default function AdminProductsPage() {
                   </label>
                   <input className={inp} type="number" value={editProduct.stock_qty ?? 0} onChange={e => setEditProduct((p: any) => ({ ...p, stock_qty: parseInt(e.target.value) }))} />
                 </div>
+                <div className="col-span-2 grid grid-cols-2 gap-3 rounded-xl border border-stone-100 bg-stone-50 p-3 sm:grid-cols-4">
+                  <label className="block text-xs font-semibold text-stone-500">{<LangText ko="박스 가로 (cm)" zh="箱长 (cm)" />}<input className={`${inp} mt-1.5`} type="number" min="0" value={editProduct.box_length_cm ?? ''} onChange={e => updateBoxDimension('box_length_cm', e.target.value)} /></label>
+                  <label className="block text-xs font-semibold text-stone-500">{<LangText ko="박스 세로 (cm)" zh="箱宽 (cm)" />}<input className={`${inp} mt-1.5`} type="number" min="0" value={editProduct.box_width_cm ?? ''} onChange={e => updateBoxDimension('box_width_cm', e.target.value)} /></label>
+                  <label className="block text-xs font-semibold text-stone-500">{<LangText ko="박스 높이 (cm)" zh="箱高 (cm)" />}<input className={`${inp} mt-1.5`} type="number" min="0" value={editProduct.box_height_cm ?? ''} onChange={e => updateBoxDimension('box_height_cm', e.target.value)} /></label>
+                  <div className="rounded-lg bg-white px-3 py-2 text-xs font-semibold text-stone-500"><LangText ko="자동 계산 CBM/박스" zh="自动计算 CBM/箱" /><p className="mt-1 text-sm font-black text-stone-900">{Number(editProduct.cbm_per_box || 0).toFixed(6)}</p></div>
+                </div>
                 <div>
-                  <label className="block text-xs font-semibold text-stone-500 mb-1.5">
-                    <LangText ko="CBM/박스" zh="CBM/箱" />
-                  </label>
-                  <input className={inp} type="number" value={editProduct.cbm_per_box ?? ''} onChange={e => setEditProduct((p: any) => ({ ...p, cbm_per_box: parseFloat(e.target.value) }))} step="0.00001" />
+                  <label className="block text-xs font-semibold text-stone-500 mb-1.5"><LangText ko="박스당 수량" zh="每箱数量" /></label>
+                  <input className={inp} type="number" min="0" value={editProduct.pcs_per_carton ?? editProduct.pcs_per_box ?? ''} onChange={e => setEditProduct((p: any) => ({ ...p, pcs_per_carton: e.target.value === '' ? 0 : parseInt(e.target.value, 10), pcs_per_box: e.target.value === '' ? 0 : parseInt(e.target.value, 10) }))} />
                 </div>
               </div>
               <div className="flex flex-wrap gap-4 pt-1">
