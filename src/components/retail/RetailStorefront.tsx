@@ -15,6 +15,7 @@ const storeVisuals = [
   { src: '/images/hero-characters/gilduck.webp', alt: '길덕이' },
   { src: '/images/hero-characters/inyeoseok.webp', alt: '이녀석' },
   { src: '/images/hero-characters/kkomul.webp', alt: '꼬물이들' },
+  { src: '/images/hero-characters/heartbbung.webp', alt: '하트뿅 햄스터' },
   { src: '/images/hero-characters/piggly.webp', alt: '피글리' },
 ];
 
@@ -151,7 +152,7 @@ export function RetailStorefront() {
               <p className="mt-5 max-w-2xl text-base leading-7 text-stone-600">{t.description}</p>
             </div>
             <div className="space-y-3">
-              <div className="grid grid-cols-4 gap-2" aria-label="KERYX IP 캐릭터">
+              <div className="grid grid-cols-3 gap-2 sm:grid-cols-5" aria-label="KERYX IP 캐릭터">
                 {storeVisuals.map((visual) => <div key={visual.src} className="relative aspect-square overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"><Image src={visual.src} alt={visual.alt} fill sizes="(max-width: 768px) 25vw, 10rem" className="object-cover" /></div>)}
               </div>
               <div className="rounded-3xl border border-stone-200 bg-white p-3 shadow-sm">
