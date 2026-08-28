@@ -86,6 +86,7 @@ export const adminNavItems: NavEntry[] = [
       { href: '/admin/products', label: '전체 상품 데이터', labelZh: '全部商品数据', icon: '🗂️' },
       { href: '/admin/products/price-approvals', label: '가격 수정 승인', labelZh: '价格修改审批', icon: '💰' },
       { href: '/admin/retail-products', label: '스토어 상품 공개', labelZh: '商店商品公开', icon: '🛍️' },
+      { href: '/admin/retail-price-requests', label: '스토어 가격 변경 승인', labelZh: '商店售价变更审批', icon: '✅' },
     ],
   },
   {

@@ -3,17 +3,26 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ShoppingBag, Search, SlidersHorizontal, ArrowRight, PackageOpen } from 'lucide-react';
+import { Search, SlidersHorizontal, ArrowRight, PackageOpen } from 'lucide-react';
 import { useRetailCart } from '@/components/retail/RetailCartProvider';
+import { RetailStoreHeader } from '@/components/retail/RetailStoreHeader';
+import { useLangContext } from '@/components/layout/LangContext';
 import { formatKrw, productImage, type RetailProduct } from '@/lib/retail/types';
 
 type Lang = 'ko' | 'zh';
+
+const storeVisuals = [
+  { src: '/images/hero-characters/gilduck.webp', alt: '길덕이' },
+  { src: '/images/hero-characters/inyeoseok.webp', alt: '이녀석' },
+  { src: '/images/hero-characters/kkomul.webp', alt: '꼬물이들' },
+  { src: '/images/hero-characters/piggly.webp', alt: '피글리' },
+];
 
 const copy = {
   ko: {
     eyebrow: 'KERYX STORE',
     title: '스토리가 있는 굿즈를 만나보세요',
-    description: 'KERYX가 기획한 캐릭터와 상품을 안전한 결제 방식으로 구매할 수 있습니다.',
+    description: 'KERYX가 기획한 캐릭터와 상품의 정보, 옵션, 배송 조건을 한곳에서 확인할 수 있습니다.',
     search: '상품명으로 검색',
     all: '전체 상품',
     cart: '장바구니',
@@ -32,7 +41,7 @@ const copy = {
   zh: {
     eyebrow: 'KERYX STORE',
     title: '探索有故事的创意周边',
-    description: '选购由 KERYX 策划的角色与商品，并通过安全的支付方式完成订单。',
+    description: '在一个页面了解由 KERYX 策划的角色和商品信息、选项及配送条件。',
     search: '搜索商品名称',
     all: '全部商品',
     cart: '购物车',
@@ -49,38 +58,6 @@ const copy = {
     fixedShipping: '另收运费',
   },
 };
-
-function StoreHeader({ lang, onLangChange }: { lang: Lang; onLangChange: () => void }) {
-  const { itemCount, hydrated } = useRetailCart();
-  const t = copy[lang];
-
-  return (
-    <header className="sticky top-0 z-40 border-b border-stone-200/80 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex min-h-11 items-center gap-2 font-black tracking-tight text-stone-950 no-underline" aria-label="KERYX 홈">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-stone-950 text-sm text-white">K</span>
-          <span>KERYX</span>
-          <span className="hidden rounded-full bg-orange-50 px-2 py-1 text-[10px] font-bold tracking-[0.12em] text-orange-700 sm:inline">STORE</span>
-        </Link>
-        <nav className="hidden items-center gap-5 text-sm font-medium text-stone-600 md:flex" aria-label="쇼핑몰 메뉴">
-          <Link href="/ip-story" className="hover:text-stone-950">{lang === 'ko' ? 'IP 소개' : 'IP介绍'}</Link>
-          <Link href="/sample-subscription" className="hover:text-stone-950">{lang === 'ko' ? '샘플 구독' : '样品订阅'}</Link>
-          <Link href="/about" className="hover:text-stone-950">{lang === 'ko' ? '회사 소개' : '公司介绍'}</Link>
-        </nav>
-        <div className="flex items-center gap-2">
-          <button type="button" onClick={onLangChange} className="min-h-11 rounded-xl px-3 text-xs font-semibold text-stone-600 transition hover:bg-stone-100 active:scale-95">
-            {lang === 'ko' ? '中文' : '한국어'}
-          </button>
-          <Link href="/shop/cart" className="relative inline-flex min-h-11 items-center gap-2 rounded-xl bg-stone-950 px-3 text-sm font-bold text-white no-underline transition hover:bg-stone-800 active:scale-95">
-            <ShoppingBag className="h-4 w-4" aria-hidden="true" />
-            <span className="hidden sm:inline">{t.cart}</span>
-            {hydrated && itemCount > 0 && <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-orange-400 px-1 text-[10px] text-stone-950">{itemCount}</span>}
-          </Link>
-        </div>
-      </div>
-    </header>
-  );
-}
 
 function ProductCard({ product, lang }: { product: RetailProduct; lang: Lang }) {
   const t = copy[lang];
@@ -123,7 +100,8 @@ function ProductCard({ product, lang }: { product: RetailProduct; lang: Lang }) 
 }
 
 export function RetailStorefront() {
-  const [lang, setLang] = useState<Lang>('ko');
+  const { lang } = useLangContext();
+  const { itemCount, hydrated } = useRetailCart();
   const [products, setProducts] = useState<RetailProduct[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [category, setCategory] = useState('');
@@ -157,23 +135,13 @@ export function RetailStorefront() {
     }
   }, [category, search]);
 
-  useEffect(() => {
-    const saved = window.localStorage.getItem('keryx_store_lang');
-    if (saved === 'ko' || saved === 'zh') setLang(saved);
-  }, []);
-
   useEffect(() => { loadProducts(); }, [loadProducts]);
 
   const heading = useMemo(() => search ? `“${search}” ${t.result}` : t.all, [search, t.result, t.all]);
-  const toggleLang = () => {
-    const next = lang === 'ko' ? 'zh' : 'ko';
-    setLang(next);
-    window.localStorage.setItem('keryx_store_lang', next);
-  };
 
   return (
     <div className="min-h-screen bg-stone-50 text-stone-950">
-      <StoreHeader lang={lang} onLangChange={toggleLang} />
+      <RetailStoreHeader mode="store" cartCount={itemCount} cartReady={hydrated} />
       <main>
         <section className="border-b border-stone-200 bg-orange-50">
           <div className="mx-auto grid max-w-screen-xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-[1.15fr_0.85fr] md:items-end lg:px-8 lg:py-16">
@@ -182,14 +150,19 @@ export function RetailStorefront() {
               <h1 className="max-w-3xl text-4xl font-black leading-[1.13] tracking-tight text-stone-950 sm:text-5xl">{t.title}</h1>
               <p className="mt-5 max-w-2xl text-base leading-7 text-stone-600">{t.description}</p>
             </div>
-            <div className="rounded-3xl border border-stone-200 bg-white p-4 shadow-sm">
-              <form onSubmit={(event) => { event.preventDefault(); setSearch(input.trim()); }} className="flex gap-2">
-                <label className="sr-only" htmlFor="retail-search">{t.search}</label>
-                <input id="retail-search" value={input} onChange={(event) => setInput(event.target.value)} placeholder={t.search} className="min-w-0 flex-1 rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-base outline-none transition focus:border-stone-500 focus:ring-2 focus:ring-stone-200" />
-                <button type="submit" className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-stone-950 px-4 text-white transition hover:bg-stone-800 active:scale-95" aria-label={t.search}>
-                  <Search className="h-5 w-5" />
-                </button>
-              </form>
+            <div className="space-y-3">
+              <div className="grid grid-cols-4 gap-2" aria-label="KERYX IP 캐릭터">
+                {storeVisuals.map((visual) => <div key={visual.src} className="relative aspect-square overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"><Image src={visual.src} alt={visual.alt} fill sizes="(max-width: 768px) 25vw, 10rem" className="object-cover" /></div>)}
+              </div>
+              <div className="rounded-3xl border border-stone-200 bg-white p-3 shadow-sm">
+                <form onSubmit={(event) => { event.preventDefault(); setSearch(input.trim()); }} className="flex gap-2">
+                  <label className="sr-only" htmlFor="retail-search">{t.search}</label>
+                  <input id="retail-search" value={input} onChange={(event) => setInput(event.target.value)} placeholder={t.search} className="min-w-0 flex-1 rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-base outline-none transition focus:border-stone-500 focus:ring-2 focus:ring-stone-200" />
+                  <button type="submit" className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-stone-950 px-4 text-white transition hover:bg-stone-800 active:scale-95" aria-label={t.search}>
+                    <Search className="h-5 w-5" />
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </section>
