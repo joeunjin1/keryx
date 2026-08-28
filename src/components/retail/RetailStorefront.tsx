@@ -153,7 +153,7 @@ export function RetailStorefront() {
             </div>
             <div className="space-y-3">
               <div className="grid grid-cols-3 gap-2 sm:grid-cols-5" aria-label="KERYX IP 캐릭터">
-                {storeVisuals.map((visual) => <div key={visual.src} className="relative aspect-square overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"><Image src={visual.src} alt={visual.alt} fill sizes="(max-width: 768px) 25vw, 10rem" className="object-cover" /></div>)}
+                {storeVisuals.map((visual) => <div key={visual.src} className="relative aspect-square overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"><Image src={visual.src} alt={visual.alt} fill priority sizes="(max-width: 768px) 25vw, 10rem" className="object-cover" /></div>)}
               </div>
               <div className="rounded-3xl border border-stone-200 bg-white p-3 shadow-sm">
                 <form onSubmit={(event) => { event.preventDefault(); setSearch(input.trim()); }} className="flex gap-2">
