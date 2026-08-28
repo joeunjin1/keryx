@@ -31,9 +31,9 @@ const texts = {
 
     // 카탈로그 섹션
     catalog_badge: 'KERYX STORE',
-    catalog_title: '스토리로 완성되는 IP 굿즈',
-    catalog_desc: '캐릭터의 개성과 세계관을 제품으로 이어갑니다. 판매 준비가 완료된 상품은 스토어에서 확인할 수 있습니다.',
-    catalog_cta: '스토어에서 보기',
+    catalog_title: '캐릭터에서 시작한 굿즈 라인업',
+    catalog_desc: '캐릭터의 개성과 세계관을 봉제·키링·피규어·랜덤 굿즈로 확장합니다. 실제 판매 상품은 스토어에서 별도로 공개합니다.',
+    catalog_cta: '판매 상품 보러 가기',
     catalog_moq: '최소주문',
     catalog_featured: '추천',
     catalog_new: 'NEW',
@@ -45,7 +45,7 @@ const texts = {
       { title: '캐릭터 디자인', desc: '전문 디자이너가 오리지널 캐릭터를 개발합니다' },
       { title: '상품 기획', desc: '캐릭터에 맞는 상품 아이디어를 기획합니다' },
       { title: '샘플 제작', desc: '전문 공장에서 샘플을 제작합니다' },
-      { title: '양산 & 검수', desc: '100% 전수 검수 후 납품합니다' },
+      { title: '양산 & 검수', desc: '생산 후 상태를 확인하고 납품을 준비합니다' },
     ],
     // Why KERYX
     trust_badge: '왜 KERYX인가',
@@ -85,9 +85,9 @@ const texts = {
     ],
 
     catalog_badge: 'KERYX STORE',
-    catalog_title: '由故事完成的IP周边',
-    catalog_desc: '将角色个性与世界观延伸到产品中。已完成销售准备的商品可在商店中查看。',
-    catalog_cta: '前往商店',
+    catalog_title: '从角色开始的周边产品线',
+    catalog_desc: '将角色个性与世界观延展为毛绒、钥匙扣、手办和随机周边。实际销售商品将在商店中另行公开。',
+    catalog_cta: '查看销售商品',
     catalog_moq: '起订量',
     catalog_featured: '推荐',
     catalog_new: 'NEW',
@@ -98,7 +98,7 @@ const texts = {
       { title: '角色设计', desc: '专业设计师开发原创角色' },
       { title: '产品策划', desc: '根据角色策划商品创意' },
       { title: '样品制作', desc: '在专业工厂制作样品' },
-      { title: '量产&检验', desc: '100%全检后交货' },
+      { title: '量产&检验', desc: '完成生产后确认状态并准备交付' },
     ],
     trust_badge: '为什么选择KERYX',
     trust_title: 'KERYX的特别之处',
@@ -323,16 +323,16 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {[
-              { img: '/images/catalog-goods/gilduck-plush.webp', name: lang === 'zh' ? '吉鸭毛绒公仔 30cm' : '길덕이 봉제인형 30cm', price: '¥18~25', badge: 'BEST' },
-              { img: '/images/catalog-goods/inyeoseok-plush.webp', name: lang === 'zh' ? '这家伙毛绒钥匙扣套装' : '이녀석 봉제 키링 세트 (9종)', price: '¥4~6', badge: 'HOT' },
-              { img: '/images/catalog-goods/kkomul-figure.webp', name: lang === 'zh' ? '小怪物们盲盒4款' : '꼬물이들 블라인드박스 4종', price: '¥12~18', badge: 'NEW' },
-              { img: '/images/catalog-goods/heartbbung-plush.webp', name: lang === 'zh' ? '心动仓鼠毛绒公仔' : '하트뿅 햄스터 봉제인형', price: '¥14~20', badge: 'BEST' },
-              { img: '/images/catalog-goods/piggly-plush.webp', name: lang === 'zh' ? '小猪猪毛绒公仔 20cm' : '피글리 봉제인형 20cm', price: '¥12~18', badge: 'NEW' },
-              { img: '/images/catalog-goods/gilduck-gacha.webp', name: lang === 'zh' ? '吉鸭扭蛋胶囊系列' : '길덕이 가챠 캡슐 시리즈', price: '¥3~5', badge: 'HOT' },
-              { img: '/images/catalog-goods/piggly-figure.webp', name: lang === 'zh' ? '小猪猪盲盒4款' : '피글리 블라인드박스 4종', price: '¥10~15', badge: 'NEW' },
-              { img: '/images/catalog-goods/kkomul-keyring.webp', name: lang === 'zh' ? '小怪物们亚克力钥匙扣' : '꼬물이들 아크릴 키링', price: '¥3~5', badge: 'HOT' },
+              { img: '/images/catalog-goods/gilduck-plush.webp', name: lang === 'zh' ? '吉鸭毛绒公仔' : '길덕이 봉제인형', badge: lang === 'zh' ? '毛绒' : '봉제' },
+              { img: '/images/catalog-goods/inyeoseok-plush.webp', name: lang === 'zh' ? '这家伙毛绒钥匙扣' : '이녀석 봉제 키링', badge: lang === 'zh' ? '钥匙扣' : '키링' },
+              { img: '/images/catalog-goods/kkomul-figure.webp', name: lang === 'zh' ? '小怪物们盲盒' : '꼬물이들 블라인드 박스', badge: lang === 'zh' ? '手办' : '피규어' },
+              { img: '/images/catalog-goods/heartbbung-plush.webp', name: lang === 'zh' ? '心动仓鼠毛绒公仔' : '하트뿅 햄스터 봉제인형', badge: lang === 'zh' ? '毛绒' : '봉제' },
+              { img: '/images/catalog-goods/piggly-plush.webp', name: lang === 'zh' ? '小猪丽毛绒公仔' : '피글리 봉제인형', badge: lang === 'zh' ? '毛绒' : '봉제' },
+              { img: '/images/catalog-goods/gilduck-gacha.webp', name: lang === 'zh' ? '吉鸭扭蛋系列' : '길덕이 가챠 시리즈', badge: lang === 'zh' ? '随机周边' : '랜덤 굿즈' },
+              { img: '/images/catalog-goods/piggly-figure.webp', name: lang === 'zh' ? '小猪丽盲盒' : '피글리 블라인드 박스', badge: lang === 'zh' ? '手办' : '피규어' },
+              { img: '/images/catalog-goods/kkomul-keyring.webp', name: lang === 'zh' ? '小怪物们亚克力钥匙扣' : '꼬물이들 아크릴 키링', badge: lang === 'zh' ? '钥匙扣' : '키링' },
             ].map((item, i) => (
-              <Link key={i} href="/shop" className="group rounded-2xl border border-gray-100 bg-white overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5" aria-label={`${item.name} 스토어 보기`}>
+              <Link key={i} href="/ip" className="group rounded-2xl border border-gray-100 bg-white overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5" aria-label={`${item.name} IP 소개 보기`}>
                 <div className="aspect-square relative bg-gray-50 overflow-hidden">
                   <Image src={item.img} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 768px) 50vw, 25vw" />
                   <div className="absolute top-2 left-2">
@@ -386,7 +386,7 @@ export default function HomePage() {
                     sizes="(max-width: 768px) 90vw, 25vw"
                   />
                   <div className="absolute top-3 left-3">
-                    <span className="w-8 h-8 rounded-full bg-brand-600 text-white flex items-center justify-center text-sm font-bold">{i + 1}</span>
+                    <span className="w-8 h-8 rounded-full bg-brand-600 text-white flex items-center justify-center text-sm font-bold">K</span>
                   </div>
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">{step.title}</h3>
@@ -413,7 +413,7 @@ export default function HomePage() {
             {t.trust_items.map((item: any, i: number) => (
               <div key={i} className="text-center p-8 rounded-3xl border border-gray-100 hover:border-amber-200 hover:bg-amber-50/30 transition-all">
                 <div className="w-16 h-16 mx-auto rounded-full bg-amber-100 flex items-center justify-center mb-6">
-                  <span className="text-2xl font-black text-amber-600">{i + 1}</span>
+                  <span className="text-2xl font-black text-amber-600">K</span>
                 </div>
                 <h3 className="text-base font-bold text-gray-900 mb-3">{item.title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
