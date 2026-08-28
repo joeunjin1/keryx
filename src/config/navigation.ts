@@ -85,6 +85,7 @@ export const adminNavItems: NavEntry[] = [
       { href: '/admin/categories', label: '카테고리 관리', labelZh: '类别管理', icon: '🏷️' },
       { href: '/admin/products', label: '전체 상품 데이터', labelZh: '全部商品数据', icon: '🗂️' },
       { href: '/admin/products/price-approvals', label: '가격 수정 승인', labelZh: '价格修改审批', icon: '💰' },
+      { href: '/admin/retail-products', label: '스토어 상품 공개', labelZh: '商店商品公开', icon: '🛍️' },
     ],
   },
   {
@@ -94,6 +95,7 @@ export const adminNavItems: NavEntry[] = [
     defaultOpen: false,
     items: [
       { href: '/admin/orders', label: '파트너 주문 관리', labelZh: '合作伙伴订单管理', icon: '📋' },
+      { href: '/admin/retail-orders', label: '스토어 주문·배송', labelZh: '商店订单·配送', icon: '🚚' },
       { href: '/admin/payments', label: '주문·결제 승인', labelZh: '订单·付款审批', icon: '💳' },
       { href: '/admin/trade', label: '거래 센터', labelZh: '交易中心', icon: '🤝' },
       { href: '/admin/samples', label: '샘플 요청 관리', labelZh: '样品申请管理', icon: '📬' },
@@ -113,13 +115,13 @@ export const adminNavItems: NavEntry[] = [
     ],
   },
   {
-    groupLabel: 'B2B 구독·마케팅',
-    groupLabelZh: 'B2B订阅·营销',
+    groupLabel: '샘플 구독·상품 안내',
+    groupLabelZh: '样品订阅·商品资讯',
     groupIcon: '📬',
     defaultOpen: false,
     items: [
-      { href: '/admin/b2b-subscribers', label: 'B2B 구독자 관리', labelZh: 'B2B订阅者管理', icon: '👥' },
-      { href: '/admin/weekly-report', label: '주간 리포트 발송', labelZh: '周报发送', icon: '📨' },
+      { href: '/admin/b2b-subscribers', label: '샘플 구독자 관리', labelZh: '样品订阅者管理', icon: '👥' },
+      { href: '/admin/weekly-report', label: '신상품 안내 발송', labelZh: '新品资讯发送', icon: '📨' },
     ],
   },
   {

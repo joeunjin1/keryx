@@ -1,123 +1,117 @@
-/**
- * B2B 무료 구독 신청 API
- * - createAdminClient (service_role_key) 사용 → RLS 완전 우회
- * - 익명 사용자도 구독 신청 가능
- * - 관리자에게 알림 이메일 발송
- */
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { createAdminClient } from '@/lib/supabase/server';
 
-export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json();
-    const supabase = createAdminClient();
+const SubscribeSchema = z.object({
+  email: z.string().trim().email().max(200),
+  companyName: z.string().trim().min(1).max(160),
+  contactName: z.string().trim().max(80).default(''),
+  phone: z.string().trim().max(32).default(''),
+  interestIpSlugs: z.array(z.string().trim().min(1).max(80)).max(20).default([]),
+  interestCategories: z.array(z.string().trim().min(1).max(80)).max(20).default([]),
+  privacyConsent: z.literal(true),
+  marketingConsent: z.boolean().default(false),
+});
 
-    // 필수 필드 검증
-    if (!body.email || !body.company_name) {
-      return NextResponse.json(
-        { error: '이메일과 회사명은 필수입니다.' },
-        { status: 400 }
-      );
-    }
+function escapeHtml(value: string) {
+  return value.replace(/[&<>'"]/g, (character) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;',
+  }[character] || character));
+}
 
-    // 이메일 형식 검증
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(body.email)) {
-      return NextResponse.json(
-        { error: '올바른 이메일 형식이 아닙니다.' },
-        { status: 400 }
-      );
-    }
-
-    // 중복 구독 확인
-    const { data: existing } = await supabase
-      .from('b2b_subscribers')
-      .select('id, status')
-      .eq('email', body.email)
-      .is('deleted_at', null)
-      .maybeSingle();
-
-    if (existing) {
-      if (existing.status === 'approved') {
-        return NextResponse.json(
-          { error: '이미 구독 중인 이메일입니다.' },
-          { status: 409 }
-        );
-      }
-      if (existing.status === 'pending') {
-        return NextResponse.json(
-          { error: '이미 신청된 이메일입니다. 승인 대기 중입니다.' },
-          { status: 409 }
-        );
-      }
-      // rejected 또는 unsubscribed인 경우 재신청 허용 (기존 레코드 업데이트)
-      const { error: updateErr } = await supabase
-        .from('b2b_subscribers')
-        .update({
-          company_name: body.company_name,
-          phone: body.phone || null,
-          status: 'pending',
-          rejection_reason: null,
-          subscribed_at: new Date().toISOString(),
-          rejected_at: null,
-          unsubscribed_at: null,
-        })
-        .eq('id', existing.id);
-
-      if (updateErr) {
-        console.error('[subscribe/b2b] Update error:', updateErr);
-        return NextResponse.json({ error: updateErr.message }, { status: 500 });
-      }
-
-      return NextResponse.json({ success: true, message: '재신청이 완료되었습니다.' });
-    }
-
-    // 신규 구독 신청 삽입
-    const { error: dbErr } = await supabase.from('b2b_subscribers').insert({
-      email: body.email,
-      company_name: body.company_name,
-      phone: body.phone || null,
-      status: 'pending',
-    });
-
-    if (dbErr) {
-      console.error('[subscribe/b2b] DB error:', dbErr);
-      return NextResponse.json({ error: dbErr.message }, { status: 500 });
-    }
-
-    // 관리자에게 알림 이메일 발송 (비동기, 실패해도 구독 신청은 성공)
-    try {
-      const resendKey = process.env.RESEND_API_KEY;
-      if (resendKey) {
-        await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${resendKey}`,
-          },
-          body: JSON.stringify({
-            from: 'KERYX <noreply@keryx.kr>',
-            to: ['admin@keryx.kr'],
-            subject: `[B2B 구독 신청] ${body.company_name} - ${body.email}`,
-            html: `
-              <h2>새로운 B2B 구독 신청</h2>
-              <table style="border-collapse:collapse; width:100%; max-width:500px;">
-                <tr><td style="padding:8px; border:1px solid #ddd; font-weight:bold;">회사명</td><td style="padding:8px; border:1px solid #ddd;">${body.company_name}</td></tr>
-                <tr><td style="padding:8px; border:1px solid #ddd; font-weight:bold;">이메일</td><td style="padding:8px; border:1px solid #ddd;">${body.email}</td></tr>
-                <tr><td style="padding:8px; border:1px solid #ddd; font-weight:bold;">연락처</td><td style="padding:8px; border:1px solid #ddd;">${body.phone || '-'}</td></tr>
-              </table>
-              <p style="margin-top:16px;">관리자 페이지에서 사업자 등록증 확인 후 승인해 주세요.</p>
-            `,
-          }),
-        });
-      }
-    } catch (emailErr) {
-      console.error('[subscribe/b2b] Email notification failed:', emailErr);
-    }
-
-    return NextResponse.json({ success: true, message: '구독 신청이 완료되었습니다.' });
-  } catch (err) {
-    console.error('[subscribe/b2b] Unexpected error:', err);
-    return NextResponse.json({ error: '서버 오류가 발생했습니다.' }, { status: 500 });
+export async function POST(request: NextRequest) {
+  const payload = await request.json().catch(() => null);
+  const parsed = SubscribeSchema.safeParse(payload);
+  if (!parsed.success) {
+    return NextResponse.json({ error: '회사명, 이메일, 개인정보 수집·이용 동의를 확인해 주세요.' }, { status: 400 });
   }
+
+  const data = parsed.data;
+  const email = data.email.toLowerCase();
+  const now = new Date().toISOString();
+  const supabase = createAdminClient() as any;
+
+  const { data: existing, error: lookupError } = await supabase
+    .from('b2b_subscribers')
+    .select('id, status')
+    .eq('email', email)
+    .is('deleted_at', null)
+    .maybeSingle();
+  if (lookupError) {
+    console.error('[sample subscription] lookup failed', lookupError.message);
+    return NextResponse.json({ error: '구독 정보를 확인하지 못했습니다. 잠시 후 다시 시도해 주세요.' }, { status: 500 });
+  }
+
+  const subscriberData = {
+    company_name: data.companyName,
+    contact_name: data.contactName,
+    phone: data.phone || null,
+    interest_ip_slugs: data.interestIpSlugs,
+    interest_categories: data.interestCategories,
+    privacy_consent_at: now,
+    marketing_consent_at: data.marketingConsent ? now : null,
+    source: 'sample_subscription',
+  };
+
+  let subscriberId: string;
+  if (existing) {
+    const { error: updateError } = await supabase
+      .from('b2b_subscribers')
+      .update({
+        ...subscriberData,
+        status: existing.status === 'approved' ? 'approved' : 'pending',
+        subscribed_at: now,
+        rejection_reason: null,
+        rejected_at: null,
+        unsubscribed_at: null,
+      })
+      .eq('id', existing.id);
+    if (updateError) {
+      console.error('[sample subscription] update failed', updateError.message);
+      return NextResponse.json({ error: '구독 정보를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.' }, { status: 500 });
+    }
+    subscriberId = existing.id;
+  } else {
+    const { data: inserted, error: insertError } = await supabase
+      .from('b2b_subscribers')
+      .insert({ email, status: 'pending', ...subscriberData })
+      .select('id')
+      .single();
+    if (insertError || !inserted) {
+      console.error('[sample subscription] insert failed', insertError?.message);
+      return NextResponse.json({ error: '구독을 신청하지 못했습니다. 잠시 후 다시 시도해 주세요.' }, { status: 500 });
+    }
+    subscriberId = inserted.id;
+  }
+
+  // 메일 발송 실패는 신청 저장을 취소하지 않는다. HTML에는 사용자 입력을 이스케이프한다.
+  const resendKey = process.env.RESEND_API_KEY;
+  if (resendKey) {
+    try {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${resendKey}`,
+        },
+        body: JSON.stringify({
+          from: 'KERYX <noreply@keryx.kr>',
+          to: ['admin@keryx.kr'],
+          subject: `[샘플 구독 신청] ${data.companyName}`,
+          html: `<h2>새 샘플 구독 신청</h2><table style="border-collapse:collapse;max-width:560px"><tr><th style="text-align:left;padding:8px;border:1px solid #ddd">회사명</th><td style="padding:8px;border:1px solid #ddd">${escapeHtml(data.companyName)}</td></tr><tr><th style="text-align:left;padding:8px;border:1px solid #ddd">담당자</th><td style="padding:8px;border:1px solid #ddd">${escapeHtml(data.contactName || '-')}</td></tr><tr><th style="text-align:left;padding:8px;border:1px solid #ddd">이메일</th><td style="padding:8px;border:1px solid #ddd">${escapeHtml(email)}</td></tr><tr><th style="text-align:left;padding:8px;border:1px solid #ddd">관심 IP</th><td style="padding:8px;border:1px solid #ddd">${escapeHtml(data.interestIpSlugs.join(', ') || '-')}</td></tr></table><p>관리자 화면에서 사업자 확인 후 구독 상태를 검토해 주세요.</p>`,
+        }),
+      });
+    } catch (emailError) {
+      console.error('[sample subscription] notification email failed', emailError);
+    }
+  }
+
+  return NextResponse.json({
+    success: true,
+    subscriberId,
+    status: existing?.status === 'approved' ? 'approved' : 'pending',
+    message: existing?.status === 'approved'
+      ? '신청 정보를 업데이트했습니다. 신상품·샘플 소식을 계속 받아보실 수 있습니다.'
+      : '샘플 구독 신청이 접수되었습니다. 사업자 정보를 확인한 뒤 발송 대상으로 등록합니다.',
+  });
 }
