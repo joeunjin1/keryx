@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createAdminClient, createClient } from '@/lib/supabase/server';
+import { writeOperatorLog } from '@/lib/admin/requireAdmin';
 
 const ParamsSchema = z.string().uuid();
 const ReviewSchema = z.object({
@@ -38,5 +39,9 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     return NextResponse.json({ error: '가격 변경 요청을 처리하지 못했습니다.' }, { status: 409 });
   }
 
+  await writeOperatorLog(admin, user.id, 'review_retail_price_change', 'retail_price_change_requests', requestId.data, {
+    decision: parsed.data.decision,
+    reviewerNoteProvided: Boolean(parsed.data.note),
+  });
   return NextResponse.json({ request: priceRequest });
 }

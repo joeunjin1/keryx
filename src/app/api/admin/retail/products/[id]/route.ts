@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createAdminClient, createClient } from '@/lib/supabase/server';
+import { writeOperatorLog } from '@/lib/admin/requireAdmin';
 
 const ProductIdSchema = z.string().uuid();
 
@@ -73,6 +74,12 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     return NextResponse.json({ error: '판매 설정을 저장하지 못했습니다. 공개 조건과 관리자 권한을 확인해 주세요.' }, { status: 409 });
   }
 
+  await writeOperatorLog(auth.admin, auth.user.id, 'update_retail_product_settings', 'products', productId.data, {
+    retailVisible: input.retailVisible,
+    retailStockQty: input.retailStockQty,
+    retailSaleStatus: input.retailSaleStatus,
+    retailShippingPolicy: input.retailShippingPolicy,
+  });
   return NextResponse.json({ product: updated });
 }
 
@@ -102,5 +109,9 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     return NextResponse.json({ error: '판매가 변경 요청을 등록하지 못했습니다.' }, { status: 409 });
   }
 
+  await writeOperatorLog(auth.admin, auth.user.id, 'request_retail_price_change', 'retail_price_change_requests', priceRequest.id ?? null, {
+    productId: productId.data,
+    requestedPriceKrw: parsed.data.requestedPriceKrw,
+  });
   return NextResponse.json({ request: priceRequest }, { status: 201 });
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createAdminClient, createClient } from '@/lib/supabase/server';
+import { writeOperatorLog } from '@/lib/admin/requireAdmin';
 
 const UpdateOrderSchema = z.object({
   nextStatus: z.enum(['fulfillment_ready', 'shipped', 'delivered']),
@@ -43,5 +44,9 @@ export async function PATCH(
     return NextResponse.json({ error: '현재 주문 상태에서는 요청한 단계로 변경할 수 없습니다. 새로고침 후 확인해 주세요.' }, { status: 409 });
   }
 
+  await writeOperatorLog(admin, user.id, 'advance_retail_order_status', 'retail_orders', params.id, {
+    nextStatus: parsed.data.nextStatus,
+    noteProvided: Boolean(parsed.data.note),
+  });
   return NextResponse.json({ order: updated });
 }
