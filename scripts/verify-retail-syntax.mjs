@@ -62,6 +62,7 @@ const paths = [
   'src/app/api/admin/retail/orders/[id]/route.ts',
   'src/app/api/cron/retail-reservation-expiry/route.ts',
   'src/components/layout/PublicHeader.tsx',
+  'src/components/layout/PublicFooter.tsx',
   'src/lib/supabase/middleware.ts',
   'src/app/layout.tsx',
   'src/app/about/page.tsx',
