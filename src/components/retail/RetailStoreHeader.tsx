@@ -5,7 +5,7 @@ import { Menu, ShoppingBag, X } from 'lucide-react';
 import { useState } from 'react';
 import { useLangContext } from '@/components/layout/LangContext';
 
-type HeaderMode = 'store' | 'ip' | 'sample';
+type HeaderMode = 'store' | 'ip' | 'sample' | 'company';
 
 type RetailStoreHeaderProps = {
   mode?: HeaderMode;
@@ -41,12 +41,12 @@ export function RetailStoreHeader({ mode = 'store', showCart = true, cartCount =
   const { lang, toggle } = useLangContext();
   const [mobileOpen, setMobileOpen] = useState(false);
   const t = copy[lang];
-  const brandLabel = mode === 'ip' ? 'IP' : mode === 'sample' ? 'SAMPLE' : 'STORE';
+  const brandLabel = mode === 'ip' ? 'IP' : mode === 'sample' ? 'SAMPLE' : mode === 'company' ? 'ABOUT' : 'STORE';
   const navItems = [
     { href: '/shop', label: t.store, active: mode === 'store' },
     { href: '/sample-subscription', label: t.sample, active: mode === 'sample' },
     { href: '/ip', label: t.ip, active: mode === 'ip' },
-    { href: '/about', label: t.company, active: false },
+    { href: '/about', label: t.company, active: mode === 'company' },
   ];
 
   return (

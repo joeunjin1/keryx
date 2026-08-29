@@ -10,6 +10,9 @@ import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 
+// 쿠키 기반 관리자 인증 API는 정적 생성 대상이 될 수 없습니다.
+export const dynamic = 'force-dynamic';
+
 function createSupabaseClient() {
   const cookieStore = cookies();
   return createServerClient(

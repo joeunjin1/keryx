@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://keryx.co.kr';
+  const baseUrl = 'https://www.keryx.kr';
   const now = new Date().toISOString();
 
   // 현재 공개 구조의 단일 기준: 스토어, 샘플 구독, 자체 디자인 IP와 필수 회사 정보.
