@@ -71,6 +71,7 @@ export const adminNavItems: NavEntry[] = [
       { href: '/admin/factory-ratings', label: '공장 평가·점수', labelZh: '工厂评分', icon: '⭐' },
       { href: '/admin/factory-match-reports', label: '매칭 보고서', labelZh: '匹配报告', icon: '📋' },
       { href: '/admin/factory-match-reports/new', label: '매칭 보고서 작성', labelZh: '新建匹配报告', icon: '✍️' },
+      { href: '/admin/manufacturing-projects', label: '제조 프로젝트 운영', labelZh: '制造项目运营', icon: '🧵' },
       { href: '/admin/inspections/dashboard', label: '검수 관리', labelZh: '验货管理', icon: '🔍' },
       { href: '/admin/inspections/new', label: '검수서 작성', labelZh: '新建验货单', icon: '📝' },
     ],
@@ -269,6 +270,16 @@ export const sellerNavItems: NavEntry[] = [
     items: [
       { href: '/buyer/discover', label: '최근 신상품·샘플', labelZh: '最新新品·样品', icon: '✨' },
       { href: '/sample-subscription/status', label: '회사 인증·구독 상태', labelZh: '企业认证·订阅状态', icon: '🛡️' },
+    ],
+  },
+  {
+    groupLabel: '제조 프로젝트',
+    groupLabelZh: '制造项目',
+    groupIcon: '🧵',
+    defaultOpen: true,
+    items: [
+      { href: '/buyer/projects', label: '내 제조 프로젝트', labelZh: '我的制造项目', icon: '🗂️' },
+      { href: '/buyer/projects/new', label: '새 제품 요청', labelZh: '新增产品需求', icon: '➕' },
     ],
   },
   {
