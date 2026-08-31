@@ -121,7 +121,9 @@ export const adminNavItems: NavEntry[] = [
     groupIcon: '📬',
     defaultOpen: false,
     items: [
-      { href: '/admin/b2b-subscribers', label: '샘플 구독자 관리', labelZh: '样品订阅者管理', icon: '👥' },
+      { href: '/admin/buyer-verifications', label: '바이어 회사 인증', labelZh: '买家企业认证', icon: '🛡️' },
+      { href: '/admin/new-product-feed', label: '신상품·샘플 피드 관리', labelZh: '新品·样品信息流管理', icon: '🆕' },
+      { href: '/admin/b2b-subscribers', label: '기존 샘플 구독 이력', labelZh: '原有样品订阅记录', icon: '👥' },
       { href: '/admin/weekly-report', label: '신상품 안내 발송', labelZh: '新品资讯发送', icon: '📨' },
     ],
   },
@@ -257,6 +259,16 @@ export const sellerNavItems: NavEntry[] = [
     items: [
       { href: '/catalog', label: 'B2B 상품 카탈로그', labelZh: 'B2B商品目录', icon: '📦' },
       { href: '/showroom', label: 'IP 쇼룸', labelZh: 'IP展厅', icon: '✨' },
+    ],
+  },
+  {
+    groupLabel: '신상품·샘플 구독',
+    groupLabelZh: '新品·样品订阅',
+    groupIcon: '🆕',
+    defaultOpen: true,
+    items: [
+      { href: '/buyer/discover', label: '최근 신상품·샘플', labelZh: '最新新品·样品', icon: '✨' },
+      { href: '/sample-subscription/status', label: '회사 인증·구독 상태', labelZh: '企业认证·订阅状态', icon: '🛡️' },
     ],
   },
   {

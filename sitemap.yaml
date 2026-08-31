@@ -3,8 +3,11 @@
 # 모든 라우트, 권한, DB 테이블, i18n 키를 이 파일에서 관리
 # 변경 시 반드시 이 파일을 먼저 수정 후 코드에 반영
 
-version: "2.0"
-updated: "2026-05-04"
+version: "3.0"
+updated: "2026-08-31"
+
+# Phase 0 신규 구조: 아래 discovery 섹션은 페이지·API·테이블·권한·i18n·알림을
+# 함께 선언한다. 코드·DB·메뉴 변경 시 이 항목을 먼저 갱신한다.
 
 # ─────────────────────────────────────────────
 # 공개 라우트 (인증 불필요)
@@ -20,6 +23,15 @@ public:
     labelZh: B2B商城
     component: src/app/shop/page.tsx
     db_tables: [products, factories, categories]
+
+  - path: /sample-subscription
+    label: 샘플 구독 안내
+    labelZh: 样品订阅说明
+    component: src/app/sample-subscription/page.tsx
+    db_tables: [b2b_subscribers]
+    api: [/api/subscribe/b2b]
+    roles: [public]
+    i18n: [sample_subscription]
 
   - path: /shop/factory/[factoryId]
     label: 공장 상세
@@ -73,6 +85,57 @@ public:
     label: 이용약관
     labelZh: 使用条款
     component: src/app/terms/page.tsx
+
+# ─────────────────────────────────────────────
+# 승인 바이어 전용 신상품·샘플 발견 포털 (Phase 0)
+# ----------------------------------------------------------------
+buyer_discovery:
+  role: seller
+  base_path: /buyer
+  shell: BuyerPortalLayout
+  nav_source: src/config/navigation.ts#buyerNavItems
+  access_gate: seller_profile_kind + approved_company_verification + active_discovery_access
+  pages:
+    - path: /sample-subscription/apply
+      label: 회사 인증 신청
+      labelZh: 提交企业认证
+      component: src/app/sample-subscription/apply/page.tsx
+      api: [/api/buyer/company-verification]
+      db_tables: [sellers, buyer_company_verifications, buyer_discovery_access]
+      roles: [seller]
+      i18n: [buyer_verification_apply]
+      notifications: [buyer_verification_submitted]
+      seed: [approved_seller_account]
+    - path: /sample-subscription/status
+      label: 구독·회사 인증 상태
+      labelZh: 订阅与企业认证状态
+      component: src/app/sample-subscription/status/page.tsx
+      api: [/api/buyer/company-verification]
+      db_tables: [buyer_company_verifications, buyer_discovery_access]
+      roles: [seller]
+      i18n: [buyer_verification_status]
+      notifications: [buyer_verification_decision]
+      seed: [pending_verification]
+    - path: /buyer/discover
+      label: 신상품·샘플
+      labelZh: 新品与样品
+      component: src/app/buyer/discover/page.tsx
+      api: [/api/buyer/discover]
+      db_tables: [v_approved_buyer_new_product_feed, new_product_offering_assets, buyer_discovery_events]
+      roles: [seller_active_discovery]
+      i18n: [buyer_discover]
+      notifications: [new_product_published, offering_expired]
+      seed: [active_discovery_access, published_offering]
+    - path: /buyer/discover/[offeringId]
+      label: 신상품·샘플 상세
+      labelZh: 新品与样品详情
+      component: src/app/buyer/discover/[offeringId]/page.tsx
+      api: [/api/buyer/discover/[offeringId], /api/buyer/discover/[offeringId]/save]
+      db_tables: [v_approved_buyer_new_product_feed, new_product_offering_assets, buyer_discovery_events]
+      roles: [seller_active_discovery]
+      i18n: [buyer_discover_detail]
+      notifications: []
+      seed: [active_discovery_access, published_offering]
 
 # ─────────────────────────────────────────────
 # Admin 포털 (role: admin)
@@ -208,6 +271,36 @@ admin:
       label: 시스템 상태
       labelZh: 系统状态
       db_tables: []
+
+# ─────────────────────────────────────────────
+# 승인 바이어·신상품 운영 (Phase 0/1)
+# ----------------------------------------------------------------
+admin_discovery:
+  role: admin
+  base_path: /admin
+  shell: AdminShell
+  nav_source: src/config/navigation.ts#adminNavItems
+  pages:
+    - path: /admin/buyer-verifications
+      label: 바이어 회사 인증
+      labelZh: 买家企业认证
+      component: src/app/admin/buyer-verifications/page.tsx
+      api: [/api/admin/buyer-verifications, /api/admin/buyer-verifications/[verificationId]/decision]
+      db_tables: [buyer_company_verifications, buyer_discovery_access, operator_activity_log]
+      roles: [admin]
+      i18n: [admin_buyer_verification]
+      notifications: [buyer_verification_submitted, buyer_verification_decision]
+      seed: [pending_verification]
+    - path: /admin/new-product-feed
+      label: 신상품·샘플 피드 관리
+      labelZh: 新品与样品内容管理
+      component: src/app/admin/new-product-feed/page.tsx
+      api: [/api/admin/new-product-offerings, /api/admin/new-product-offerings/[offeringId]/publish]
+      db_tables: [new_product_offerings, new_product_offering_assets, new_product_offering_reviews, operator_activity_log]
+      roles: [admin]
+      i18n: [admin_new_product_feed]
+      notifications: [new_product_published, offering_expired]
+      seed: [draft_offering]
 
 # ─────────────────────────────────────────────
 # MD 포털 (role: md)

@@ -7,6 +7,10 @@
     {
       "path": "/api/cron/daily-alerts",
       "schedule": "0 1 * * *"
+    },
+    {
+      "path": "/api/cron/expire-new-product-offerings",
+      "schedule": "17 0 * * *"
     }
   ]
 }
