@@ -17,11 +17,16 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     return NextResponse.json({ error: '저장 요청이 올바르지 않습니다.' }, { status: 400 });
   }
 
-  // 만료·비공개 항목은 저장할 수 없다. 원본 테이블 대신 권한이 강제된 피드 뷰로 확인한다.
+  // 만료·비공개 항목은 저장할 수 없다. 바이어 세션 권한은 위에서 확인하고,
+  // 서버는 게시·14일 조건을 원본 테이블에 명시적으로 적용한다.
+  const currentTime = new Date().toISOString();
   const { data: offering, error: offeringError } = await (context.admin as any)
-    .from('v_approved_buyer_new_product_feed')
+    .from('new_product_offerings')
     .select('id')
     .eq('id', parsedParams.data.offeringId)
+    .eq('status', 'published')
+    .lte('published_at', currentTime)
+    .gt('expires_at', currentTime)
     .maybeSingle();
   if (offeringError) {
     console.error('[buyer discovery] save offering lookup failed', offeringError.message);

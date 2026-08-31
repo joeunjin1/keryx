@@ -328,6 +328,7 @@ export const factoryNavItems: NavEntry[] = [
     items: [
       { href: '/factory/products', label: '제품 목록', labelZh: '产品列表', icon: '📋', tabIcon: '📋' },
       { href: '/factory/products/new', label: '제품 등록', labelZh: '新增产品', icon: '➕' },
+      { href: '/factory/new-product-feed', label: '신상품·샘플 검토 요청', labelZh: '新品·样品审核申请', icon: '🆕' },
       { href: '/factory/profile', label: '공장 프로필', labelZh: '工厂资料', icon: '🏷️' },
     ],
   },

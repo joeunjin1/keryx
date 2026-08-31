@@ -29,9 +29,16 @@ export async function GET(request: NextRequest) {
   }
 
   const { category, ip, limit } = parsed.data;
+  // 세션 바이어 권한은 requireActiveBuyerDiscovery()에서 먼저 확인한다.
+  // service role 조회는 auth.uid()가 바이어가 아니므로, 안전한 열만 선택하고
+  // 게시·14일 노출 조건을 서버에서 동일하게 강제한다.
+  const currentTime = new Date().toISOString();
   let query = (context.admin as any)
-    .from('v_approved_buyer_new_product_feed')
+    .from('new_product_offerings')
     .select('id, title_ko, title_zh, summary_ko, summary_zh, category_slug, ip_slug, sample_available, customization_scope_ko, customization_scope_zh, visible_moq_note_ko, visible_moq_note_zh, visible_lead_time_note_ko, visible_lead_time_note_zh, published_at, expires_at')
+    .eq('status', 'published')
+    .lte('published_at', currentTime)
+    .gt('expires_at', currentTime)
     .order('published_at', { ascending: false })
     .limit(limit);
 

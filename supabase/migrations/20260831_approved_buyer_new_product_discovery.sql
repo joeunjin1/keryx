@@ -532,6 +532,24 @@ $$;
 -- -----------------------------------------------------------------------------
 -- 6. 바이어 피드 보안 게이트와 노출 전용 뷰
 -- -----------------------------------------------------------------------------
+-- 공장 계정은 shared_login_user_id로 연결된 자기 공장 하나만 식별한다.
+CREATE OR REPLACE FUNCTION public.keryx_current_factory_id()
+RETURNS uuid
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT factory.id
+  FROM public.factories factory
+  INNER JOIN public.user_profiles profile
+    ON profile.id = auth.uid()
+   AND profile.kind::text = 'factory'
+  WHERE factory.shared_login_user_id = auth.uid()
+  ORDER BY factory.id ASC
+  LIMIT 1;
+$$;
+
 CREATE OR REPLACE FUNCTION public.keryx_has_active_discovery_access()
 RETURNS boolean
 LANGUAGE sql
@@ -596,6 +614,7 @@ REVOKE ALL ON public.v_approved_buyer_new_product_feed FROM anon;
 GRANT SELECT ON public.v_approved_buyer_new_product_feed TO authenticated;
 REVOKE ALL ON FUNCTION public.keryx_is_admin() FROM PUBLIC;
 REVOKE ALL ON FUNCTION public.keryx_current_seller_id() FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.keryx_current_factory_id() FROM PUBLIC;
 REVOKE ALL ON FUNCTION public.keryx_has_active_discovery_access() FROM PUBLIC;
 REVOKE ALL ON FUNCTION public.expire_new_product_offerings() FROM PUBLIC;
 REVOKE ALL ON FUNCTION public.transition_new_product_offering(uuid, uuid, text, text) FROM PUBLIC;
@@ -603,6 +622,7 @@ REVOKE ALL ON FUNCTION public.decide_buyer_company_verification(uuid, uuid, text
 -- 아래 세 보조 함수는 RLS 정책 평가에만 쓰며, 호출자 자신의 ID/접근 여부만 반환한다.
 GRANT EXECUTE ON FUNCTION public.keryx_is_admin() TO authenticated;
 GRANT EXECUTE ON FUNCTION public.keryx_current_seller_id() TO authenticated;
+GRANT EXECUTE ON FUNCTION public.keryx_current_factory_id() TO authenticated;
 GRANT EXECUTE ON FUNCTION public.keryx_has_active_discovery_access() TO authenticated;
 
 -- -----------------------------------------------------------------------------
@@ -655,6 +675,24 @@ CREATE POLICY new_product_offerings_admin_all
   FOR ALL
   USING (public.keryx_is_admin())
   WITH CHECK (public.keryx_is_admin());
+
+-- 공장은 자기 공장 ID로 연결된 초안·보완 요청 항목만 조회·제출한다. 승인·게시 권한은 없다.
+DROP POLICY IF EXISTS new_product_offerings_factory_read_own ON public.new_product_offerings;
+CREATE POLICY new_product_offerings_factory_read_own
+  ON public.new_product_offerings
+  FOR SELECT
+  USING (source_type = 'factory' AND source_factory_id = public.keryx_current_factory_id());
+
+DROP POLICY IF EXISTS new_product_offerings_factory_submit_own ON public.new_product_offerings;
+CREATE POLICY new_product_offerings_factory_submit_own
+  ON public.new_product_offerings
+  FOR INSERT
+  WITH CHECK (
+    source_type = 'factory'
+    AND source_factory_id = public.keryx_current_factory_id()
+    AND status = 'submitted'
+    AND created_by = auth.uid()
+  );
 
 DROP POLICY IF EXISTS new_product_offering_assets_admin_all ON public.new_product_offering_assets;
 CREATE POLICY new_product_offering_assets_admin_all

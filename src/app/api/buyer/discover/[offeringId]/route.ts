@@ -15,10 +15,14 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
   const parsed = ParamsSchema.safeParse(await params);
   if (!parsed.success) return NextResponse.json({ error: '신상품 식별자가 올바르지 않습니다.' }, { status: 400 });
 
+  const currentTime = new Date().toISOString();
   const { data: offering, error: offeringError } = await (context.admin as any)
-    .from('v_approved_buyer_new_product_feed')
+    .from('new_product_offerings')
     .select('id, title_ko, title_zh, summary_ko, summary_zh, category_slug, ip_slug, sample_available, customization_scope_ko, customization_scope_zh, visible_moq_note_ko, visible_moq_note_zh, visible_lead_time_note_ko, visible_lead_time_note_zh, published_at, expires_at')
     .eq('id', parsed.data.offeringId)
+    .eq('status', 'published')
+    .lte('published_at', currentTime)
+    .gt('expires_at', currentTime)
     .maybeSingle();
 
   if (offeringError) {
