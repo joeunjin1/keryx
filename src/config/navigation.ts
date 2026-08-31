@@ -350,6 +350,7 @@ export const factoryNavItems: NavEntry[] = [
     defaultOpen: false,
     items: [
       { href: '/factory/briefs', label: 'Brief 목록', labelZh: '需求单列表', icon: '📝', tabIcon: '📝' },
+      { href: '/factory/manufacturing-projects', label: '제조 프로젝트 실행', labelZh: '制造项目执行', icon: '🧵', tabIcon: '🧵' },
       { href: '/factory/orders', label: '주문 현황', labelZh: '订单状态', icon: '🛒' },
       { href: '/factory/ratings', label: '평가 현황', labelZh: '评价状况', icon: '⭐' },
     ],
