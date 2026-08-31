@@ -84,6 +84,7 @@ export async function updateSession(request: NextRequest) {
   if (user) {
     const isPortalPath =
       path.startsWith('/seller') ||
+      path.startsWith('/buyer') ||
       path.startsWith('/factory') ||
       path.startsWith('/md') ||
       path.startsWith('/admin') ||
@@ -108,7 +109,7 @@ export async function updateSession(request: NextRequest) {
 
       // 역할별 허용 경로
       const roleAllowedPaths: Record<string, string[]> = {
-        seller:    ['/seller', '/my'],
+        seller:    ['/seller', '/buyer', '/my'],
         factory:   ['/factory', '/my'],
         md:        ['/md', '/admin', '/my'],
         inspector: ['/md/inspections', '/inspector', '/my'],

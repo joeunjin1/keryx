@@ -121,7 +121,9 @@ export const adminNavItems: NavEntry[] = [
     groupIcon: '📬',
     defaultOpen: false,
     items: [
-      { href: '/admin/b2b-subscribers', label: '샘플 구독자 관리', labelZh: '样品订阅者管理', icon: '👥' },
+      { href: '/admin/buyer-verifications', label: '바이어 회사 인증', labelZh: '买家企业认证', icon: '🛡️' },
+      { href: '/admin/new-product-feed', label: '신상품·샘플 피드 관리', labelZh: '新品·样品信息流管理', icon: '🆕' },
+      { href: '/admin/b2b-subscribers', label: '기존 샘플 구독 이력', labelZh: '原有样品订阅记录', icon: '👥' },
       { href: '/admin/weekly-report', label: '신상품 안내 발송', labelZh: '新品资讯发送', icon: '📨' },
     ],
   },
@@ -260,6 +262,16 @@ export const sellerNavItems: NavEntry[] = [
     ],
   },
   {
+    groupLabel: '신상품·샘플 구독',
+    groupLabelZh: '新品·样品订阅',
+    groupIcon: '🆕',
+    defaultOpen: true,
+    items: [
+      { href: '/buyer/discover', label: '최근 신상품·샘플', labelZh: '最新新品·样品', icon: '✨' },
+      { href: '/sample-subscription/status', label: '회사 인증·구독 상태', labelZh: '企业认证·订阅状态', icon: '🛡️' },
+    ],
+  },
+  {
     groupLabel: '상품·거래',
     groupLabelZh: '商品·交易',
     groupIcon: '📦',
@@ -316,6 +328,7 @@ export const factoryNavItems: NavEntry[] = [
     items: [
       { href: '/factory/products', label: '제품 목록', labelZh: '产品列表', icon: '📋', tabIcon: '📋' },
       { href: '/factory/products/new', label: '제품 등록', labelZh: '新增产品', icon: '➕' },
+      { href: '/factory/new-product-feed', label: '신상품·샘플 검토 요청', labelZh: '新品·样品审核申请', icon: '🆕' },
       { href: '/factory/profile', label: '공장 프로필', labelZh: '工厂资料', icon: '🏷️' },
     ],
   },
