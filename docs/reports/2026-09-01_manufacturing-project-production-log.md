@@ -25,3 +25,18 @@
 - **다음 구현:** 기능 브랜치에서 공장 제조 프로젝트 실행 화면·진행 업데이트 API, 운영자 공장 배정·QC 증빙·선적 관리 API/UI, 바이어 프로젝트룸의 승인된 QC·선적 공개를 구현·검증한다.
 - **비밀·외부 연동:** 새 외부 API, 결제 키, 알림 키 또는 환경변수 변경은 없다.
 
+
+## 2026-08-31 Preview 후속 검증 — 역할별 제조실행 UI
+
+- 브랜치: `feat/manufacturing-role-ui`
+- 최신 커밋: `bdce6d7` (`feat: add manufacturing execution workspace and alerts`)
+- Vercel Preview: `https://keryx-mdn60utis-joeunjin1s-projects.vercel.app`
+- 관찰 시각: 2026-08-31 GMT+9
+- 상태: Vercel Preview 목록에서 **Error**로 표시됨. 로컬 `npx tsc --noEmit` 및 `npm run build`는 통과했으므로 Vercel Build Log의 실제 실패 지점을 우선 확인해야 함.
+- 비교 기준: 직전 `6379657` Preview는 Ready였음.
+
+다음 조치: Build Log를 확인한 뒤 로그 근거가 있는 최소 수정만 수행한다. 추정에 의한 수정·Production 병합은 금지한다.
+
+### 상태 정정
+
+Vercel 배포 목록의 필터 화면은 최신 `bdce6d7` 배포를 Error로 표시했으나, 해당 배포의 상세 URL(`98mxdcjiissWPjXLM7vft8MHCaet`)에서 최종 상태는 **Ready / Latest / Preview**로 확인됐다. Build Duration은 2분 4초였고, 오류에 근거한 코드 수정은 수행하지 않았다. 이후 검증은 이 상세 배포를 기준으로 진행한다.

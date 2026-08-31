@@ -39,6 +39,8 @@ export async function updateSession(request: NextRequest) {
     path.startsWith('/signup') ||
     path.startsWith('/auth/callback') ||
     path.startsWith('/api/public') ||
+    // Cron routes validate CRON_SECRET inside each handler; redirecting here would prevent Vercel from reaching that check.
+    path.startsWith('/api/cron/') ||
     path.startsWith('/api/apply') ||
     path.startsWith('/api/auth/link-requests') ||
     path.startsWith('/shop') ||
