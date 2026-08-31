@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { createAdminClient, createClient } from '@/lib/supabase/server';
+import { requireFactory } from '@/lib/factory/requireFactory';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,25 +19,6 @@ const FactoryOfferingSchema = z.object({
   visibleLeadTimeNoteKo: z.string().trim().max(300).optional().default(''),
   visibleLeadTimeNoteZh: z.string().trim().max(300).optional().default(''),
 });
-
-async function requireFactory() {
-  const sessionClient = createClient();
-  const { data: { user }, error: userError } = await sessionClient.auth.getUser();
-  if (userError || !user) return { error: NextResponse.json({ error: '로그인이 필요합니다.' }, { status: 401 }) };
-
-  const admin = createAdminClient();
-  const { data: profile } = await admin.from('user_profiles').select('kind').eq('id', user.id).maybeSingle();
-  if (profile?.kind !== 'factory') return { error: NextResponse.json({ error: '공장 계정으로 로그인해 주세요.' }, { status: 403 }) };
-
-  const { data: factory, error: factoryError } = await admin
-    .from('factories')
-    .select('id, name, company_name_ko')
-    .eq('shared_login_user_id', user.id)
-    .maybeSingle();
-  if (factoryError || !factory) return { error: NextResponse.json({ error: '연결된 공장 프로필을 찾지 못했습니다. 운영자에게 문의해 주세요.' }, { status: 403 }) };
-
-  return { admin, user, factory };
-}
 
 export async function GET() {
   const context = await requireFactory();
